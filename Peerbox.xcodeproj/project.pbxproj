@@ -39,10 +39,6 @@
 		658945BA19269B4C00A58A83 /* SQLiteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589441719269B4B00A58A83 /* SQLiteDatabase.m */; };
 		658945BB19269B4C00A58A83 /* NSString+Equality.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589441B19269B4B00A58A83 /* NSString+Equality.m */; };
 		658945BC19269B4C00A58A83 /* NSString+Equality.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589441B19269B4B00A58A83 /* NSString+Equality.m */; };
-		658945BD19269B4C00A58A83 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 6589441D19269B4B00A58A83 /* .gitignore */; };
-		658945BE19269B4C00A58A83 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 6589441D19269B4B00A58A83 /* .gitignore */; };
-		658945BF19269B4C00A58A83 /* .hgignore in Resources */ = {isa = PBXBuildFile; fileRef = 6589441E19269B4B00A58A83 /* .hgignore */; };
-		658945C019269B4C00A58A83 /* .hgignore in Resources */ = {isa = PBXBuildFile; fileRef = 6589441E19269B4B00A58A83 /* .hgignore */; };
 		658945C119269B4C00A58A83 /* DDData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589442219269B4B00A58A83 /* DDData.m */; };
 		658945C219269B4C00A58A83 /* DDData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589442219269B4B00A58A83 /* DDData.m */; };
 		658945C319269B4C00A58A83 /* DDNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589442419269B4B00A58A83 /* DDNumber.m */; };
@@ -119,8 +115,6 @@
 		658946C819269B4C00A58A83 /* RNOpenSSLEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589453C19269B4C00A58A83 /* RNOpenSSLEncryptor.m */; };
 		658946C919269B4C00A58A83 /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = 6589453F19269B4C00A58A83 /* .travis.yml */; };
 		658946CA19269B4C00A58A83 /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = 6589453F19269B4C00A58A83 /* .travis.yml */; };
-		658946CB19269B4C00A58A83 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 6589454019269B4C00A58A83 /* Config.xcconfig */; };
-		658946CC19269B4C00A58A83 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 6589454019269B4C00A58A83 /* Config.xcconfig */; };
 		658946CD19269B4C00A58A83 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 6589454119269B4C00A58A83 /* LICENSE */; };
 		658946CE19269B4C00A58A83 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 6589454119269B4C00A58A83 /* LICENSE */; };
 		658946CF19269B4C00A58A83 /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 6589454219269B4C00A58A83 /* README.markdown */; };
@@ -199,8 +193,6 @@
 		6589441719269B4B00A58A83 /* SQLiteDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteDatabase.m; sourceTree = "<group>"; };
 		6589441A19269B4B00A58A83 /* NSString+Equality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Equality.h"; sourceTree = "<group>"; };
 		6589441B19269B4B00A58A83 /* NSString+Equality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Equality.m"; sourceTree = "<group>"; };
-		6589441D19269B4B00A58A83 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		6589441E19269B4B00A58A83 /* .hgignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .hgignore; sourceTree = "<group>"; };
 		6589442119269B4B00A58A83 /* DDData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDData.h; sourceTree = "<group>"; };
 		6589442219269B4B00A58A83 /* DDData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDData.m; sourceTree = "<group>"; };
 		6589442319269B4B00A58A83 /* DDNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDNumber.h; sourceTree = "<group>"; };
@@ -275,7 +267,6 @@
 		6589453B19269B4C00A58A83 /* RNOpenSSLEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLEncryptor.h; sourceTree = "<group>"; };
 		6589453C19269B4C00A58A83 /* RNOpenSSLEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLEncryptor.m; sourceTree = "<group>"; };
 		6589453F19269B4C00A58A83 /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
-		6589454019269B4C00A58A83 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		6589454119269B4C00A58A83 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6589454219269B4C00A58A83 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		6589454419269B4C00A58A83 /* CJSONDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJSONDeserializer.h; sourceTree = "<group>"; };
@@ -409,8 +400,6 @@
 		6589441C19269B4B00A58A83 /* CocoaHTTPServer */ = {
 			isa = PBXGroup;
 			children = (
-				6589441D19269B4B00A58A83 /* .gitignore */,
-				6589441E19269B4B00A58A83 /* .hgignore */,
 				6589441F19269B4B00A58A83 /* Core */,
 				6589445119269B4B00A58A83 /* LICENSE.txt */,
 				6589445219269B4B00A58A83 /* README.markdown */,
@@ -571,7 +560,6 @@
 			isa = PBXGroup;
 			children = (
 				6589453F19269B4C00A58A83 /* .travis.yml */,
-				6589454019269B4C00A58A83 /* Config.xcconfig */,
 				6589454119269B4C00A58A83 /* LICENSE */,
 				6589454219269B4C00A58A83 /* README.markdown */,
 				6589454319269B4C00A58A83 /* Source */,
@@ -771,13 +759,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				658946CE19269B4C00A58A83 /* LICENSE in Resources */,
-				658946CC19269B4C00A58A83 /* Config.xcconfig in Resources */,
-				658945C019269B4C00A58A83 /* .hgignore in Resources */,
 				658946D019269B4C00A58A83 /* README.markdown in Resources */,
 				658945EE19269B4C00A58A83 /* README.markdown in Resources */,
 				658945EC19269B4C00A58A83 /* LICENSE.txt in Resources */,
 				658946AA19269B4C00A58A83 /* About.txt in Resources */,
-				658945BE19269B4C00A58A83 /* .gitignore in Resources */,
 				658945A419269B4C00A58A83 /* README.md in Resources */,
 				658946BA19269B4C00A58A83 /* README.txt in Resources */,
 				6589459A19269B4C00A58A83 /* COPYING in Resources */,
@@ -793,19 +778,16 @@
 			files = (
 				6589459919269B4C00A58A83 /* COPYING in Resources */,
 				658946CD19269B4C00A58A83 /* LICENSE in Resources */,
-				658945BD19269B4C00A58A83 /* .gitignore in Resources */,
 				658945EB19269B4C00A58A83 /* LICENSE.txt in Resources */,
 				658946A919269B4C00A58A83 /* About.txt in Resources */,
 				658946C919269B4C00A58A83 /* .travis.yml in Resources */,
 				658946A519269B4C00A58A83 /* About.txt in Resources */,
 				658946CF19269B4C00A58A83 /* README.markdown in Resources */,
-				658946CB19269B4C00A58A83 /* Config.xcconfig in Resources */,
 				6510B91B19267B5700808055 /* COPYING in Resources */,
 				658946B919269B4C00A58A83 /* README.txt in Resources */,
 				658945A319269B4C00A58A83 /* README.md in Resources */,
 				658945ED19269B4C00A58A83 /* README.markdown in Resources */,
 				6595E54618D4EDC300E13880 /* MainMenu.xib in Resources */,
-				658945BF19269B4C00A58A83 /* .hgignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
