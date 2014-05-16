@@ -40,9 +40,9 @@
 @synthesize fswatcher;
 
 
+
 #pragma mark -----------------------
 #pragma mark Initializer & Setup & Shutdown
-
 
 
 /**
@@ -423,7 +423,7 @@
  */
 - (void) downloadSharesHasFailed
 {
-	
+	DebugLog(@"downloadSharesHasFailed: Whatever...!");
 }
 
 
