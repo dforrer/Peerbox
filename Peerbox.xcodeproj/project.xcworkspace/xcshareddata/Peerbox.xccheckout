@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>4A6B6CA1-A245-49A8-8EF9-1321A5858E2D</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Peerbox</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>864CDB18-716A-4C44-A46D-832CFD386E61</key>
+		<string>file://localhost/Users/Daniel/Subversion.Repos/Peerbox</string>
+		<key>8D7685AB-2DEF-4870-A05B-21E4F615D92E</key>
+		<string>https://github.com/dforrer/Objective-C.Classes.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Peerbox.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>864CDB18-716A-4C44-A46D-832CFD386E61</key>
+		<string>../..</string>
+		<key>8D7685AB-2DEF-4870-A05B-21E4F615D92E</key>
+		<string>../../../Objective-C.Classes</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>864CDB18-716A-4C44-A46D-832CFD386E61</key>
+		<string>file://localhost/Users/Daniel/Subversion.Repos/Peerbox</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>file://localhost/Users/Daniel/Subversion.Repos/Peerbox/Peerbox.xcodeproj</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>864CDB18-716A-4C44-A46D-832CFD386E61</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>8D7685AB-2DEF-4870-A05B-21E4F615D92E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Objective-C.Classes</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>864CDB18-716A-4C44-A46D-832CFD386E61</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Peerbox</string>
+		</dict>
+	</array>
+</dict>
+</plist>
