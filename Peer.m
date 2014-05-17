@@ -61,7 +61,9 @@
 	NSArray * sortedKeys = [[downloadedRevs allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 	for (id key in [sortedKeys reverseObjectEnumerator])
 	{
+		DebugLog(@"---------------------");
 		DebugLog(@"key: %@", key);
+		DebugLog(@"---------------------");
 		Revision * r = [downloadedRevs objectForKey:key];
 		[r match];
 	}

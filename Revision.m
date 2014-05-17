@@ -98,7 +98,6 @@
  */
 - (void) match
 {
-	DebugLog(@"---------------------");
 	DebugLog(@"match");
 	[self updateLastMatchAttempt];
 	
