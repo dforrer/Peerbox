@@ -241,8 +241,8 @@
 	
 	httpServer = [[HTTPServer alloc] init];
 	[httpServer setConnectionClass:[MyHTTPConnection class]];
-	//	[server setPort:0];
-	[httpServer setPort:12345];
+	[httpServer setPort:0];
+//	[httpServer setPort:12345];
 	
 	// Tell the server to broadcast its presence via Bonjour.
 	// This allows browsers such as Safari to automatically discover our service.

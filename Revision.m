@@ -498,6 +498,7 @@
 				// (localState:versions:biggestKey >= remoteState:versions:biggestKey)
 				
 				// DO NOTHING
+				DebugLog(@"DO NOTHING");
 				return [delegatePeer revisionMatched:self];
 			}
 		}
