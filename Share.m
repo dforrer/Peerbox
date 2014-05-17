@@ -279,7 +279,7 @@
 		if (error)
 		{
 			DebugLog(@"CJSONSerializer Error: %@", error);
-			exit(-1);
+			extAttrData = [NSData data];
 		}
 		NSString * extAttrJSON = [[NSString alloc] initWithData:extAttrData encoding:NSUTF8StringEncoding];
 		
@@ -291,7 +291,7 @@
 		if (error)
 		{
 			DebugLog(@"CJSONSerializer Error: %@", error);
-			exit(-1);
+			versionsData = [NSData data];
 		}
 		NSString * versionsJSON = [[NSString alloc] initWithData:versionsData encoding:NSUTF8StringEncoding];
 		
