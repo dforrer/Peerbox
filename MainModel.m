@@ -708,6 +708,7 @@
 
 - (void) matchRevisions
 {
+	DebugLog(@"MainModel: matchRevisions called");
 	for (id key in myShares)
 	{
 		Share * s = [myShares objectForKey:key];
