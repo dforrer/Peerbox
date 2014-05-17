@@ -11,7 +11,7 @@
 #import "File.h"
 #import "NSDictionary_JSONExtensions.h"
 #import "SingleFileOperation.h"
-
+#import "Constants.h"
 
 @implementation Peer
 {
@@ -55,10 +55,15 @@
 
 
 
-
-- (void) matchRevisions
+- (void) matchNextRevisions
 {
+	if ([downloadedRevs count] == 0)
+	{
+		return;
+	}
+	
 	NSArray * sortedKeys = [[downloadedRevs allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+	int counter = 0;
 	for (id key in [sortedKeys reverseObjectEnumerator])
 	{
 		DebugLog(@"---------------------");
@@ -66,7 +71,13 @@
 		DebugLog(@"---------------------");
 		Revision * r = [downloadedRevs objectForKey:key];
 		[r match];
+		
+		if (counter == REVS_PER_MATCH_GROUP)
+		{
+			break;
+		}
 	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"MatchEvent" object:nil];
 }
 
 

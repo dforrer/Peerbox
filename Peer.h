@@ -17,7 +17,7 @@
 - (void) removeRevision:(Revision*)rev;
 - (NSDictionary*) allDownloadedRevs;
 - (NSDictionary*) plistEncoded;
-- (void) matchRevisions;
+- (void) matchNextRevisions;
 
 
 // Other

@@ -85,7 +85,8 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsFile" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsSymlink" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsSymlink" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"SyncTriggerEvent" object:nil];		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(matchRevisions) name:@"MatchEvent" object:nil];
+		
 		
 		[self updateFSWatcher];
 		
@@ -712,7 +713,7 @@
 		Share * s = [myShares objectForKey:key];
 		for (Peer * p in [s allPeers])
 		{
-			[p matchRevisions];
+			[p matchNextRevisions];
 		}
 	}
 }
