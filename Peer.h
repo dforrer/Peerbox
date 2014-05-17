@@ -3,13 +3,14 @@
 //  Copyright (c) 2014 Forrer. All rights reserved.
 //
 
-#import "Revision.h"
 
 @class DownloadRevisions;
 @class Share;
+@class Revision;
+@class Configuration;
 
 
-@interface Peer : NSObject <RevisionDelegate>
+@interface Peer : NSObject
 
 
 - (id) initWithPeerID:(NSString*) pid andShare:(Share*) s andConfig:(Configuration*)c;
@@ -17,7 +18,6 @@
 - (void) removeRevision:(Revision*)rev;
 - (NSDictionary*) allDownloadedRevs;
 - (NSDictionary*) plistEncoded;
-- (void) matchNextRevisions;
 
 
 // Other

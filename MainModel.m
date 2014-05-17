@@ -12,6 +12,7 @@
 #import "FileHelper.h"
 #import "Share.h"
 #import "Peer.h"
+#import "File.h"
 #import "FullScanOperation.h"
 #import "SingleFileOperation.h"
 #import "Configuration.h"
@@ -243,7 +244,7 @@
 	httpServer = [[HTTPServer alloc] init];
 	[httpServer setConnectionClass:[MyHTTPConnection class]];
 	[httpServer setPort:0];
-//	[httpServer setPort:12345];
+	//	[httpServer setPort:12345];
 	
 	// Tell the server to broadcast its presence via Bonjour.
 	// This allows browsers such as Safari to automatically discover our service.
@@ -491,6 +492,18 @@
 
 
 
+/**
+ * OVERRIDE: RevisionDelegate
+ */
+- (void) revisionMatched:(Revision*) rev
+{
+	[[rev peer] removeRevision:rev];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:[[rev remoteState] url]];
+}
+
+
+
+
 #pragma mark -----------------------
 #pragma mark FSWatcher-Controller
 
@@ -688,21 +701,23 @@
 		Share * s = [myShares objectForKey:key];
 		for (Peer * p in [s allPeers])
 		{
-			NSNetService * s = [bonjourSearcher getNetServiceForName:[p peerID]];
+			NSNetService * ns = [bonjourSearcher getNetServiceForName:[p peerID]];
 			
 			// Compare currentRev (on remote peer) with lastDownloadedRev
 			//------------------------------------------------------------
-			if (s != nil
+			if (ns != nil
 			    && ([[p currentRev] longLongValue] > [[p lastDownloadedRev] longLongValue]))
 			{
 				DebugLog(@"revisionsDownload alloc");
-				[p setRevisionsDownload:[[DownloadRevisions alloc] initWithNetService:s andPeer:p]];
+				[p setRevisionsDownload:[[DownloadRevisions alloc] initWithNetService:ns andPeer:p]];
 				[[p revisionsDownload] setDelegate:self];
 				[[p revisionsDownload] start];
 			}
 		}
 	}
 }
+
+
 
 
 
@@ -714,11 +729,32 @@
 		Share * s = [myShares objectForKey:key];
 		for (Peer * p in [s allPeers])
 		{
-			[p matchNextRevisions];
+			if ([[p allDownloadedRevs] count] == 0)
+			{
+				continue;
+			}
+			
+			NSArray * sortedKeys = [[[p allDownloadedRevs] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+			int counter = 0;
+			for (id key in [sortedKeys reverseObjectEnumerator])
+			{
+				DebugLog(@"---------------------");
+				DebugLog(@"key: %@", key);
+				DebugLog(@"---------------------");
+				Revision * r = [[p allDownloadedRevs] objectForKey:key];
+				[r setDelegate:self];
+				
+				[r match];
+				
+				if (counter == REVS_PER_MATCH_GROUP)
+				{
+					break;
+				}
+				
+			}
 		}
 	}
 }
-
 
 
 

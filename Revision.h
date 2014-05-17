@@ -83,7 +83,7 @@
 @property (nonatomic, readonly, strong) NSURL * absoluteURL; // generated
 @property (nonatomic, readonly, strong) File * remoteState;	// generated
 @property (nonatomic, readonly) BOOL isDir;	// generated
-@property (nonatomic,assign) id <RevisionDelegate> delegatePeer; // Instance of Peer-Class
+@property (nonatomic,assign) id <RevisionDelegate> delegate; // Instance of Peer-Class
 @property (nonatomic,readonly,strong) Configuration * config;
 
 @end

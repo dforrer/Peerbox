@@ -21,7 +21,7 @@
 
 @synthesize relURL, revision, isSet, extAttributes, versions;
 @synthesize peer, download, lastMatchAttempt, absoluteURL, remoteState, isDir;
-@synthesize delegatePeer, config;
+@synthesize delegate, config;
 
 
 
@@ -70,7 +70,7 @@
 	
 	// Set the delegate of the revision to this peer-instance
 	//--------------------------------------------------------
-	delegatePeer = peer;
+	delegate = peer;
 }
 
 
@@ -106,7 +106,7 @@
 	if (isDir)
 	{
 		[self matchDir];
-		return [delegatePeer revisionMatched:self];
+		return [delegate revisionMatched:self];
 	}
 	
 	// match 'normal' files
@@ -208,7 +208,7 @@
 	if ([self isZeroLengthFile])
 	{
 		[self matchZeroLengthFile];
-		return [delegatePeer revisionMatched:self];
+		return [delegate revisionMatched:self];
 	}
 	
 	if (!download)
@@ -242,7 +242,7 @@
 			if (error)
 			{
 				DebugLog(@"ERROR: removeItemAtURL failed!, %@", error);
-				return [delegatePeer revisionMatched:self];
+				return [delegate revisionMatched:self];
 			}
 		}
 		error = nil;
@@ -256,7 +256,7 @@
 			if (error)
 			{
 				DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
-				return [delegatePeer revisionMatched:self];
+				return [delegate revisionMatched:self];
 			}
 		}
 	}
@@ -276,7 +276,7 @@
 	// Informing the peer (delegate) that this
 	// revision has been successfully matched
 	//-----------------------------------------
-	return [delegatePeer revisionMatched:self];
+	return [delegate revisionMatched:self];
 }
 
 /*
@@ -285,7 +285,7 @@
 - (void) downloadFileHasFailed:(DownloadFile*)d
 {
 	DebugLog(@"ERROR: downloadFileHasFailed");
-	[delegatePeer revisionMatched:self];
+	[delegate revisionMatched:self];
 	//download = nil;
 }
 
@@ -357,7 +357,7 @@
 	if ( ([[localState isSet] intValue] == 0 || localState == nil) && [[remoteState isSet] intValue] == 0)
 	{
 		DebugLog(@"B  (doing nothing)");
-		return [delegatePeer revisionMatched:self];
+		return [delegate revisionMatched:self];
 	}
 	
 	
@@ -411,7 +411,7 @@
 					}
 				}
 			}
-			[delegatePeer revisionMatched:self];
+			[delegate revisionMatched:self];
 			return;
 		}
 		
@@ -472,7 +472,7 @@
 				DebugLog(@"DO NOTHING because myPeerId >= otherPeerId");
 				
 				// DO NOTHING
-				return [delegatePeer revisionMatched:self];
+				return [delegate revisionMatched:self];
 			}
 		}
 		else
@@ -499,7 +499,7 @@
 				
 				// DO NOTHING
 				DebugLog(@"DO NOTHING");
-				return [delegatePeer revisionMatched:self];
+				return [delegate revisionMatched:self];
 			}
 		}
 	}

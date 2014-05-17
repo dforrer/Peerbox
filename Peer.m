@@ -55,31 +55,6 @@
 
 
 
-- (void) matchNextRevisions
-{
-	if ([downloadedRevs count] == 0)
-	{
-		return;
-	}
-	
-	NSArray * sortedKeys = [[downloadedRevs allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-	int counter = 0;
-	for (id key in [sortedKeys reverseObjectEnumerator])
-	{
-		DebugLog(@"---------------------");
-		DebugLog(@"key: %@", key);
-		DebugLog(@"---------------------");
-		Revision * r = [downloadedRevs objectForKey:key];
-		[r match];
-		
-		if (counter == REVS_PER_MATCH_GROUP)
-		{
-			break;
-		}
-	}
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"MatchEvent" object:nil];
-}
-
 
 
 - (void) addRevision:(Revision*)rev
@@ -111,15 +86,7 @@
 #pragma mark Implemented Interfaces (Protocols)
 
 
-/**
- * OVERRIDE: RevisionDelegate
- */
-- (void) revisionMatched:(Revision*) rev
-{
-	[self removeRevision:rev];
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:[[rev remoteState] url]];
-}
+
 
 
 
