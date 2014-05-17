@@ -497,6 +497,7 @@
  */
 - (void) revisionMatched:(Revision*) rev
 {
+	DebugLog(@"revisionMatched called");
 	[[rev peer] removeRevision:rev];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:[[rev remoteState] url]];
 }
