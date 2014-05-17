@@ -23,8 +23,6 @@
 		658943EE192125EA00A58A83 /* Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943ED192125EA00A58A83 /* Configuration.m */; };
 		6589459719269B4C00A58A83 /* BonjourSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943F519269B4A00A58A83 /* BonjourSearcher.m */; };
 		6589459819269B4C00A58A83 /* BonjourSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943F519269B4A00A58A83 /* BonjourSearcher.m */; };
-		6589459919269B4C00A58A83 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 658943F619269B4A00A58A83 /* COPYING */; };
-		6589459A19269B4C00A58A83 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 658943F619269B4A00A58A83 /* COPYING */; };
 		6589459B19269B4C00A58A83 /* FileEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943F819269B4A00A58A83 /* FileEncryptor.m */; };
 		6589459C19269B4C00A58A83 /* FileEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943F819269B4A00A58A83 /* FileEncryptor.m */; };
 		6589459D19269B4C00A58A83 /* FileHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943FA19269B4A00A58A83 /* FileHelper.m */; };
@@ -33,8 +31,6 @@
 		658945A019269B4C00A58A83 /* FSWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943FC19269B4A00A58A83 /* FSWatcher.m */; };
 		658945A119269B4C00A58A83 /* NSDataGZipCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943FE19269B4A00A58A83 /* NSDataGZipCategory.m */; };
 		658945A219269B4C00A58A83 /* NSDataGZipCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943FE19269B4A00A58A83 /* NSDataGZipCategory.m */; };
-		658945A319269B4C00A58A83 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 658943FF19269B4A00A58A83 /* README.md */; };
-		658945A419269B4C00A58A83 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 658943FF19269B4A00A58A83 /* README.md */; };
 		658945B919269B4C00A58A83 /* SQLiteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589441719269B4B00A58A83 /* SQLiteDatabase.m */; };
 		658945BA19269B4C00A58A83 /* SQLiteDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589441719269B4B00A58A83 /* SQLiteDatabase.m */; };
 		658945BB19269B4C00A58A83 /* NSString+Equality.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589441B19269B4B00A58A83 /* NSString+Equality.m */; };
@@ -179,7 +175,6 @@
 		658943ED192125EA00A58A83 /* Configuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Configuration.m; sourceTree = "<group>"; };
 		658943F419269B4A00A58A83 /* BonjourSearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BonjourSearcher.h; sourceTree = "<group>"; };
 		658943F519269B4A00A58A83 /* BonjourSearcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BonjourSearcher.m; sourceTree = "<group>"; };
-		658943F619269B4A00A58A83 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		658943F719269B4A00A58A83 /* FileEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileEncryptor.h; sourceTree = "<group>"; };
 		658943F819269B4A00A58A83 /* FileEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileEncryptor.m; sourceTree = "<group>"; };
 		658943F919269B4A00A58A83 /* FileHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileHelper.h; sourceTree = "<group>"; };
@@ -188,7 +183,6 @@
 		658943FC19269B4A00A58A83 /* FSWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSWatcher.m; sourceTree = "<group>"; };
 		658943FD19269B4A00A58A83 /* NSDataGZipCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataGZipCategory.h; sourceTree = "<group>"; };
 		658943FE19269B4A00A58A83 /* NSDataGZipCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataGZipCategory.m; sourceTree = "<group>"; };
-		658943FF19269B4A00A58A83 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		6589441619269B4B00A58A83 /* SQLiteDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteDatabase.h; sourceTree = "<group>"; };
 		6589441719269B4B00A58A83 /* SQLiteDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteDatabase.m; sourceTree = "<group>"; };
 		6589441A19269B4B00A58A83 /* NSString+Equality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Equality.h"; sourceTree = "<group>"; };
@@ -361,7 +355,6 @@
 			children = (
 				658943F419269B4A00A58A83 /* BonjourSearcher.h */,
 				658943F519269B4A00A58A83 /* BonjourSearcher.m */,
-				658943F619269B4A00A58A83 /* COPYING */,
 				658943F719269B4A00A58A83 /* FileEncryptor.h */,
 				658943F819269B4A00A58A83 /* FileEncryptor.m */,
 				658943F919269B4A00A58A83 /* FileHelper.h */,
@@ -370,7 +363,6 @@
 				658943FC19269B4A00A58A83 /* FSWatcher.m */,
 				658943FD19269B4A00A58A83 /* NSDataGZipCategory.h */,
 				658943FE19269B4A00A58A83 /* NSDataGZipCategory.m */,
-				658943FF19269B4A00A58A83 /* README.md */,
 				6589441619269B4B00A58A83 /* SQLiteDatabase.h */,
 				6589441719269B4B00A58A83 /* SQLiteDatabase.m */,
 			);
@@ -763,9 +755,7 @@
 				658945EE19269B4C00A58A83 /* README.markdown in Resources */,
 				658945EC19269B4C00A58A83 /* LICENSE.txt in Resources */,
 				658946AA19269B4C00A58A83 /* About.txt in Resources */,
-				658945A419269B4C00A58A83 /* README.md in Resources */,
 				658946BA19269B4C00A58A83 /* README.txt in Resources */,
-				6589459A19269B4C00A58A83 /* COPYING in Resources */,
 				658946A619269B4C00A58A83 /* About.txt in Resources */,
 				6510B90F1924DE1F00808055 /* InfoPlist.strings in Resources */,
 				658946CA19269B4C00A58A83 /* .travis.yml in Resources */,
@@ -776,7 +766,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6589459919269B4C00A58A83 /* COPYING in Resources */,
 				658946CD19269B4C00A58A83 /* LICENSE in Resources */,
 				658945EB19269B4C00A58A83 /* LICENSE.txt in Resources */,
 				658946A919269B4C00A58A83 /* About.txt in Resources */,
@@ -785,7 +774,6 @@
 				658946CF19269B4C00A58A83 /* README.markdown in Resources */,
 				6510B91B19267B5700808055 /* COPYING in Resources */,
 				658946B919269B4C00A58A83 /* README.txt in Resources */,
-				658945A319269B4C00A58A83 /* README.md in Resources */,
 				658945ED19269B4C00A58A83 /* README.markdown in Resources */,
 				6595E54618D4EDC300E13880 /* MainMenu.xib in Resources */,
 			);
