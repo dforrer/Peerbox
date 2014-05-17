@@ -168,13 +168,13 @@
 	*/
 	
 
-	//	DebugLog(@"Size before inflation: %lu",(unsigned long)[response length]);
+	DebugLog(@"Size before inflation: %lu",(unsigned long)[response length]);
 	
 	// Decompress response
 	//---------------------
 	response = [NSMutableData dataWithData:[response gzipInflate]];
 
-	//	DebugLog(@"Size after inflation: %lu",(unsigned long)[response length]);
+	DebugLog(@"Size after inflation: %lu",(unsigned long)[response length]);
 	
 	[delegate downloadRevisionsHasFinished:self];
  
