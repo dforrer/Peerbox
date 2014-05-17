@@ -372,6 +372,7 @@
 		6589441819269B4B00A58A83 /* Objective-C.Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				65E5CBC5180AFF98001065AE /* Resources */,
 				6589441919269B4B00A58A83 /* Categories */,
 				6589441C19269B4B00A58A83 /* CocoaHTTPServer */,
 				6589452C19269B4C00A58A83 /* RNCryptor */,
@@ -611,7 +612,6 @@
 				6564985A18708DF800BBB3D1 /* FullScanOperation.m */,
 				658943F319269B4A00A58A83 /* Objective-C.Classes */,
 				6589441819269B4B00A58A83 /* Objective-C.Libraries */,
-				65E5CBC5180AFF98001065AE /* Resources */,
 				6510B90A1924DE1F00808055 /* Unit Tests */,
 				65E5CBBE180AFF98001065AE /* Frameworks */,
 				65E5CBBD180AFF98001065AE /* Products */,
@@ -656,7 +656,7 @@
 				65A1212F190446DB0082C251 /* Peerbox-Prefix.pch */,
 			);
 			name = Resources;
-			path = Peerbox_OBJC_OO;
+			path = ../Peerbox_OBJC_OO;
 			sourceTree = "<group>";
 		};
 		65E98252184F9DD7000282C1 /* Linked Frameworks */ = {
