@@ -19,9 +19,19 @@
 }
 
 
-@synthesize relURL, revision, isSet, extAttributes, versions;
-@synthesize peer, download, lastMatchAttempt, absoluteURL, remoteState, isDir;
-@synthesize delegate, config;
+@synthesize relURL;
+@synthesize revision;
+@synthesize isSet;
+@synthesize extAttributes;
+@synthesize versions;
+@synthesize peer;
+@synthesize download;
+@synthesize lastMatchAttempt;
+@synthesize absoluteURL;
+@synthesize remoteState;
+@synthesize isDir;
+@synthesize delegate;
+@synthesize config;
 
 
 
@@ -37,18 +47,18 @@
 	{
 		// Core information from the response
 		//------------------------------------
-		relURL = u;
-		revision = r;
-		isSet = i;
-		extAttributes = [NSMutableDictionary dictionaryWithDictionary:e];
-		versions = [NSMutableDictionary dictionaryWithDictionary:v];
+		relURL		= u;
+		revision		= r;
+		isSet		= i;
+		extAttributes	= [NSMutableDictionary dictionaryWithDictionary:e];
+		versions		= [NSMutableDictionary dictionaryWithDictionary:v];
 		
 		// Additional Info
 		//-----------------
-		peer = p;
+		peer			= p;
+		download		= nil;
+		config		= c;
 		lastMatchAttempt = nil;
-		download = nil;
-		config = c;
 
 		[self helperInit];
 	}
@@ -62,15 +72,10 @@
  */
 - (void) helperInit
 {
-	absoluteURL = [NSURL URLWithString:relURL relativeToURL:[[peer share] root]];
-	remoteState = [[File alloc] initWithShare:[peer share] relUrl:relURL isSet:isSet extAttributesAsBase64:extAttributes versions:versions];
-	isDir = [remoteState isDir];
-	
-	myPeerID = [config myPeerID];
-	
-	// Set the delegate of the revision to this peer-instance
-	//--------------------------------------------------------
-	delegate = peer;
+	absoluteURL	= [NSURL URLWithString:relURL relativeToURL:[[peer share] root]];
+	remoteState	= [[File alloc] initWithShare:[peer share] relUrl:relURL isSet:isSet extAttributesAsBase64:extAttributes versions:versions];
+	isDir		= [remoteState isDir];
+	myPeerID		= [config myPeerID];
 }
 
 

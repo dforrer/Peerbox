@@ -13,9 +13,12 @@
 #import "SingleFileOperation.h"
 #import "Constants.h"
 
+
 @implementation Peer
 {
-	NSMutableDictionary * downloadedRevs; // key = relUrl
+	NSMutableDictionary * downloadedRevsWithFilesToAdd; // key = relURL
+	NSMutableDictionary * downloadedRevsWithIsSetFalse; // key = relURL
+	NSMutableDictionary * downloadedRevsWithIsDirTrue;  // key = relURL
 }
 
 
@@ -34,7 +37,9 @@
 {
 	if( self = [super init] )
 	{
-		downloadedRevs		= [NSMutableDictionary dictionary];
+		downloadedRevsWithFilesToAdd	= [NSMutableDictionary dictionary];
+		downloadedRevsWithIsSetFalse	= [NSMutableDictionary dictionary];
+		downloadedRevsWithIsDirTrue	= [NSMutableDictionary dictionary];
 		currentRev		= [NSNumber numberWithLongLong:0];
 		lastDownloadedRev	= [NSNumber numberWithLongLong:0];
 		peerID			= pid;
@@ -45,45 +50,71 @@
 }
 
 
-- (NSDictionary*) downloadedRevs
+- (NSDictionary*) downloadedRevsWithFilesToAdd
 {
-	return downloadedRevs; // this is non-editable
+	return downloadedRevsWithFilesToAdd; // this is non-editable
 }
 
 
 
-- (NSArray*) downloadedRevsWithIsSetFalse
+- (NSDictionary*) downloadedRevsWithIsSetFalse
 {
-	NSIndexSet *indices = [[downloadedRevs allValues] indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
-		return (BOOL) ![[obj isSet] boolValue];	// isEqualToNumber:[NSNumber numberWithInt:0]];
-	}];
-	NSArray *filtered = [[downloadedRevs allValues] objectsAtIndexes:indices];
-	return filtered;
+	return downloadedRevsWithIsSetFalse; // this is non-editable
 }
 
 
 
-- (NSArray*) downloadedRevsWithIsDirTrue
+- (NSDictionary*) downloadedRevsWithIsDirTrue
 {
-	NSIndexSet *indices = [[downloadedRevs allValues] indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
-		return [obj isDir];
-	}];
-	NSArray *filtered = [[downloadedRevs allValues] objectsAtIndexes:indices];
-	return filtered;
+	return downloadedRevsWithIsDirTrue; // this is non-editable
 }
 
+
+- (Revision *) revisionForRelURL:(NSString*) relURL
+{
+	Revision * oldRev = [downloadedRevsWithIsSetFalse objectForKey:relURL];
+	if (oldRev)
+	{
+		return oldRev;
+	}
+	oldRev = [downloadedRevsWithIsDirTrue objectForKey:relURL];
+	if (oldRev)
+	{
+		return oldRev;
+	}
+	oldRev = [downloadedRevsWithFilesToAdd objectForKey:relURL];
+	if (oldRev)
+	{
+		return oldRev;
+	}
+	return nil;
+}
 
 
 - (void) addRevision:(Revision*)rev
 {
 	// Cancel ongoing rev->download if necessary
 	//-------------------------------------------
-	Revision * oldRev = [downloadedRevs objectForKey:[rev relURL]];
+	Revision * oldRev = [self revisionForRelURL:[rev relURL]];
 	if (oldRev && [oldRev download])
 	{
 		[[oldRev download] cancel];
 	}
-	[downloadedRevs setObject:rev forKey:[rev relURL]];
+	
+	// Switch between the 3 NSDictionaries to add revisions to
+	//---------------------------------------------------------
+	if ([[rev isSet] boolValue] == FALSE)
+	{
+		[downloadedRevsWithIsSetFalse  setObject:rev forKey:[rev relURL]];
+	}
+	else if ([rev isDir])
+	{
+		[downloadedRevsWithIsDirTrue  setObject:rev forKey:[rev relURL]];
+	}
+	else
+	{
+		[downloadedRevsWithFilesToAdd setObject:rev forKey:[rev relURL]];
+	}
 }
 
 
@@ -92,10 +123,30 @@
 
 - (void) removeRevision:(Revision*)rev
 {
-	[downloadedRevs removeObjectForKey:[rev relURL]];
+	[downloadedRevsWithIsSetFalse removeObjectForKey:[rev relURL]];
+	[downloadedRevsWithIsDirTrue removeObjectForKey:[rev relURL]];
+	[downloadedRevsWithFilesToAdd removeObjectForKey:[rev relURL]];
 }
 
 
+/**
+ * Returns MAX_CONCURRENT_DOWNLOADS number of Revisions
+ * from 'downloadedRevsWithFilesToAdd'
+ */
+- (NSArray*) getNextFileRevisions:(int)count
+{
+	NSMutableArray * a = [[NSMutableArray alloc] init];
+	for (Revision * r in downloadedRevsWithFilesToAdd)
+	{
+		count--;
+		[a addObject:r];
+		if (count == 0)
+		{
+			break;
+		}
+	}
+	return a;
+}
 
 
 
@@ -118,17 +169,30 @@
 	
 	NSMutableDictionary * rv = [[NSMutableDictionary alloc] init];
 	
-	[rv setObject:currentRev forKey:@"currentRev"];
-	[rv setObject:lastDownloadedRev forKey:@"lastDownloadedRev"];
-	
 	NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
-	for (id key in downloadedRevs)
+	
+	// Encode the revisions stored in the 3 NSDictionaries "downloadedRevs..."
+	//-------------------------------------------------------------------------
+	for (id key in downloadedRevsWithIsSetFalse)
 	{
-		Revision * r = [downloadedRevs objectForKey:key];
+		Revision * r = [downloadedRevsWithIsSetFalse objectForKey:key];
 		[dict setObject:[r plistEncoded] forKey:[r relURL]];
 	}
+	for (id key in downloadedRevsWithIsDirTrue)
+	{
+		Revision * r = [downloadedRevsWithIsDirTrue objectForKey:key];
+		[dict setObject:[r plistEncoded] forKey:[r relURL]];
+	}
+	for (id key in downloadedRevsWithFilesToAdd)
+	{
+		Revision * r = [downloadedRevsWithFilesToAdd objectForKey:key];
+		[dict setObject:[r plistEncoded] forKey:[r relURL]];
+	}
+	
 	[rv setObject:dict forKey:@"revisions"];
 	[rv setObject:peerID forKey:@"peerID"];
+	[rv setObject:currentRev forKey:@"currentRev"];
+	[rv setObject:lastDownloadedRev forKey:@"lastDownloadedRev"];
 	
 	return rv;
 }

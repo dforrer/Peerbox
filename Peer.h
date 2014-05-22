@@ -16,24 +16,24 @@
 - (id) initWithPeerID:(NSString*) pid andShare:(Share*) s andConfig:(Configuration*)c;
 - (void) addRevision:(Revision*)rev;
 - (void) removeRevision:(Revision*)rev;
-- (NSDictionary*) downloadedRevs;
-- (NSArray*) downloadedRevsWithIsSetFalse;
-- (NSArray*) downloadedRevsWithIsDirTrue;
-
+- (NSDictionary*) downloadedRevsWithFilesToAdd;
+- (NSDictionary*) downloadedRevsWithIsSetFalse;
+- (NSDictionary*) downloadedRevsWithIsDirTrue;
+- (NSArray*) getNextFileRevisions:(int)count;
 
 // Other
 //-------
-- (NSString *)description;
+- (NSString*) description;
 - (NSDictionary*) plistEncoded;
 
 
-@property (nonatomic,readwrite,strong) NSNumber * currentRev; // of the remote peer
-@property (nonatomic,readwrite,strong) NSNumber * lastDownloadedRev;
-@property (nonatomic,readonly ,strong) NSString * peerID;
-@property (nonatomic,readwrite,strong) Share * share;
-@property (nonatomic,readwrite,strong) NSNetService * netService;
-@property (nonatomic,readonly) int numOfRevsBeingMatched;
-@property (nonatomic,readonly,strong) Configuration * config;
+@property (nonatomic, readwrite, strong) NSNumber * currentRev; // of the remote peer
+@property (nonatomic, readwrite, strong) NSNumber * lastDownloadedRev;
+@property (nonatomic, readonly , strong) NSString * peerID;
+@property (nonatomic, readwrite, strong) Share * share;
+@property (nonatomic, readwrite, strong) NSNetService * netService;
+@property (nonatomic, readonly) int numOfRevsBeingMatched;
+@property (nonatomic, readonly, strong) Configuration * config;
 @property (nonatomic, readwrite, strong) DownloadRevisions * revisionsDownload;
 
 

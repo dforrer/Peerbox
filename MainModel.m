@@ -29,6 +29,7 @@
 	
 	NSOperationQueue * fsWatcherQueue;
 	BOOL fsWatcherQueueRestartet;
+	NSMutableArray * fileDownloads;
 }
 
 
@@ -66,6 +67,7 @@
 		fswatcher		 = [[FSWatcher alloc] init];
 		fsWatcherQueue  = [[NSOperationQueue alloc] init];
 		fsWatcherQueueRestartet = FALSE;
+		fileDownloads = [[NSMutableArray alloc] init];
 		
 		[self setupHTTPServer];
 		[self createWorkingDirectories];
@@ -340,8 +342,6 @@
 		for (Peer * p in [s allPeers])
 		{
 			DebugLog(@"%@", p);
-			DebugLog(@"downloadedRevs-Count: %lu", (unsigned long)[[p downloadedRevs] count]);
-			DebugLog(@"%@", [p downloadedRevs]);
 		}
 	}
 }
@@ -731,21 +731,49 @@
 		Share * s = [myShares objectForKey:key];
 		for (Peer * p in [s allPeers])
 		{
-			if ([[p downloadedRevs] count] == 0)
+			if ([[p downloadedRevsWithFilesToAdd] count] == 0)
 			{
 				continue;
 			}
-			
-			NSArray * sortedKeys = [[[p downloadedRevs] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+			// Match DELETE-Revisions
+			//------------------------
+			NSArray * sortedKeys = [[[p downloadedRevsWithIsSetFalse] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 			for (id key in [sortedKeys reverseObjectEnumerator])
 			{
 				DebugLog(@"---------------------");
 				DebugLog(@"key: %@", key);
 				DebugLog(@"---------------------");
-				Revision * r = [[p downloadedRevs] objectForKey:key];
-				[r setDelegate:self];
-				
+				Revision * r = [[p downloadedRevsWithIsSetFalse] objectForKey:key];
 				[r match];
+			}
+			
+			// Match DIR-Revisions
+			//---------------------
+			sortedKeys = [[[p downloadedRevsWithIsDirTrue] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+			for (id key in [sortedKeys reverseObjectEnumerator])
+			{
+				DebugLog(@"---------------------");
+				DebugLog(@"key: %@", key);
+				DebugLog(@"---------------------");
+				Revision * r = [[p downloadedRevsWithIsDirTrue] objectForKey:key];
+				[r match];
+			}
+			
+			if ([fileDownloads count] <= MAX_CONCURRENT_DOWNLOADS / 2)
+			{
+				// Match FILE-Revisions
+				//----------------------
+				sortedKeys = [[[p downloadedRevsWithFilesToAdd] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+				int counter = MAX_CONCURRENT_DOWNLOADS;
+				for (id key in [sortedKeys reverseObjectEnumerator])
+				{
+					DebugLog(@"---------------------");
+					DebugLog(@"key: %@", key);
+					DebugLog(@"---------------------");
+					Revision * r = [[p downloadedRevsWithFilesToAdd] objectForKey:key];
+					[r setDelegate:self];
+					[r match];
+				}
 			}
 		}
 	}
