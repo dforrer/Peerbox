@@ -36,10 +36,14 @@
 } 
 */
 
-#import "DownloadFile.h"
 
-@class Peer, DownloadFile, File;
 
+
+@class Peer;
+@class DownloadFile;
+@class File;
+@class Revision;
+@class Configuration;
 
 @protocol RevisionDelegate <NSObject>
 
@@ -49,7 +53,7 @@
 
 
 
-@interface Revision : NSObject <DownloadFileDelegate>
+@interface Revision : NSObject
 
 
 - (id) initWithRelURL:(NSString*)u
@@ -78,12 +82,12 @@
 // Additional attributes
 //-----------------------
 @property (nonatomic, readonly, strong) Peer * peer;
-@property (nonatomic, readonly, strong) DownloadFile * download;	// generated IF necessary
 @property (nonatomic, readonly, strong) NSDate * lastMatchAttempt; // generated
 @property (nonatomic, readonly, strong) NSURL * absoluteURL; // generated
 @property (nonatomic, readonly, strong) File * remoteState;	// generated
 @property (nonatomic, readonly) BOOL isDir;	// generated
 @property (nonatomic,assign) id <RevisionDelegate> delegate; // Instance of Peer-Class
 @property (nonatomic,readonly,strong) Configuration * config;
+
 
 @end

@@ -42,7 +42,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6510B9071924DE1F00808055"
+               BlueprintIdentifier = "65384C5E192E19F10070F0A9"
                BuildableName = "Unit Tests.xctest"
                BlueprintName = "Unit Tests"
                ReferencedContainer = "container:Peerbox.xcodeproj">

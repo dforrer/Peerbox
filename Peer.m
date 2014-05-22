@@ -51,25 +51,45 @@
 }
 
 
-
+/**
+ * Returns an NSArray with Revision-Objects with isSet = 0
+ * sorted in reverse order by the "relURL"-attribute of the revisions.
+ */
 - (NSArray*) downloadedRevsWithIsSetFalse
 {
 	NSIndexSet *indices = [[downloadedRevs allValues] indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
-		return (BOOL) ![[obj isSet] boolValue];	// isEqualToNumber:[NSNumber numberWithInt:0]];
+		return (BOOL) ![[obj isSet] boolValue];
 	}];
-	NSArray *filtered = [[downloadedRevs allValues] objectsAtIndexes:indices];
-	return filtered;
+	NSArray * rv = [[downloadedRevs allValues] objectsAtIndexes:indices];
+
+	rv = [rv sortedArrayUsingComparator:^NSComparisonResult(Revision *r1, Revision *r2){
+		
+		return [r1.relURL compare:r2.relURL];
+		
+	}];
+
+	return rv;
 }
 
 
 
+/**
+ * Returns an NSArray with Revision-Objects with isDir = TRUE
+ * sorted in reverse order by the "relURL"-attribute of the revisions.
+ */
 - (NSArray*) downloadedRevsWithIsDirTrue
 {
 	NSIndexSet *indices = [[downloadedRevs allValues] indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
-		return [obj isDir];
+		return (BOOL) [obj isDir];
 	}];
-	NSArray *filtered = [[downloadedRevs allValues] objectsAtIndexes:indices];
-	return filtered;
+	NSArray * rv = [[downloadedRevs allValues] objectsAtIndexes:indices];
+	
+	rv = [rv sortedArrayUsingComparator:^NSComparisonResult(Revision *r1, Revision *r2){
+		
+		return [r1.relURL compare:r2.relURL];
+		
+	}];
+	return rv;
 }
 
 

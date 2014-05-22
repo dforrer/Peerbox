@@ -18,6 +18,8 @@
 	File * f1;
 	File * f2;
 }
+
+
 - (void)setUp
 {
     [super setUp];

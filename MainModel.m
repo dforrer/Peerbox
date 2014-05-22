@@ -29,6 +29,8 @@
 	
 	NSOperationQueue * fsWatcherQueue;
 	BOOL fsWatcherQueueRestartet;
+	
+	NSArray * downloads;
 }
 
 
@@ -721,8 +723,6 @@
 
 
 
-
-
 - (void) matchRevisions
 {
 	DebugLog(@"MainModel: matchRevisions called");
@@ -735,6 +735,8 @@
 			{
 				continue;
 			}
+			
+			NSArray * revsDEL = [p downloadedRevsWithIsSetFalse];
 			
 			NSArray * sortedKeys = [[[p downloadedRevs] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 			for (id key in [sortedKeys reverseObjectEnumerator])
@@ -750,7 +752,6 @@
 		}
 	}
 }
-
 
 
 
