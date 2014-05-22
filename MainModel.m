@@ -765,11 +765,12 @@
 			if ([fileDownloads count] <= MAX_CONCURRENT_DOWNLOADS / 2)
 			{
 				NSArray * fileRevs = [p getNextFileRevisions:(int)(MAX_CONCURRENT_DOWNLOADS - [fileDownloads count])];
-				for (Revision * r in fileRevs)
+				for (int i=0; i < [fileRevs count]; i++)
 				{
 					DebugLog(@"---------------------");
 					DebugLog(@"key: %@", key);
 					DebugLog(@"---------------------");
+					Revision * r = [fileRevs objectAtIndex:i];
 					[r setDelegate:self];
 					[fileDownloads addObject:r];
 					[r match];
