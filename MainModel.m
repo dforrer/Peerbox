@@ -500,6 +500,7 @@
 {
 	DebugLog(@"revisionMatched called");
 	[[rev peer] removeRevision:rev];
+	[fileDownloads removeObject:rev];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:[[rev remoteState] url]];
 }
 
@@ -759,19 +760,18 @@
 				[r match];
 			}
 			
+			// Match FILE-Revisions
+			//----------------------
 			if ([fileDownloads count] <= MAX_CONCURRENT_DOWNLOADS / 2)
 			{
-				// Match FILE-Revisions
-				//----------------------
-				sortedKeys = [[[p downloadedRevsWithFilesToAdd] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-				int counter = MAX_CONCURRENT_DOWNLOADS;
-				for (id key in [sortedKeys reverseObjectEnumerator])
+				NSArray * fileRevs = [p getNextFileRevisions:(int)(MAX_CONCURRENT_DOWNLOADS - [fileDownloads count])];
+				for (Revision * r in fileRevs)
 				{
 					DebugLog(@"---------------------");
 					DebugLog(@"key: %@", key);
 					DebugLog(@"---------------------");
-					Revision * r = [[p downloadedRevsWithFilesToAdd] objectForKey:key];
 					[r setDelegate:self];
+					[fileDownloads addObject:r];
 					[r match];
 				}
 			}

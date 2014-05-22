@@ -135,6 +135,11 @@
  */
 - (NSArray*) getNextFileRevisions:(int)count
 {
+	if (count <= 0)
+	{
+		return [NSArray array];
+	}
+	
 	NSMutableArray * a = [[NSMutableArray alloc] init];
 	for (Revision * r in downloadedRevsWithFilesToAdd)
 	{
