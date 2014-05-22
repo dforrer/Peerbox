@@ -505,7 +505,7 @@
 	
 	if ([fileDownloads count] <= MAX_CONCURRENT_DOWNLOADS / 2)
 	{
-		[self matchRevisions];
+		[self performSelectorInBackground:@selector(matchRevisions) withObject:nil];
 	}
 }
 
