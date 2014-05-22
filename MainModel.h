@@ -13,7 +13,6 @@
 #import "DownloadFile.h"
 #import "DownloadRevisions.h"
 #import "Revision.h"
-#import "DownloadFile.h"
 
 @class Share;
 @class Configuration;
@@ -21,7 +20,7 @@
 @class HTTPServer;
 
 
-@interface MainModel : NSObject <BonjourSearcherDelegate, DownloadSharesDelegate, DownloadRevisionsDelegate, RevisionDelegate, DownloadFileDelegate>
+@interface MainModel : NSObject <BonjourSearcherDelegate, DownloadSharesDelegate, DownloadRevisionsDelegate, RevisionDelegate>
 
 
 

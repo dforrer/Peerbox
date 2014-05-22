@@ -20,7 +20,7 @@
 
 
 @synthesize relURL, revision, isSet, extAttributes, versions;
-@synthesize peer, lastMatchAttempt, absoluteURL, remoteState, isDir;
+@synthesize peer, download, lastMatchAttempt, absoluteURL, remoteState, isDir;
 @synthesize delegate, config;
 
 
@@ -47,6 +47,7 @@
 		//-----------------
 		peer = p;
 		lastMatchAttempt = nil;
+		download = nil;
 		config = c;
 
 		[self helperInit];
