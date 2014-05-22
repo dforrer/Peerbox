@@ -74,7 +74,7 @@
 {
 	absoluteURL	= [NSURL URLWithString:relURL relativeToURL:[[peer share] root]];
 	remoteState	= [[File alloc] initWithShare:[peer share] relUrl:relURL isSet:isSet extAttributesAsBase64:extAttributes versions:versions];
-	isDir		= [remoteState isDir];
+	isDir		= [relURL hasSuffix:@"/"];
 	myPeerID		= [config myPeerID];
 }
 

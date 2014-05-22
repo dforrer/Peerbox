@@ -742,7 +742,7 @@
 			}
 			// Match DELETE-Revisions
 			//------------------------
-			DebugLog(@"Match DELETE-Revisions");
+			DebugLog(@"+++ Match DELETE-Revisions");
 			
 			NSArray * sortedKeys = [[[p downloadedRevsWithIsSetFalse] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 			for (id key in [sortedKeys reverseObjectEnumerator])
@@ -757,7 +757,7 @@
 			
 			// Match DIR-Revisions
 			//---------------------
-			DebugLog(@"Match DIR-Revisions");
+			DebugLog(@"+++ Match DIR-Revisions");
 			
 			sortedKeys = [[[p downloadedRevsWithIsDirTrue] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 			for (id key in [sortedKeys reverseObjectEnumerator])
@@ -772,16 +772,16 @@
 			
 			// Match FILE-Revisions
 			//----------------------
-			DebugLog(@"Match FILE-Revisions");
+			DebugLog(@"+++ Match FILE-Revisions");
+			
 			if ([fileDownloads count] <= MAX_CONCURRENT_DOWNLOADS / 2)
 			{
 				NSArray * fileRevs = [p getNextFileRevisions:(int)(MAX_CONCURRENT_DOWNLOADS - [fileDownloads count])];
-				for (int i=0; i < [fileRevs count]; i++)
+				for (Revision * r in fileRevs)
 				{
 					DebugLog(@"---------------------");
 					DebugLog(@"key: %@", key);
 					DebugLog(@"---------------------");
-					Revision * r = [fileRevs objectAtIndex:i];
 					[r setDelegate:self];
 					[fileDownloads addObject:r];
 					[r match];
