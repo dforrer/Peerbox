@@ -141,8 +141,9 @@
 	}
 	
 	NSMutableArray * a = [[NSMutableArray alloc] init];
-	for (Revision * r in downloadedRevsWithFilesToAdd)
+	for (id key in downloadedRevsWithFilesToAdd)
 	{
+		Revision * r = [downloadedRevsWithFilesToAdd objectForKey:key];
 		count--;
 		[a addObject:r];
 		if (count == 0)
