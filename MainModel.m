@@ -748,6 +748,7 @@
 				DebugLog(@"---------------------");
 				Revision * r = [[p downloadedRevsWithIsSetFalse] objectForKey:key];
 				[r match];
+				[p removeRevision:r];
 			}
 			
 			// Match DIR-Revisions
@@ -762,6 +763,7 @@
 				DebugLog(@"---------------------");
 				Revision * r = [[p downloadedRevsWithIsDirTrue] objectForKey:key];
 				[r match];
+				[p removeRevision:r];
 			}
 			
 			// Match FILE-Revisions
