@@ -502,8 +502,12 @@
 	[[rev peer] removeRevision:rev];
 	[fileDownloads removeObject:rev];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:[[rev remoteState] url]];
+	
+	if ([fileDownloads count] <= MAX_CONCURRENT_DOWNLOADS / 2)
+	{
+		[self matchRevisions];
+	}
 }
-
 
 
 
