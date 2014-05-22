@@ -16,13 +16,15 @@
 - (id) initWithPeerID:(NSString*) pid andShare:(Share*) s andConfig:(Configuration*)c;
 - (void) addRevision:(Revision*)rev;
 - (void) removeRevision:(Revision*)rev;
-- (NSDictionary*) allDownloadedRevs;
-- (NSDictionary*) plistEncoded;
+- (NSDictionary*) downloadedRevs;
+- (NSArray*) downloadedRevsWithIsSetFalse;
+- (NSArray*) downloadedRevsWithIsDirTrue;
 
 
 // Other
 //-------
 - (NSString *)description;
+- (NSDictionary*) plistEncoded;
 
 
 @property (nonatomic,readwrite,strong) NSNumber * currentRev; // of the remote peer

@@ -45,15 +45,32 @@
 }
 
 
-
-
-
-- (NSDictionary*) allDownloadedRevs
+- (NSDictionary*) downloadedRevs
 {
 	return downloadedRevs; // this is non-editable
 }
 
 
+
+- (NSArray*) downloadedRevsWithIsSetFalse
+{
+	NSIndexSet *indices = [[downloadedRevs allValues] indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+		return (BOOL) ![[obj isSet] boolValue];	// isEqualToNumber:[NSNumber numberWithInt:0]];
+	}];
+	NSArray *filtered = [[downloadedRevs allValues] objectsAtIndexes:indices];
+	return filtered;
+}
+
+
+
+- (NSArray*) downloadedRevsWithIsDirTrue
+{
+	NSIndexSet *indices = [[downloadedRevs allValues] indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+		return [obj isDir];
+	}];
+	NSArray *filtered = [[downloadedRevs allValues] objectsAtIndexes:indices];
+	return filtered;
+}
 
 
 

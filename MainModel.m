@@ -75,6 +75,7 @@
 		//----------------------------------------------------------
 		[FileHelper removeAllFilesInDir:[config downloadsDir]];
 		
+		
 		// Perform initial scans of the shares
 		//-------------------------------------
 		[self restartFSWatcherQueue];
@@ -339,8 +340,8 @@
 		for (Peer * p in [s allPeers])
 		{
 			DebugLog(@"%@", p);
-			DebugLog(@"downloadedRevs-Count: %lu", (unsigned long)[[p allDownloadedRevs] count]);
-			DebugLog(@"%@", [p allDownloadedRevs]);
+			DebugLog(@"downloadedRevs-Count: %lu", (unsigned long)[[p downloadedRevs] count]);
+			DebugLog(@"%@", [p downloadedRevs]);
 		}
 	}
 }
@@ -730,28 +731,21 @@
 		Share * s = [myShares objectForKey:key];
 		for (Peer * p in [s allPeers])
 		{
-			if ([[p allDownloadedRevs] count] == 0)
+			if ([[p downloadedRevs] count] == 0)
 			{
 				continue;
 			}
 			
-			NSArray * sortedKeys = [[[p allDownloadedRevs] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-			int counter = 0;
+			NSArray * sortedKeys = [[[p downloadedRevs] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 			for (id key in [sortedKeys reverseObjectEnumerator])
 			{
 				DebugLog(@"---------------------");
 				DebugLog(@"key: %@", key);
 				DebugLog(@"---------------------");
-				Revision * r = [[p allDownloadedRevs] objectForKey:key];
+				Revision * r = [[p downloadedRevs] objectForKey:key];
 				[r setDelegate:self];
 				
 				[r match];
-				
-				if (counter == REVS_PER_MATCH_GROUP)
-				{
-					break;
-				}
-				
 			}
 		}
 	}
