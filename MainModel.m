@@ -19,6 +19,7 @@
 #import "FSWatcher.h"
 #import "HTTPServer.h"
 #import "MyHTTPConnection.h"
+#import "MatchOperation.h"
 
 /**
  * Contains all the Domain-logic
@@ -29,7 +30,8 @@
 	
 	NSOperationQueue * fsWatcherQueue;
 	BOOL fsWatcherQueueRestartet;
-	NSMutableArray * fileDownloads;
+	
+	NSOperationQueue * matcherQueue;
 }
 
 
@@ -40,7 +42,7 @@
 @synthesize config;	// passed down to Share, Peer, Revision
 @synthesize httpServer;
 @synthesize fswatcher;
-
+@synthesize fileDownloads;
 
 
 #pragma mark -----------------------
@@ -68,6 +70,7 @@
 		fsWatcherQueue  = [[NSOperationQueue alloc] init];
 		fsWatcherQueueRestartet = FALSE;
 		fileDownloads = [[NSMutableArray alloc] init];
+		matcherQueue  = [[NSOperationQueue alloc] init];
 		
 		[self setupHTTPServer];
 		[self createWorkingDirectories];
@@ -505,7 +508,12 @@
 	
 	if ([fileDownloads count] <= MAX_CONCURRENT_DOWNLOADS / 2)
 	{
-		[self performSelectorInBackground:@selector(matchRevisions) withObject:nil];
+		MatchOperation * o = [[MatchOperation alloc] initWithMainModel:self];
+		if ([matcherQueue operationCount] > 0)
+		{
+			[o addDependency:[[matcherQueue operations] lastObject]];
+		}
+		[matcherQueue addOperation: o];
 	}
 }
 
@@ -725,9 +733,18 @@
 }
 
 
+- (void) matchRevisions
+{
+	MatchOperation * o = [[MatchOperation alloc] initWithMainModel:self];
+	if ([matcherQueue operationCount] > 0)
+	{
+		[o addDependency:[[matcherQueue operations] lastObject]];
+	}
+	[matcherQueue addOperation: o];
+}
 
 
-
+/*
 - (void) matchRevisions
 {
 	DebugLog(@"MainModel: matchRevisions called");
@@ -789,8 +806,9 @@
 			}
 		}
 	}
+ 
 }
-
+*/
 
 
 

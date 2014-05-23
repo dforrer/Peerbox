@@ -42,6 +42,6 @@
 @property (nonatomic, readonly, strong)	HTTPServer * httpServer;
 @property (nonatomic, readonly, strong)	FSWatcher  * fswatcher;
 
-
+@property (nonatomic, readonly, strong) NSMutableArray * fileDownloads;
 
 @end
