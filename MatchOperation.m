@@ -46,12 +46,12 @@
 			DebugLog(@"+++ Match DELETE-Revisions");
 			
 			NSArray * sortedKeys = [[[p downloadedRevsWithIsSetFalse] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-			for (id key in [sortedKeys reverseObjectEnumerator])
+			for (int i = (int)[sortedKeys count]-1; i>=0; i--)
 			{
 				DebugLog(@"---------------------");
 				DebugLog(@"key: %@", key);
 				DebugLog(@"---------------------");
-				Revision * r = [[p downloadedRevsWithIsSetFalse] objectForKey:key];
+				Revision * r = [[p downloadedRevsWithIsSetFalse] objectForKey:[sortedKeys objectAtIndex:i]];
 				[r match];
 				[p removeRevision:r];
 			}
@@ -61,12 +61,12 @@
 			DebugLog(@"+++ Match DIR-Revisions");
 			
 			sortedKeys = [[[p downloadedRevsWithIsDirTrue] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-			for (id key in [sortedKeys reverseObjectEnumerator])
+			for (int i = (int)[sortedKeys count]-1; i>=0; i--)
 			{
 				DebugLog(@"---------------------");
 				DebugLog(@"key: %@", key);
 				DebugLog(@"---------------------");
-				Revision * r = [[p downloadedRevsWithIsDirTrue] objectForKey:key];
+				Revision * r = [[p downloadedRevsWithIsDirTrue] objectForKey:[sortedKeys objectAtIndex:i]];
 				[r match];
 				[p removeRevision:r];
 			}
