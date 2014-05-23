@@ -29,7 +29,7 @@
 
 - (void) main
 {
-	DebugLog(@"MainModel: matchRevisions called");
+	DebugLog(@"MainModel: MatchOperation started");
 	NSMutableDictionary * myShares = [mm getAllShares];
 	
 	for (id key in myShares)

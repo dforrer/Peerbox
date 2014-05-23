@@ -506,7 +506,7 @@
 	[fileDownloads removeObject:rev];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:[[rev remoteState] url]];
 	
-	if ([fileDownloads count] <= MAX_CONCURRENT_DOWNLOADS / 2)
+	if ([fileDownloads count] <= MAX_CONCURRENT_DOWNLOADS / 2 && [matcherQueue operationCount] < 2)
 	{
 		MatchOperation * o = [[MatchOperation alloc] initWithMainModel:self];
 		if ([matcherQueue operationCount] > 0)
@@ -735,6 +735,10 @@
 
 - (void) matchRevisions
 {
+	if ([matcherQueue operationCount] >= 2)
+	{
+		return;
+	}
 	MatchOperation * o = [[MatchOperation alloc] initWithMainModel:self];
 	if ([matcherQueue operationCount] > 0)
 	{
