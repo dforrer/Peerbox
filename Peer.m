@@ -141,9 +141,10 @@
 	}
 	
 	NSMutableArray * a = [[NSMutableArray alloc] init];
-	for (id key in downloadedRevsWithFilesToAdd)
+	NSArray * tmp = [downloadedRevsWithFilesToAdd allValues];
+	for (int i = 0; i < [tmp count]; i++)
 	{
-		Revision * r = [downloadedRevsWithFilesToAdd objectForKey:key];
+		Revision * r = [tmp objectAtIndex:i];
 		count--;
 		[a addObject:r];
 		if (count == 0)
