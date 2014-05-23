@@ -37,10 +37,6 @@
 		Share * s = [myShares objectForKey:key];
 		for (Peer * p in [s allPeers])
 		{
-			if ([[p downloadedRevsWithFilesToAdd] count] == 0)
-			{
-				continue;
-			}
 			// Match DELETE-Revisions
 			//------------------------
 			DebugLog(@"+++ Match DELETE-Revisions");
