@@ -68,7 +68,7 @@
 		[request setHTTPBody: [self preparePostData]];
 		[request setURL: [self urlFromNetService: netService]];
 		DebugLog(@"URL: %@", [request URL]);
-		delegate = r;
+
 
 	/*	decryptor = [[RNDecryptor alloc] initWithPassword:[share secret] handler:
 		 ^(RNCryptor *cryptor, NSData *data) {
@@ -91,7 +91,7 @@
 	// Prepare POST-Data
 	//-------------------
 	NSMutableDictionary * postData = [[NSMutableDictionary alloc] init];
-	NSString * relUrl = [[[[[rev remoteState] url] absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] substringFromIndex:[[[[[rev peer] share] root] absoluteString] length]];
+	NSString * relUrl = [rev relURL];
 	[postData setObject:relUrl forKey:@"relUrl"];
 	NSError * error;
 	NSData * rv = [[CJSONSerializer serializer] serializeObject: postData
@@ -130,8 +130,7 @@
  */
 - (NSString*) prepareDownloadPath
 {
-	NSString * relUrl = [[[[rev remoteState] url] absoluteString] substringFromIndex:[[[[[rev peer] share] root] absoluteString] length]];
-	return [NSString stringWithFormat:@"%@/%@-%@", [config downloadsDir], [[[rev peer] share] shareId], [FileHelper sha1OfNSString:relUrl]];
+	return [NSString stringWithFormat:@"%@/%@-%@", [config downloadsDir], [[[rev peer] share] shareId], [FileHelper sha1OfNSString:[rev relURL]]];
 }
 
 

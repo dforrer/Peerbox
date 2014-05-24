@@ -11,7 +11,6 @@
 #import "DownloadShares.h"
 #import "DownloadFile.h"
 #import "DownloadRevisions.h"
-#import "Revision.h"
 
 @class Share;
 @class Configuration;
@@ -19,7 +18,7 @@
 @class HTTPServer;
 @class BonjourSearcher;
 
-@interface MainController : NSObject <DownloadSharesDelegate, DownloadRevisionsDelegate, RevisionDelegate>
+@interface MainController : NSObject <DownloadSharesDelegate, DownloadRevisionsDelegate, DownloadFileDelegate>
 
 - (id) init;
 - (Share*) getShareForID:(NSString*)shareID;

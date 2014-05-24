@@ -17,10 +17,12 @@
 - (NSString*) getLastVersionKey;
 - (BOOL) isCoreEqualToFile:(File*)f;
 - (BOOL) isEqualToFile:(File*)f;
-- (BOOL) hasConflictingVersionsWithFile:(File*)f;
 - (BOOL) isDir;
+- (BOOL) hasConflictingVersionsWithFile:(File*)f;
++ (BOOL) versions:(NSDictionary*)v1 hasConflictsWithVersions:(NSDictionary*)v2;
 
 // Setter
+//--------
 - (void) setUrl:(NSURL *)u;
 - (void) setRevision:(NSNumber *)rev;
 - (void) setFileSize:(NSNumber *)size;
@@ -32,6 +34,7 @@
 - (void) setVersions:(NSMutableDictionary *)v ;
 
 // Updater
+//---------
 - (void) updateIsSet;
 - (void) updateFileSize;
 - (void) updateContentModDate;

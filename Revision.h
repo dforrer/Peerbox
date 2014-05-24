@@ -36,36 +36,17 @@
 } 
 */
 
-#import "DownloadFile.h"
 
-@class Peer, DownloadFile, File;
-
-
-@protocol RevisionDelegate <NSObject>
-
-- (void) revisionMatched:(Revision*) rev;
-
-@end
+@class Peer;
 
 
-
-@interface Revision : NSObject <DownloadFileDelegate>
-
-
-- (id) initWithRelURL:(NSString*)u
-		andRevision:(NSNumber*)r
-		   andIsSet:(NSNumber*)i
-		 andExtAttr:(NSDictionary*)e
-		andVersions:(NSDictionary*)v
-		    andPeer:(Peer*)p
-		  andConfig:(Configuration*)c;
-
-- (NSDictionary*) plistEncoded;
-
-- (void) match;
+@interface Revision : NSObject
 
 - (void) updateLastMatchAttempt;
-
+- (BOOL) isZeroLengthFile;
+- (BOOL) canBeMatchedInstantly;
+- (NSString *) getLastVersionHash;
+- (NSString *) getLastVersionKey;
 
 // Core attributes from /revisions-request
 //-----------------------------------------
@@ -76,14 +57,7 @@
 @property (nonatomic, readwrite, strong) NSMutableDictionary * versions;
 @property (nonatomic, readwrite, strong) NSNumber * isDir;
 @property (nonatomic, readwrite, strong) NSDate * lastMatchAttempt;
-
-// Additional attributes
-//-----------------------
 @property (nonatomic, readwrite, strong) Peer * peer;
-@property (nonatomic, readonly, strong) DownloadFile * download;	// generated IF necessary
-@property (nonatomic, readonly, strong) NSURL * absoluteURL; // generated
-@property (nonatomic, readonly, strong) File * remoteState;	// generated
-@property (nonatomic,assign) id <RevisionDelegate> delegate; // Instance of Peer-Class
-@property (nonatomic,readonly,strong) Configuration * config;
 
+ 
 @end

@@ -316,14 +316,14 @@
 
 /*
  Revisions-Table-Layout:
- peerID TEXT,
- relURL TEXT,
- revision SQLITE3_INT64,
- isSet INTEGER,
- extAttributes TEXT,
- versions TEXT,
- isDir INTEGER,
- lastMatchAttemptDate TEXT
+	peerID TEXT,
+	relURL TEXT,
+	revision SQLITE3_INT64,
+	isSet INTEGER,
+	extAttributes TEXT,
+	versions TEXT,
+	isDir INTEGER,
+	lastMatchAttemptDate TEXT
  */
 
 - (Revision*) nextDownloadedRevisionForPeer:(Peer*)p
@@ -364,6 +364,9 @@
 	[rv setIsDir:rows[0][5]];
 	[rv setLastMatchAttempt:[NSDate dateWithString:rows[0][6]]];
 
+	// Setting the Peer-Attribute of the Revision
+	//--------------------------------------------
+	
 	[rv setPeer:p];
 	
 	return rv;

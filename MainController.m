@@ -21,6 +21,7 @@
 #import "HTTPServer.h"
 #import "MyHTTPConnection.h"
 #import "RevisionMatchOperation.h"
+#import "Revision.h"
 
 /**
  * Contains all the Domain-logic
@@ -416,17 +417,24 @@
 			NSDictionary * rev	= [[dict objectForKey:@"revisions"] objectForKey:key];
 			NSNumber * revision = [rev objectForKey:@"revision"];
 			NSNumber * isSet	= [rev objectForKey:@"isSet"];
-			NSDictionary * extendedAttributes	= [rev objectForKey:@"extendedAttributes"];
-			NSDictionary * versions			= [rev objectForKey:@"versions"];
+			NSMutableDictionary * extendedAttributes	= [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"extendedAttributes"]];
+			NSMutableDictionary * versions			= [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"versions"]];
 			
-			Revision * r = [[Revision alloc] initWithRelURL:key
-										 andRevision:revision
-										    andIsSet:isSet
-										  andExtAttr:extendedAttributes
-										 andVersions:versions
-											andPeer:[d peer]
-										   andConfig:config];
-			[[[d peer] share] setDownloadedRevision:r forPeer:[d peer]];
+			Revision * r = [[Revision alloc] init];
+			[r setRelURL:key];
+			[r setRevision:revision];
+			[r setIsSet:isSet];
+			[r setIsDir:[NSNumber numberWithBool:[key hasSuffix:@"/"]]];
+			[r setExtAttributes:extendedAttributes];
+			[r setVersions:versions];
+			[r setPeer:[d peer]];
+			
+			RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithRevision:r andConfig:config];
+			if ([matcherQueue operationCount] > 0)
+			{
+				[o addDependency:[[matcherQueue operations] lastObject]];
+			}
+			[matcherQueue addOperation: o];
 		}
 		
 		
@@ -449,9 +457,77 @@
 
 
 
+/*
+ * OVERRIDE: Delegate function called by "download" inherited from <DownloadFileDelegate>
+ */
+- (void) downloadFileHasFinished:(DownloadFile*)d
+{
+	NSURL * fullURL = [NSURL URLWithString:[[d rev] relURL] relativeToURL:[[[[d rev] peer] share] root]];
+	
+	// Continue matching the file
+	//----------------------------
+	if ( [[NSFileManager defaultManager] isReadableFileAtPath:[d downloadPath]] )
+	{
+		// Move existing file to the trash
+		//---------------------------------
+		NSError * error;
+		if ( [[NSFileManager defaultManager] isReadableFileAtPath:[fullURL path]] )
+		{
+			[[NSFileManager defaultManager] removeItemAtURL:fullURL error:&error];
+			if (error)
+			{
+				DebugLog(@"ERROR: removeItemAtURL failed!, %@", error);
+				return;
+			}
+		}
+		error = nil;
+		if ([d downloadPath] != nil && [fullURL path] != nil)
+		{
+			[[NSFileManager defaultManager] createDirectoryAtPath:[[fullURL URLByDeletingLastPathComponent] path]
+								 withIntermediateDirectories:YES
+											   attributes:nil
+												   error:nil];
+			[[NSFileManager defaultManager] moveItemAtPath:[d downloadPath] toPath:[fullURL path] error:&error];
+			if (error)
+			{
+				DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
+				return;
+			}
+		}
+	}
+	
+	// Set extended attributes
+	//-------------------------
+	for (id key in [[d rev] extAttributes])
+	{
+		NSData * extAttrBinary = [[NSData alloc] initWithBase64EncodedString:[[[d rev] extAttributes] objectForKey:key] options:0];
+		[FileHelper setValue:extAttrBinary forName:key onFile:[fullURL path]];
+	}
+	
+	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
+	[newState setVersions:[[d rev] versions]];
+	[[[[d rev] peer] share] setFile:newState];
+}
+
+
+
+/*
+ * OVERRIDE: Delegate function called by "download" inherited from <DownloadFileDelegate>
+ */
+- (void) downloadFileHasFailed:(DownloadFile*)d
+{
+	DebugLog(@"ERROR: downloadFileHasFailed");
+
+}
+
+
+
 /**
  * OVERRIDE: RevisionDelegate
  */
+
+
+/*
 - (void) revisionMatched:(Revision*) rev
 {
 	DebugLog(@"revisionMatched called");
@@ -470,13 +546,14 @@
 	}
 }
 
-
+*/
 
 #pragma mark -----------------------
-#pragma mark FSWatcher-Controller
+#pragma mark Controlling FSWatcher
 
 /**
- *
+ * Cancels all operations in 'fsWatcherQueue' 
+ * and sets complete Share-rescans.
  */
 - (void) restartFSWatcherQueue
 {
@@ -688,16 +765,7 @@
 
 - (void) matchRevisions
 {
-	if ([matcherQueue operationCount] >= 2)
-	{
-		return;
-	}
-	RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithMainModel:self];
-	if ([matcherQueue operationCount] > 0)
-	{
-		[o addDependency:[[matcherQueue operations] lastObject]];
-	}
-	[matcherQueue addOperation: o];
+
 }
 
 

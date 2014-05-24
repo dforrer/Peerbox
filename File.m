@@ -197,6 +197,8 @@
 		return FALSE;
 	}
 	
+	return [File versions:[self versions] hasConflictsWithVersions:[f versions]];
+	
 	// 1,2,3,4 ... OR 10,11,12,13 ...
 	NSArray * local = [[[self versions] allKeys] sortedArrayUsingComparator:^(NSString *str1, NSString *str2) {
 		return [str1 compare:str2 options:NSNumericSearch];
@@ -239,6 +241,60 @@
 	{
 		DebugLog(@"%i: %@", i, [[self versions] objectForKey:[NSString stringWithFormat:@"%i", i]]);
 		DebugLog(@"%i: %@", i, [[f versions] objectForKey:[NSString stringWithFormat:@"%i", i]]);
+		i++;
+	}
+	return !(i == biggestSharedVersion + 1);
+}
+
+
+/**
+ * v1 = [self versions]
+ * v2 = [f versions]
+ */
++ (BOOL) versions:(NSDictionary*)v1 hasConflictsWithVersions:(NSDictionary*)v2
+{
+	// 1,2,3,4 ... OR 10,11,12,13 ...
+	NSArray * local = [[v1 allKeys] sortedArrayUsingComparator:^(NSString *str1, NSString *str2) {
+		return [str1 compare:str2 options:NSNumericSearch];
+	}];;
+	NSArray * remote = [[v2 allKeys] sortedArrayUsingComparator:^(NSString *str1, NSString *str2) {
+		return [str1 compare:str2 options:NSNumericSearch];
+	}];;
+	
+	//DebugLog(@"local: %@", local);
+	//DebugLog(@"remote: %@", remote);
+	
+	int local_smallest	 = [[local firstObject] intValue];
+	int remote_smallest = [[remote firstObject] intValue];
+	int local_biggest	 = [[local lastObject] intValue];
+	int remote_biggest	 = [[remote lastObject] intValue];
+	
+	//DebugLog(@"local_smallest:  %i", local_smallest);
+	//DebugLog(@"remote_smallest: %i", remote_smallest);
+	//DebugLog(@"local_biggest:   %i", local_biggest);
+	//DebugLog(@"remote_biggest:  %i", remote_biggest);
+	
+	int smallestSharedVersion;
+	int biggestSharedVersion;
+	
+	// Finding the smallest shared revision
+	//-------------------------------------
+	smallestSharedVersion = MAX(local_smallest , remote_smallest);
+	DebugLog(@"shared smallest: %i", smallestSharedVersion);
+	biggestSharedVersion  = MIN(local_biggest  , remote_biggest);
+	DebugLog(@"shared biggest:  %i", biggestSharedVersion);
+	
+	if ( (biggestSharedVersion - smallestSharedVersion) < 0)
+	{
+		/* An overlapping range DOESN'T exists */
+		return TRUE;
+	}
+	int i = smallestSharedVersion;
+	while (i <= biggestSharedVersion
+		  && [[v1 objectForKey:[NSString stringWithFormat:@"%i", i]] isEqualToString:[v2 objectForKey:[NSString stringWithFormat:@"%i", i]]])
+	{
+		DebugLog(@"%i: %@", i, [v1 objectForKey:[NSString stringWithFormat:@"%i", i]]);
+		DebugLog(@"%i: %@", i, [v2 objectForKey:[NSString stringWithFormat:@"%i", i]]);
 		i++;
 	}
 	return !(i == biggestSharedVersion + 1);

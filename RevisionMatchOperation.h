@@ -3,10 +3,11 @@
 //  Copyright (c) 2014 putitinthebox.com. All rights reserved.
 //
 
-@class MainController;
+@class Revision;
+@class Configuration;
 
 @interface RevisionMatchOperation : NSOperation
 
--(id) initWithMainModel:(MainController*)m;
+- (id) initWithRevision:(Revision*)r andConfig:(Configuration*)c;
 
 @end
