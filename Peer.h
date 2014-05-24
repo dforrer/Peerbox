@@ -4,22 +4,13 @@
 //
 
 
-@class DownloadRevisions;
 @class Share;
-@class Revision;
-@class Configuration;
 
 
 @interface Peer : NSObject
 
 
-- (id) initWithPeerID:(NSString*) pid andShare:(Share*) s andConfig:(Configuration*)c;
-- (void) addRevision:(Revision*)rev;
-- (void) removeRevision:(Revision*)rev;
-- (NSDictionary*) downloadedRevsWithFilesToAdd;
-- (NSDictionary*) downloadedRevsWithIsSetFalse;
-- (NSDictionary*) downloadedRevsWithIsDirTrue;
-- (NSArray*) getNextFileRevisions:(int)count;
+- (id) initWithPeerID:(NSString*) pid andShare:(Share*) s;
 
 // Other
 //-------
@@ -31,10 +22,6 @@
 @property (nonatomic, readwrite, strong) NSNumber * lastDownloadedRev;
 @property (nonatomic, readonly , strong) NSString * peerID;
 @property (nonatomic, readwrite, strong) Share * share;
-@property (nonatomic, readwrite, strong) NSNetService * netService;
-@property (nonatomic, readonly) int numOfRevsBeingMatched;
-@property (nonatomic, readonly, strong) Configuration * config;
-@property (nonatomic, readwrite, strong) DownloadRevisions * revisionsDownload;
 
 
 @end
