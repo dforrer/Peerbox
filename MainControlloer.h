@@ -20,7 +20,7 @@
 @class BonjourSearcher;
 
 
-@interface MainModel : NSObject <DownloadSharesDelegate, DownloadRevisionsDelegate, RevisionDelegate>
+@interface MainControlloer : NSObject <DownloadSharesDelegate, DownloadRevisionsDelegate, RevisionDelegate>
 
 
 

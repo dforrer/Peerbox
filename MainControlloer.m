@@ -4,7 +4,7 @@
 //
 
 // HEADER
-#import "MainModel.h"
+#import "MainControlloer.h"
 
 #import "BonjourSearcher.h"
 #import "DownloadShares.h"
@@ -25,7 +25,7 @@
 /**
  * Contains all the Domain-logic
  */
-@implementation MainModel
+@implementation MainControlloer
 {
 	NSMutableDictionary * myShares;	// shareId = key of NSDictionary
 	
@@ -33,7 +33,6 @@
 	BOOL fsWatcherQueueRestartet;
 	
 	NSOperationQueue * matcherQueue;
-	
 }
 
 

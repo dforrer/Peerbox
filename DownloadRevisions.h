@@ -6,6 +6,8 @@
 @class Peer;
 @class DownloadRevisions;
 
+
+
 @protocol DownloadRevisionsDelegate <NSObject>
 
 - (void) downloadRevisionsHasFinished:(DownloadRevisions*)d;
@@ -17,7 +19,6 @@
 
 @interface DownloadRevisions : NSObject
 
-
 - (id) initWithNetService:(NSNetService*)netService andPeer:(Peer*)p;
 - (void)start;
 
@@ -26,6 +27,5 @@
 @property (nonatomic, readonly, strong) NSMutableData * response;
 @property (nonatomic, readonly) BOOL isFinished;
 @property (nonatomic,assign) id<DownloadRevisionsDelegate> delegate;
-
 
 @end

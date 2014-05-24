@@ -74,26 +74,12 @@
 {
 	absoluteURL	= [NSURL URLWithString:relURL relativeToURL:[[peer share] root]];
 	remoteState	= [[File alloc] initWithShare:[peer share] relUrl:relURL isSet:isSet extAttributesAsBase64:extAttributes versions:versions];
-	isDir		= [relURL hasSuffix:@"/"];
+	isDir		= [NSNumber numberWithBool:[relURL hasSuffix:@"/"]];
 	myPeerID		= [config myPeerID];
 }
 
 
 
-- (NSDictionary*) plistEncoded
-{
-	DebugLog(@"plistEncoded: Revision");
-
-	NSMutableDictionary * rv = [[NSMutableDictionary alloc] init];
-	
-	[rv setObject:relURL		forKey:@"relURL"];
-	[rv setObject:revision		forKey:@"revision"];
-	[rv setObject:isSet			forKey:@"isSet"];
-	[rv setObject:extAttributes	forKey:@"extAttributes"];
-	[rv setObject:versions		forKey:@"versions"];
-
-	return rv;
-}
 
 
 
@@ -220,7 +206,7 @@
 	{
 		// Start the download of the file
 		//--------------------------------
-		download = [[DownloadFile alloc] initWithNetService:[peer netService] andRevision:self andConfig:config];
+		download = [[DownloadFile alloc] initWithNetService:[peer share] andRevision:self andConfig:config];
 		[download setDelegate:self];
 		[download start];
 		return;
@@ -293,7 +279,6 @@
 	[delegate revisionMatched:self];
 	//download = nil;
 }
-
 
 - (void) updateLastMatchAttempt
 {

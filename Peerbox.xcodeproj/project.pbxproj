@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		650019B8191F5F43000C53C0 /* MainModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 650019B7191F5F43000C53C0 /* MainModel.m */; };
+		650019B8191F5F43000C53C0 /* MainControlloer.m in Sources */ = {isa = PBXBuildFile; fileRef = 650019B7191F5F43000C53C0 /* MainControlloer.m */; };
+		650F1FDE1930942F00771814 /* MatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 650F1FDD1930942F00771814 /* MatchOperation.m */; };
 		6510B9091924DE1F00808055 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A7924718FBF32F00E8C878 /* XCTest.framework */; };
 		6510B90F1924DE1F00808055 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6510B90D1924DE1F00808055 /* InfoPlist.strings */; };
 		6510B9181924E22600808055 /* File Unit Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A7923E18FBF2B000E8C878 /* File Unit Tests.m */; };
@@ -16,7 +17,6 @@
 		65197BA018E2A18200440C6C /* Peer.m in Sources */ = {isa = PBXBuildFile; fileRef = 65197B9F18E2A18200440C6C /* Peer.m */; };
 		6526C1CD18F5CF2800B72389 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6526C1CC18F5CF2800B72389 /* Constants.m */; };
 		652F704D184F71D3004E13C5 /* MyHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 652F704C184F71D3004E13C5 /* MyHTTPConnection.m */; };
-		65384C73192EF6F60070F0A9 /* MatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 65384C72192EF6F60070F0A9 /* MatchOperation.m */; };
 		6547B5A6188D91B1005F3BD4 /* DownloadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 6547B5A5188D91B1005F3BD4 /* DownloadFile.m */; };
 		6564985B18708DF800BBB3D1 /* FullScanOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6564985A18708DF800BBB3D1 /* FullScanOperation.m */; };
 		656AA41F188AB6BF007C6ED9 /* DownloadShares.m in Sources */ = {isa = PBXBuildFile; fileRef = 656AA41E188AB6BF007C6ED9 /* DownloadShares.m */; };
@@ -151,8 +151,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		650019B6191F5F43000C53C0 /* MainModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainModel.h; sourceTree = "<group>"; };
-		650019B7191F5F43000C53C0 /* MainModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainModel.m; sourceTree = "<group>"; };
+		650019B6191F5F43000C53C0 /* MainControlloer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainControlloer.h; sourceTree = "<group>"; };
+		650019B7191F5F43000C53C0 /* MainControlloer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainControlloer.m; sourceTree = "<group>"; };
+		650F1FDC1930942F00771814 /* MatchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchOperation.h; sourceTree = "<group>"; };
+		650F1FDD1930942F00771814 /* MatchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchOperation.m; sourceTree = "<group>"; };
 		6510B9081924DE1F00808055 /* Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6510B90C1924DE1F00808055 /* Unit Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Unit Tests-Info.plist"; sourceTree = "<group>"; };
 		6510B90E1924DE1F00808055 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -164,8 +166,6 @@
 		6526C1CC18F5CF2800B72389 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		652F704B184F71D3004E13C5 /* MyHTTPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyHTTPConnection.h; sourceTree = "<group>"; };
 		652F704C184F71D3004E13C5 /* MyHTTPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyHTTPConnection.m; sourceTree = "<group>"; };
-		65384C71192EF6F60070F0A9 /* MatchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchOperation.h; sourceTree = "<group>"; };
-		65384C72192EF6F60070F0A9 /* MatchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchOperation.m; sourceTree = "<group>"; };
 		6547B5A4188D91A5005F3BD4 /* DownloadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadFile.h; sourceTree = "<group>"; };
 		6547B5A5188D91B1005F3BD4 /* DownloadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadFile.m; sourceTree = "<group>"; };
 		6564985918708DF700BBB3D1 /* FullScanOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScanOperation.h; sourceTree = "<group>"; };
@@ -585,8 +585,8 @@
 				6526C1CC18F5CF2800B72389 /* Constants.m */,
 				65E5CBF5180B0043001065AE /* AppDelegate.h */,
 				65E5CBF6180B0043001065AE /* AppDelegate.m */,
-				650019B6191F5F43000C53C0 /* MainModel.h */,
-				650019B7191F5F43000C53C0 /* MainModel.m */,
+				650019B6191F5F43000C53C0 /* MainControlloer.h */,
+				650019B7191F5F43000C53C0 /* MainControlloer.m */,
 				65E5CBFF180B0043001065AE /* File.h */,
 				65E5CC00180B0043001065AE /* File.m */,
 				65E61FFC18E49F83007A654B /* Share.h */,
@@ -609,8 +609,8 @@
 				652F704C184F71D3004E13C5 /* MyHTTPConnection.m */,
 				657657D718D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.h */,
 				657657D818D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m */,
-				65384C71192EF6F60070F0A9 /* MatchOperation.h */,
-				65384C72192EF6F60070F0A9 /* MatchOperation.m */,
+				650F1FDC1930942F00771814 /* MatchOperation.h */,
+				650F1FDD1930942F00771814 /* MatchOperation.m */,
 				65AD01E4186E0DBA00DC6A1B /* SingleFileOperation.h */,
 				65AD01E5186E0DBA00DC6A1B /* SingleFileOperation.m */,
 				6564985918708DF700BBB3D1 /* FullScanOperation.h */,
@@ -848,7 +848,7 @@
 				6589459719269B4C00A58A83 /* BonjourSearcher.m in Sources */,
 				658946C119269B4C00A58A83 /* RNEncryptor.m in Sources */,
 				658945D319269B4C00A58A83 /* MultipartMessageHeaderField.m in Sources */,
-				650019B8191F5F43000C53C0 /* MainModel.m in Sources */,
+				650019B8191F5F43000C53C0 /* MainControlloer.m in Sources */,
 				658943EE192125EA00A58A83 /* Configuration.m in Sources */,
 				652F704D184F71D3004E13C5 /* MyHTTPConnection.m in Sources */,
 				657657D918D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m in Sources */,
@@ -891,7 +891,7 @@
 				6595E54418D4ED7300E13880 /* main.m in Sources */,
 				658945D919269B4C00A58A83 /* HTTPDynamicFileResponse.m in Sources */,
 				658946AB19269B4C00A58A83 /* DDAbstractDatabaseLogger.m in Sources */,
-				65384C73192EF6F60070F0A9 /* MatchOperation.m in Sources */,
+				650F1FDE1930942F00771814 /* MatchOperation.m in Sources */,
 				658945A119269B4C00A58A83 /* NSDataGZipCategory.m in Sources */,
 				658946B519269B4C00A58A83 /* ContextFilterLogFormatter.m in Sources */,
 				658945C919269B4C00A58A83 /* HTTPConnection.m in Sources */,

@@ -10,6 +10,7 @@
 #import "SQLiteDatabase.h"
 #import "FileHelper.h"
 #import "File.h"
+#import "Revision.h"
 #import "Peer.h"
 #import "NSDictionary_JSONExtensions.h"
 #import "CJSONDeserializer.h"
@@ -137,12 +138,20 @@
 	
 	NSError * error;
 	
-	// causes the sqlite-file to shrink after deletions
-	
+	// Causes the sqlite-file to shrink after deletions
+	//--------------------------------------------------
 	[filesDB performQuery:@"PRAGMA auto_vacuum = FULL" rows:nil error:&error];
+
+
+	// Create Table "files" + index
+	//------------------------------
 	[filesDB performQuery:@"CREATE TABLE IF NOT EXISTS files (uid TEXT PRIMARY KEY, url TEXT, revision SQLITE3_INT64 UNIQUE, fileSize SQLITE3_INT64, contentModDate TEXT, attributesModDate TEXT, isSet INTEGER, extAttributes TEXT, versions TEXT)" rows:nil error:&error];
 	[filesDB performQuery:@"CREATE INDEX IF NOT EXISTS index_files_revision ON files (revision);" rows:nil error:&error];
+
 	
+	// Create Table "Revisions"
+	//------------------------------------
+	[filesDB performQuery:@"CREATE TABLE IF NOT EXISTS Revisions (peerID TEXT, relURL TEXT, revision SQLITE3_INT64, isSet INTEGER, extAttributes TEXT, versions TEXT, isDir INTEGER, lastMatchAttemptDate TEXT)" rows:nil error:&error];
 }
 
 
@@ -223,7 +232,143 @@
 }
 
 
+#pragma mark -----------------------
+#pragma mark Getter/Setter Revision
 
+
+- (void) setDownloadedRevision:(Revision*)r forPeer:(Peer*)p;
+{
+	@autoreleasepool
+	{
+		// Serialize "extAttrBase64Encoded" to JSON-String
+		//-------------------------------------------------
+		NSError * error;
+		NSData * extAttrData = [[CJSONSerializer serializer] serializeObject:[r extAttributes] error:&error];
+		if (error)
+		{
+			DebugLog(@"CJSONSerializer Error: %@", error);
+			extAttrData = [NSData data];
+		}
+		NSString * extAttrJSON = [[NSString alloc] initWithData:extAttrData encoding:NSUTF8StringEncoding];
+		
+		error = nil;
+		
+		// Serialize "versions" to JSON-String
+		//-------------------------------------
+		NSData * versionsData = [[CJSONSerializer serializer] serializeObject:[r versions] error:&error];
+		if (error)
+		{
+			DebugLog(@"CJSONSerializer Error: %@", error);
+			versionsData = [NSData data];
+		}
+		NSString * versionsJSON = [[NSString alloc] initWithData:versionsData encoding:NSUTF8StringEncoding];
+		
+		
+
+		/* 
+		 Revisions-Table-Layout:
+			peerID TEXT,
+			relURL TEXT, 
+			revision SQLITE3_INT64, 
+			isSet INTEGER, 
+			extAttributes TEXT, 
+			versions TEXT, 
+			isDir INTEGER, 
+			lastMatchAttemptDate TEXT
+		 */
+		
+		
+		// Try INSERT
+		//------------
+		NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO Revisions (peerID, relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate) VALUES ('%@', '%@', %lld, %i, '%@', '%@', %i, '%@');", [p peerID], [r relURL], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt]];
+		int rv = (int) [filesDB performQuery:queryINSERT rows:nil error:&error];
+		if (error)
+		{
+			DebugLog(@"ERROR during INSERT");
+		}
+		
+		// Check if the UPDATE failed
+		//----------------------------
+		if (rv == -1)
+		{
+			// Try UPDATE
+			//------------
+			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE Revisions SET peerID='%@', relURL='%@', revision=%lld, isSet=%i, extAttributes='%@', versions='%@', isDir=%i, lastMatchAttemptDate='%@' WHERE peerID='%@' AND relURL='%@';", [p peerID], [r relURL], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [p peerID], [r relURL]];
+			rv = (int) [filesDB performQuery:queryUPDATE rows:nil error:&error];
+			if (error)
+			{
+				DebugLog(@"ERROR during UPDATE");
+			}
+		}
+	}
+}
+
+
+
+- (void) removeDownloadedRevision:(Revision*)r forPeer:(Peer*)p;
+{
+	NSError * error;
+	NSString * query = [NSString stringWithFormat:@"DELETE FROM Revisions WHERE peerID='%@' AND relURL='%@';", [p peerID], [r relURL]];
+	[filesDB performQuery:query rows:nil error:&error];
+}
+
+
+
+/*
+ Revisions-Table-Layout:
+ peerID TEXT,
+ relURL TEXT,
+ revision SQLITE3_INT64,
+ isSet INTEGER,
+ extAttributes TEXT,
+ versions TEXT,
+ isDir INTEGER,
+ lastMatchAttemptDate TEXT
+ */
+
+- (Revision*) nextDownloadedRevisionForPeer:(Peer*)p
+{
+	NSString * query = [[NSString alloc] initWithFormat:@"SELECT relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate FROM Revisions WHERE peerID='%@' ORDER BY relURL DESC, isDir DESC, isSet ASC LIMIT 1;", [p peerID]];
+	
+	NSArray * rows;
+	NSError * error;
+	long long rowCount = [filesDB performQuery:query rows:&rows error:&error];
+	
+	if (rowCount == 0 || rowCount > 1)
+	{
+		return nil;
+	}
+	
+	// Parsing the results-array into a Revision-Object
+	//--------------------------------------------------
+	Revision * rv = [[Revision alloc] init];
+
+	[rv setRelURL:rows[0][0]];
+	[rv setRevision:rows[0][1]];
+	[rv setIsSet:rows[0][2]];
+	
+	error = nil;
+	[rv setExtAttributes:[NSMutableDictionary dictionaryWithJSONString:rows[0][3] error:&error]];
+	if (error)
+	{
+		DebugLog(@"A JSON-Error was encountered!");
+		exit(-1);
+	}
+	error = nil;
+	[rv setVersions:[NSDictionary dictionaryWithJSONString:rows[0][4] error:&error]];
+	if (error)
+	{
+		DebugLog(@"A JSON-Error was encountered!");
+		exit(-1);
+	}
+	[rv setIsDir:rows[0][5]];
+	[rv setLastMatchAttempt:[NSDate dateWithString:rows[0][6]]];
+
+	[rv setPeer:p];
+	
+	return rv;
+
+}
 
 
 

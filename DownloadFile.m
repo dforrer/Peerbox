@@ -21,7 +21,7 @@
 #import "RNEncryptor.h"
 #import "NSDataGZipCategory.h"
 #import "Singleton.h"
-#import "MainModel.h"
+#import "MainControlloer.h"
 #import "Configuration.h"
 #include <CommonCrypto/CommonDigest.h>
 
