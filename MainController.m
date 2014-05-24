@@ -4,7 +4,7 @@
 //
 
 // HEADER
-#import "MainControlloer.h"
+#import "MainController.h"
 
 #import "BonjourSearcher.h"
 #import "DownloadShares.h"
@@ -25,7 +25,7 @@
 /**
  * Contains all the Domain-logic
  */
-@implementation MainControlloer
+@implementation MainController
 {
 	NSMutableDictionary * myShares;	// shareId = key of NSDictionary
 	

@@ -3,7 +3,7 @@
 //  Copyright (c) 2014 Forrer. All rights reserved.
 //
 
-@class MainControlloer;
+@class MainController;
 
 /**
  * Singletons should be used with caution!
@@ -15,11 +15,11 @@
 
 @interface Singleton : NSObject
 {
-	MainControlloer * mainModel;
+	MainController * mainModel;
 }
 
 
-@property (nonatomic, retain) MainControlloer * mainModel;	// only used by 'MyHTTPConnection'
+@property (nonatomic, retain) MainController * mainModel;	// only used by 'MyHTTPConnection'
 
 
 + (id) data;

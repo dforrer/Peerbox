@@ -3,10 +3,10 @@
 //  Copyright (c) 2014 putitinthebox.com. All rights reserved.
 //
 
-@class MainControlloer;
+@class MainController;
 
 @interface MatchOperation : NSOperation
 
--(id) initWithMainModel:(MainControlloer*)m;
+-(id) initWithMainModel:(MainController*)m;
 
 @end

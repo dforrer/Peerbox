@@ -5,7 +5,7 @@
 
 // HEADER
 #import "Singleton.h"
-#import "MainControlloer.h"
+#import "MainController.h"
 
 @implementation Singleton
 
@@ -17,7 +17,7 @@
 {
 	if (self = [super init])
 	{
-		mainModel = [[MainControlloer alloc] init];
+		mainModel = [[MainController alloc] init];
 	}
 	return self;
 }

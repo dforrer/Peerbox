@@ -22,7 +22,7 @@
 #import "NSDictionary_JSONExtensions.h"
 #import "FileHelper.h"
 #import "Constants.h"
-#import "MainControlloer.h"
+#import "MainController.h"
 #import "Configuration.h"
 
 

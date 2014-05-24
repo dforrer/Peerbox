@@ -4,7 +4,7 @@
 //
 
 #import "MatchOperation.h"
-#import "MainControlloer.h"
+#import "MainController.h"
 #import "Share.h"
 #import "Peer.h"
 #import "Revision.h"
@@ -12,10 +12,10 @@
 
 @implementation MatchOperation
 {
-	MainControlloer * mm;
+	MainController * mm;
 }
 
--(id) initWithMainModel:(MainControlloer*)m
+-(id) initWithMainModel:(MainController*)m
 {
 	if ((self = [super init]))
 	{

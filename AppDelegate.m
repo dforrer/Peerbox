@@ -9,12 +9,12 @@
 #import "FileHelper.h"
 #import "Share.h"
 #import "Singleton.h"
-#import "MainControlloer.h"
+#import "MainController.h"
 
 
 @implementation AppDelegate
 {
-	MainControlloer * mm;
+	MainController * mm;
 }
 
 
