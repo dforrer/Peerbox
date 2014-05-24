@@ -3,13 +3,13 @@
 //  Copyright (c) 2014 Forrer. All rights reserved.
 //
 
-#import "FullScanOperation.h"
+#import "ShareScanOperation.h"
 
 #import "Share.h"
 #import "File.h"
 #import "FileHelper.h"
 
-@implementation FullScanOperation
+@implementation ShareScanOperation
 
 @synthesize share;
 
@@ -31,7 +31,7 @@
  */
 - (void) main
 {
-	DebugLog(@"FullScanOperation");
+	DebugLog(@"ShareScanOperation");
 
 	// Search DELETED Files
 	//----------------------

@@ -3,14 +3,14 @@
 //  Copyright (c) 2014 putitinthebox.com. All rights reserved.
 //
 
-#import "MatchOperation.h"
+#import "RevisionMatchOperation.h"
 #import "MainController.h"
 #import "Share.h"
 #import "Peer.h"
 #import "Revision.h"
 #import "Constants.h"
 
-@implementation MatchOperation
+@implementation RevisionMatchOperation
 {
 	MainController * mm;
 }

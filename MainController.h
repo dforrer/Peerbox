@@ -19,10 +19,7 @@
 @class HTTPServer;
 @class BonjourSearcher;
 
-
 @interface MainController : NSObject <DownloadSharesDelegate, DownloadRevisionsDelegate, RevisionDelegate>
-
-
 
 - (id) init;
 - (Share*) getShareForID:(NSString*)shareID;

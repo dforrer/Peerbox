@@ -14,13 +14,13 @@
 #import "Share.h"
 #import "Peer.h"
 #import "File.h"
-#import "FullScanOperation.h"
-#import "SingleFileOperation.h"
+#import "ShareScanOperation.h"
+#import "FileScanOperation.h"
 #import "Configuration.h"
 #import "FSWatcher.h"
 #import "HTTPServer.h"
 #import "MyHTTPConnection.h"
-#import "MatchOperation.h"
+#import "RevisionMatchOperation.h"
 
 /**
  * Contains all the Domain-logic
@@ -168,23 +168,6 @@
 										 andShare:s];
 				[p setCurrentRev:[peerDict objectForKey:@"currentRev"]];
 				[p setLastDownloadedRev:[peerDict objectForKey:@"lastDownloadedRev"]];
-				/*
-				// Iterate through REVISIONS
-				//---------------------------
-				NSDictionary * revisions = [peerDict objectForKey:@"revisions"];
-				for (id key3 in revisions)
-				{
-					NSDictionary * revDict = [revisions objectForKey:key3];
-					Revision * r = [[Revision alloc] initWithRelURL:[revDict objectForKey:@"relURL"]
-												 andRevision:[revDict objectForKey:@"revision"]
-												    andIsSet:[revDict objectForKey:@"isSet"]
-												  andExtAttr:[revDict objectForKey:@"extAttributes"]
-												 andVersions:[revDict objectForKey:@"versions"]
-													andPeer:p
-												   andConfig:config];
-					[p addRevision:r];
-				}
-				*/
 				[s setPeer:p];
 			}
 			[myShares setObject:s forKey:key1];
@@ -478,7 +461,7 @@
 	
 	if ([fileDownloads count] <= MAX_CONCURRENT_DOWNLOADS / 2 && [matcherQueue operationCount] < 2)
 	{
-		MatchOperation * o = [[MatchOperation alloc] initWithMainModel:self];
+		RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithMainModel:self];
 		if ([matcherQueue operationCount] > 0)
 		{
 			[o addDependency:[[matcherQueue operations] lastObject]];
@@ -504,7 +487,7 @@
 	//--------------
 	for (Share * s in [myShares allValues])
 	{
-		FullScanOperation * o = [[FullScanOperation alloc] initWithShare:s];
+		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
 		[fsWatcherQueue  addOperation: o];
 	}
 	[fsWatcherQueue setSuspended:FALSE];
@@ -547,7 +530,7 @@
 			continue;
 		}
 		
-		SingleFileOperation * o = [[SingleFileOperation alloc] initWithURL:fileURL andShare:share];
+		FileScanOperation * o = [[FileScanOperation alloc] initWithURL:fileURL andShare:share];
 		if ([fsWatcherQueue operationCount] > 0)
 		{
 			[o addDependency:[[fsWatcherQueue operations] lastObject]];
@@ -621,7 +604,7 @@
 		[myShares setObject:s forKey:shareId];
 		[self saveModel];
 		
-		FullScanOperation * o = [[FullScanOperation alloc] initWithShare:s];
+		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
 		[fsWatcherQueue addOperation:o];
 		[self updateFSWatcher];
 		return s;
@@ -709,7 +692,7 @@
 	{
 		return;
 	}
-	MatchOperation * o = [[MatchOperation alloc] initWithMainModel:self];
+	RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithMainModel:self];
 	if ([matcherQueue operationCount] > 0)
 	{
 		[o addDependency:[[matcherQueue operations] lastObject]];

@@ -8,7 +8,7 @@
 
 #import "Revision.h"
 #import "NSDictionary_JSONExtensions.h"
-#import "SingleFileOperation.h"
+#import "FileScanOperation.h"
 #import "Constants.h"
 
 

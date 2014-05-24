@@ -4,13 +4,13 @@
 //
 
 // HEADER
-#import "SingleFileOperation.h"
+#import "FileScanOperation.h"
 
 #import "Share.h"
 #import "File.h"
 #import "FileHelper.h"
 
-@implementation SingleFileOperation
+@implementation FileScanOperation
 
 
 @synthesize share;

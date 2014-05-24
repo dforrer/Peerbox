@@ -5,7 +5,7 @@
 
 @class MainController;
 
-@interface MatchOperation : NSOperation
+@interface RevisionMatchOperation : NSOperation
 
 -(id) initWithMainModel:(MainController*)m;
 

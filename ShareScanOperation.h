@@ -7,7 +7,7 @@
 @class Share;
 
 
-@interface FullScanOperation : NSOperation
+@interface ShareScanOperation : NSOperation
 
 - (id)initWithShare: (Share*) s;
 

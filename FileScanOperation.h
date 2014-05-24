@@ -6,7 +6,7 @@
 @class Share;
 
 
-@interface SingleFileOperation : NSOperation
+@interface FileScanOperation : NSOperation
 
 
 - (id)initWithURL: (NSURL*) u andShare: (Share*) s;
