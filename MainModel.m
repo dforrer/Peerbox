@@ -6,6 +6,7 @@
 // HEADER
 #import "MainModel.h"
 
+#import "BonjourSearcher.h"
 #import "DownloadShares.h"
 #import "NSDictionary_JSONExtensions.h"
 #import "Constants.h"
@@ -32,6 +33,7 @@
 	BOOL fsWatcherQueueRestartet;
 	
 	NSOperationQueue * matcherQueue;
+	
 }
 
 
@@ -64,7 +66,6 @@
 		//--------------------------------
 		NSString * serviceType = [NSString stringWithFormat:@"_%@._tcp.", APP_NAME];
 		bonjourSearcher = [[BonjourSearcher alloc] initWithServiceType:serviceType andDomain:@"local" andMyName:[config myPeerID]];
-		[bonjourSearcher setDelegate:self];
 		
 		fswatcher		 = [[FSWatcher alloc] init];
 		fsWatcherQueue  = [[NSOperationQueue alloc] init];
@@ -101,6 +102,8 @@
 	return self;
 }
 
+
+
 /**
  * Sets up the config-object with the different paths
  */
@@ -111,7 +114,6 @@
 	[config setDownloadsDir:[[[NSString alloc] initWithString:[[FileHelper getDocumentsDirectory] stringByAppendingPathComponent:APP_NAME]] stringByAppendingPathComponent:@"downloads"]];
 	[config setWebDir:[[[NSString alloc] initWithString:[[FileHelper getDocumentsDirectory] stringByAppendingPathComponent:APP_NAME]] stringByAppendingPathComponent:@"web"]];
 }
-
 
 
 
@@ -164,12 +166,10 @@
 			{
 				NSDictionary * peerDict = [peers objectForKey:key2];
 				Peer * p = [[Peer alloc] initWithPeerID:[peerDict objectForKey:@"peerID"]
-										 andShare:s
-										andConfig:config];
+										 andShare:s];
 				[p setCurrentRev:[peerDict objectForKey:@"currentRev"]];
 				[p setLastDownloadedRev:[peerDict objectForKey:@"lastDownloadedRev"]];
-				
-				
+				/*
 				// Iterate through REVISIONS
 				//---------------------------
 				NSDictionary * revisions = [peerDict objectForKey:@"revisions"];
@@ -185,6 +185,7 @@
 												   andConfig:config];
 					[p addRevision:r];
 				}
+				*/
 				[s setPeer:p];
 			}
 			[myShares setObject:s forKey:key1];
@@ -211,6 +212,7 @@
 		DebugLog(@"AN ERROR OCCURED DURING SAVING OF: model.plist");
 	}
 }
+
 
 
 /**
@@ -274,7 +276,6 @@
 
 
 
-
 /**
  * Creates the directories:
  *	/APP_NAME/web
@@ -298,7 +299,6 @@
 
 
 
-
 /**
  * Generates a new random PeerID
  */
@@ -307,7 +307,6 @@
 	NSData * random = [FileHelper createRandomNSDataOfSize:20];
 	[config setMyPeerID:[FileHelper sha1OfNSData:random]];
 }
-
 
 
 
@@ -351,37 +350,9 @@
 
 
 
-
 #pragma mark -----------------------
 #pragma mark Implemented Interfaces (Protocols)
 
-
-/**
- * OVERRIDE: BonjourSearcherDelegate
- */
-- (void) bonjourSearcherServiceResolved:(NSNetService*)n
-{
-	for (id key in myShares)
-	{
-		Share * s = [myShares objectForKey:key];
-		Peer * p = [s getPeerForID:[n name]];
-		[p setNetService:n];
-	}
-}
-
-
-/**
- * OVERRIDE: BonjourSearcherDelegate
- */
-- (void) bonjourSearcherServiceRemoved:(NSNetService*)n
-{
-	for (id key in myShares)
-	{
-		Share * s = [myShares objectForKey:key];
-		Peer * p = [s getPeerForID:[n name]];
-		[p setNetService:nil];
-	}
-}
 
 
 /**
@@ -413,7 +384,7 @@
 			Peer * p = [s getPeerForID:[d objectForKey:@"peerId"]];
 			if ( p == nil )
 			{
-				p = [[Peer alloc] initWithPeerID:[d objectForKey:@"peerId"] andShare:s andConfig:config];
+				p = [[Peer alloc] initWithPeerID:[d objectForKey:@"peerId"] andShare:s];
 				[s setPeer:p];
 			}
 			// Set the currentRev
@@ -424,6 +395,7 @@
 }
 
 
+
 /**
  * OVERRIDE: DownloadSharesDelegate
  */
@@ -431,6 +403,7 @@
 {
 	DebugLog(@"downloadSharesHasFailed: Whatever...!");
 }
+
 
 
 /**
@@ -448,7 +421,6 @@
 	if (error)
 	{
 		DebugLog(@"response-count:%li", [[dict objectForKey:@"revisions"] count]);
-		[[d peer] setRevisionsDownload:nil];
 		return;
 	}
 	
@@ -472,7 +444,7 @@
 										 andVersions:versions
 											andPeer:[d peer]
 										   andConfig:config];
-			[[d peer] addRevision:r];
+			[[[d peer] share] setDownloadedRevision:r forPeer:[d peer]];
 		}
 		
 		
@@ -482,7 +454,6 @@
 		DebugLog(@"biggestRev: %@", biggestRev);
 		[[d peer] setLastDownloadedRev:biggestRev];
 	}
-	[[d peer] setRevisionsDownload:nil];
 }
 
 
@@ -491,7 +462,7 @@
  */
 - (void) downloadRevisionsHasFailed:(DownloadRevisions*)d
 {
-	[[d peer] setRevisionsDownload:nil];
+
 }
 
 
@@ -502,7 +473,7 @@
 - (void) revisionMatched:(Revision*) rev
 {
 	DebugLog(@"revisionMatched called");
-	[[rev peer] removeRevision:rev];
+	[[[rev peer] share] removeDownloadedRevision:rev forPeer:[rev peer]];
 	[fileDownloads removeObject:rev];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:[[rev remoteState] url]];
 	
@@ -724,9 +695,9 @@
 			    && ([[p currentRev] longLongValue] > [[p lastDownloadedRev] longLongValue]))
 			{
 				DebugLog(@"revisionsDownload alloc");
-				[p setRevisionsDownload:[[DownloadRevisions alloc] initWithNetService:ns andPeer:p]];
-				[[p revisionsDownload] setDelegate:self];
-				[[p revisionsDownload] start];
+				DownloadRevisions * d = [[DownloadRevisions alloc] initWithNetService:ns andPeer:p];
+				[d setDelegate:self];
+				[d start];
 			}
 		}
 	}

@@ -8,7 +8,6 @@
  */
 
 
-#import "BonjourSearcher.h"
 #import "DownloadShares.h"
 #import "DownloadFile.h"
 #import "DownloadRevisions.h"
@@ -18,9 +17,10 @@
 @class Configuration;
 @class FSWatcher;
 @class HTTPServer;
+@class BonjourSearcher;
 
 
-@interface MainModel : NSObject <BonjourSearcherDelegate, DownloadSharesDelegate, DownloadRevisionsDelegate, RevisionDelegate>
+@interface MainModel : NSObject <DownloadSharesDelegate, DownloadRevisionsDelegate, RevisionDelegate>
 
 
 
