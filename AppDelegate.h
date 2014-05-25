@@ -10,7 +10,7 @@
 - (IBAction) removeShare: (id)sender;
 - (IBAction) downloadShares:(id)sender;
 - (IBAction) downloadRevisions:(id)sender;
-- (IBAction) matchRevisions:(id)sender;
+- (IBAction) matchFiles:(id)sender;
 - (IBAction) printShares: (id)sender;
 - (IBAction) printResolvedServices: (id)sender;
 

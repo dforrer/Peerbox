@@ -151,7 +151,7 @@
 	
 	// Create Table "Revisions"
 	//------------------------------------
-	[filesDB performQuery:@"CREATE TABLE IF NOT EXISTS Revisions (peerID TEXT, relURL TEXT, revision SQLITE3_INT64, isSet INTEGER, extAttributes TEXT, versions TEXT, isDir INTEGER, lastMatchAttemptDate TEXT)" rows:nil error:&error];
+	[filesDB performQuery:@"CREATE TABLE IF NOT EXISTS revisions (peerID TEXT, relURL TEXT, revision SQLITE3_INT64, isSet INTEGER, extAttributes TEXT, versions TEXT, isDir INTEGER, lastMatchAttemptDate TEXT)" rows:nil error:&error];
 }
 
 
@@ -236,7 +236,7 @@
 #pragma mark Getter/Setter Revision
 
 
-- (void) setDownloadedRevision:(Revision*)r forPeer:(Peer*)p;
+- (void) setRevision:(Revision*)r forPeer:(Peer*)p;
 {
 	@autoreleasepool
 	{
@@ -305,10 +305,10 @@
 
 
 
-- (void) removeDownloadedRevision:(Revision*)r forPeer:(Peer*)p;
+- (void) removeRevision:(Revision*)r forPeer:(Peer*)p;
 {
 	NSError * error;
-	NSString * query = [NSString stringWithFormat:@"DELETE FROM Revisions WHERE peerID='%@' AND relURL='%@';", [p peerID], [r relURL]];
+	NSString * query = [NSString stringWithFormat:@"DELETE FROM revisions WHERE peerID='%@' AND relURL='%@';", [p peerID], [r relURL]];
 	[filesDB performQuery:query rows:nil error:&error];
 }
 
@@ -326,9 +326,12 @@
 	lastMatchAttemptDate TEXT
  */
 
-- (Revision*) nextDownloadedRevisionForPeer:(Peer*)p
+/**
+ * Returns the next Revision to match (= download+match)
+ */
+- (Revision*) nextRevisionForPeer:(Peer*)p
 {
-	NSString * query = [[NSString alloc] initWithFormat:@"SELECT relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate FROM Revisions WHERE peerID='%@' ORDER BY relURL DESC, isDir DESC, isSet ASC LIMIT 1;", [p peerID]];
+	NSString * query = [[NSString alloc] initWithFormat:@"SELECT relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate FROM revisions WHERE peerID='%@' ORDER BY relURL DESC, isDir DESC, isSet ASC LIMIT 1;", [p peerID]];
 	
 	NSArray * rows;
 	NSError * error;
@@ -339,6 +342,7 @@
 		return nil;
 	}
 	
+	
 	// Parsing the results-array into a Revision-Object
 	//--------------------------------------------------
 	Revision * rv = [[Revision alloc] init];
@@ -348,7 +352,7 @@
 	[rv setIsSet:rows[0][2]];
 	
 	error = nil;
-	[rv setExtAttributes:[NSMutableDictionary dictionaryWithJSONString:rows[0][3] error:&error]];
+	[rv setExtAttributes:[NSDictionary dictionaryWithJSONString:rows[0][3] error:&error]];
 	if (error)
 	{
 		DebugLog(@"A JSON-Error was encountered!");
@@ -364,9 +368,9 @@
 	[rv setIsDir:rows[0][5]];
 	[rv setLastMatchAttempt:[NSDate dateWithString:rows[0][6]]];
 
+	
 	// Setting the Peer-Attribute of the Revision
 	//--------------------------------------------
-	
 	[rv setPeer:p];
 	
 	return rv;

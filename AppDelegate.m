@@ -107,9 +107,9 @@
 	[mm downloadRevisionsFromPeers];
 }
 
-- (IBAction) matchRevisions:(id)sender
+- (IBAction) matchFiles:(id)sender
 {
-	[mm matchRevisions];
+	[mm matchFiles];
 }
 
 - (IBAction) printResolvedServices: (id)sender

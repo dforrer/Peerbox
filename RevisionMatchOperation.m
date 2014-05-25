@@ -50,16 +50,23 @@
 	//--------------------------------------------------------------
 	if (![rev canBeMatchedInstantly])
 	{
-		[[[rev peer] share] setDownloadedRevision:rev forPeer:[rev peer]];
+		[[[rev peer] share] setRevision:rev forPeer:[rev peer]];
 		return;
 	}
-	
+		
 	// match directory
 	//-----------------
 	if ([rev isDir])
 	{
 		[self matchDir];
+		return;
 	}
+	
+	// Remove Revision from db:
+	// in case a file was added, not yet downloaded
+	// and deleted again.
+	//----------------------------------------------
+	[[[rev peer] share] removeRevision:rev forPeer:[rev peer]];
 	
 	// match 'normal' files
 	//----------------------

@@ -48,11 +48,11 @@
 
 // Revision-Management
 //---------------------
-- (void) setDownloadedRevision:(Revision*)r
-				   forPeer:(Peer*)p;
-- (void) removeDownloadedRevision:(Revision*)r
-					 forPeer:(Peer*)p;
-- (Revision*) nextDownloadedRevisionForPeer:(Peer*)p;
+- (void) setRevision:(Revision*)r
+		   forPeer:(Peer*)p;
+- (void) removeRevision:(Revision*)r
+			 forPeer:(Peer*)p;
+- (Revision*) nextRevisionForPeer:(Peer*)p;
 
 
 // Other

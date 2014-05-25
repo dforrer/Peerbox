@@ -29,7 +29,7 @@
 - (void) saveModel;
 - (void) printResolvedServices;
 - (void) printMyShares;
-- (void) matchRevisions;
+- (void) matchFiles;
 - (void) downloadSharesFromPeers;
 - (void) downloadRevisionsFromPeers;
 

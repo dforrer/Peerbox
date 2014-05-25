@@ -93,7 +93,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsFile" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsSymlink" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsSymlink" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(matchRevisions) name:@"MatchEvent" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(matchFiles) name:@"MatchFilesEvent" object:nil];
 		
 		
 		[self updateFSWatcher];
@@ -444,6 +444,10 @@
 		DebugLog(@"biggestRev: %@", biggestRev);
 		[[d peer] setLastDownloadedRev:biggestRev];
 	}
+	
+	// Restart Revision-Download
+	//---------------------------
+	[self downloadRevisionsFromPeers];
 }
 
 
@@ -505,7 +509,7 @@
 	}
 	
 	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
-	[newState setVersions:[[d rev] versions]];
+	[newState setVersions:[NSMutableDictionary dictionaryWithDictionary:[[d rev] versions]]];
 	[[[[d rev] peer] share] setFile:newState];
 }
 
@@ -763,7 +767,7 @@
 }
 
 
-- (void) matchRevisions
+- (void) matchFiles
 {
 
 }
