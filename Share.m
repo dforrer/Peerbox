@@ -76,7 +76,7 @@
 	
 	// Schedule timer for commit and begin on database
 	//------------------------------------------------
-	[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(commitAndBegin) userInfo:nil repeats:YES];
+	[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(commitAndBegin) userInfo:nil repeats:YES];
 }
 
 
