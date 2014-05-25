@@ -127,11 +127,14 @@
 	[[NSFileManager defaultManager] moveItemAtPath:tmpPath toPath:[fullURL path] error:&error];
 	if (error)
 	{
-		DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
-		return;
+		int rv = rename([tmpPath cStringUsingEncoding:NSUTF8StringEncoding], [[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
+		if (rv != 0)
+		{
+			DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
+			return;
+		}
 	}
-	
-	
+		
 	// Set extended attributes
 	//-------------------------
 	for (id key in [rev extAttributes])
