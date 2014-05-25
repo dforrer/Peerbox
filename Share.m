@@ -22,7 +22,7 @@
 {
 	// instance variables declared in implementation context
 	//-------------------------------------------------------
-	SQLiteDatabase * filesDB;
+	SQLiteDatabase * db;
 	DownloadRevisions * downloadRevs;
 	NSMutableDictionary * peers; // key = peerId
 	NSNumber * currentRevision;
@@ -48,7 +48,7 @@
 	// Create path and init SQLite
 	//-----------------------------
 	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [config workingDir], shareId];
-	filesDB = [[SQLiteDatabase alloc] initCreateAtPath:sqlitePath];
+	db = [[SQLiteDatabase alloc] initCreateAtPath:sqlitePath];
 	
 	
 	// Prepare Tables in "db"
@@ -61,7 +61,7 @@
 	NSArray * rows;
 	NSError * error;
 	
-	long long rv = [filesDB performQuery:@"SELECT revision FROM files ORDER BY revision DESC LIMIT 1;" rows:&rows error:&error];
+	long long rv = [db performQuery:@"SELECT revision FROM files ORDER BY revision DESC LIMIT 1;" rows:&rows error:&error];
 	
 	if ( rv == 0 || rv == -1 )
 	{
@@ -72,7 +72,7 @@
 		currentRevision = rows[0][0];
 	}
 	
-	[filesDB performQuery:@"BEGIN" rows:nil error:&error];
+	[db performQuery:@"BEGIN" rows:nil error:&error];
 	
 	// Schedule timer for commit and begin on database
 	//------------------------------------------------
@@ -140,18 +140,18 @@
 	
 	// Causes the sqlite-file to shrink after deletions
 	//--------------------------------------------------
-	[filesDB performQuery:@"PRAGMA auto_vacuum = FULL" rows:nil error:&error];
+	[db performQuery:@"PRAGMA auto_vacuum = FULL" rows:nil error:&error];
 
 
 	// Create Table "files" + index
 	//------------------------------
-	[filesDB performQuery:@"CREATE TABLE IF NOT EXISTS files (uid TEXT PRIMARY KEY, url TEXT, revision SQLITE3_INT64 UNIQUE, fileSize SQLITE3_INT64, contentModDate TEXT, attributesModDate TEXT, isSet INTEGER, extAttributes TEXT, versions TEXT)" rows:nil error:&error];
-	[filesDB performQuery:@"CREATE INDEX IF NOT EXISTS index_files_revision ON files (revision);" rows:nil error:&error];
+	[db performQuery:@"CREATE TABLE IF NOT EXISTS files (uid TEXT PRIMARY KEY, url TEXT, revision SQLITE3_INT64 UNIQUE, fileSize SQLITE3_INT64, contentModDate TEXT, attributesModDate TEXT, isSet INTEGER, extAttributes TEXT, versions TEXT)" rows:nil error:&error];
+	[db performQuery:@"CREATE INDEX IF NOT EXISTS index_files_revision ON files (revision);" rows:nil error:&error];
 
 	
 	// Create Table "Revisions"
 	//------------------------------------
-	[filesDB performQuery:@"CREATE TABLE IF NOT EXISTS revisions (peerID TEXT, relURL TEXT, revision SQLITE3_INT64, isSet INTEGER, extAttributes TEXT, versions TEXT, isDir INTEGER, lastMatchAttemptDate TEXT)" rows:nil error:&error];
+	[db performQuery:@"CREATE TABLE IF NOT EXISTS revisions (peerID TEXT, relURL TEXT, revision SQLITE3_INT64, isSet INTEGER, extAttributes TEXT, versions TEXT, isDir INTEGER, lastMatchAttemptDate TEXT)" rows:nil error:&error];
 }
 
 
@@ -160,7 +160,7 @@
 	@autoreleasepool
 	{
 		// COMMIT Changes in "indexfile" if there are any
-		int newTotalChanges = [filesDB getTotalChanges];
+		int newTotalChanges = [db getTotalChanges];
 		
 		if (newTotalChanges > totalChanges)
 		{
@@ -178,7 +178,7 @@
 - (void) filesDBBegin
 {
 	NSError * error;
-	[filesDB performQuery: @"BEGIN" rows:nil error:&error];
+	[db performQuery: @"BEGIN" rows:nil error:&error];
 	if (error)
 	{
 		DebugLog(@"%@", error);
@@ -189,7 +189,7 @@
 - (void) filesDBCommit
 {
 	NSError * error;
-	[filesDB performQuery: @"COMMIT" rows:nil error:&error];
+	[db performQuery: @"COMMIT" rows:nil error:&error];
 	if (error)
 	{
 		DebugLog(@"%@", error);
@@ -280,8 +280,8 @@
 		
 		// Try INSERT
 		//------------
-		NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO Revisions (peerID, relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate) VALUES ('%@', '%@', %lld, %i, '%@', '%@', %i, '%@');", [p peerID], [r relURL], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt]];
-		int rv = (int) [filesDB performQuery:queryINSERT rows:nil error:&error];
+		NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO revisions (peerID, relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate) VALUES ('%@', '%@', %lld, %i, '%@', '%@', %i, '%@');", [p peerID], [r relURL], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt]];
+		int rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
 		if (error)
 		{
 			DebugLog(@"ERROR during INSERT");
@@ -293,8 +293,8 @@
 		{
 			// Try UPDATE
 			//------------
-			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE Revisions SET peerID='%@', relURL='%@', revision=%lld, isSet=%i, extAttributes='%@', versions='%@', isDir=%i, lastMatchAttemptDate='%@' WHERE peerID='%@' AND relURL='%@';", [p peerID], [r relURL], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [p peerID], [r relURL]];
-			rv = (int) [filesDB performQuery:queryUPDATE rows:nil error:&error];
+			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE revisions SET peerID='%@', relURL='%@', revision=%lld, isSet=%i, extAttributes='%@', versions='%@', isDir=%i, lastMatchAttemptDate='%@' WHERE peerID='%@' AND relURL='%@';", [p peerID], [r relURL], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [p peerID], [r relURL]];
+			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error)
 			{
 				DebugLog(@"ERROR during UPDATE");
@@ -309,7 +309,7 @@
 {
 	NSError * error;
 	NSString * query = [NSString stringWithFormat:@"DELETE FROM revisions WHERE peerID='%@' AND relURL='%@';", [p peerID], [r relURL]];
-	[filesDB performQuery:query rows:nil error:&error];
+	[db performQuery:query rows:nil error:&error];
 }
 
 
@@ -335,7 +335,7 @@
 	
 	NSArray * rows;
 	NSError * error;
-	long long rowCount = [filesDB performQuery:query rows:&rows error:&error];
+	long long rowCount = [db performQuery:query rows:&rows error:&error];
 	
 	if (rowCount == 0 || rowCount > 1)
 	{
@@ -454,7 +454,7 @@
 			// UPDATE
 			//--------
 			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE files SET url='%@', revision=%lld, fileSize=%lld, contentModDate='%@', attributesModDate='%@', isSet=%i, extAttributes='%@', versions='%@' WHERE uid='%@';",[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[[[f url] absoluteString] lowercaseString] sqlString]];
-			rv = (int) [filesDB performQuery:queryUPDATE rows:nil error:&error];
+			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error) {
 				DebugLog(@"ERROR during UPDATE");
 			}
@@ -464,7 +464,7 @@
 			// INSERT
 			//--------
 			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO files (uid, url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions) VALUES ('%@', '%@',%lld, %lld, '%@','%@',%i,'%@','%@');", [[[[f url] absoluteString] lowercaseString] sqlString],[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString]];
-			rv = (int) [filesDB performQuery:queryINSERT rows:nil error:&error];
+			rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
 			if (error) {
 				DebugLog(@"ERROR during INSERT");
 			}
@@ -477,14 +477,14 @@
 {
 	NSError * error;
 	NSString * query = [NSString stringWithFormat:@"DELETE FROM files WHERE uid='%@';",[[[[f url] absoluteString] lowercaseString] sqlString]];
-	[filesDB performQuery:query rows:nil error:&error];
+	[db performQuery:query rows:nil error:&error];
 }
 
 - (File*) getFileForQuery:(NSString*) query
 {
 	NSArray * rows;
 	NSError * error;
-	long long rowCount = [filesDB performQuery:query rows:&rows error:&error];
+	long long rowCount = [db performQuery:query rows:&rows error:&error];
 	
 	if (rowCount == 0 || rowCount > 1)
 	{
@@ -548,7 +548,7 @@
 	NSError * error;
 	NSString * urlPath = [[u absoluteString] sqlString];
 	NSString * query = [NSString stringWithFormat:@"SELECT url FROM files WHERE isSet=%i AND url != '%@' AND url LIKE '%@%%'", b, urlPath, urlPath];
-	[filesDB performQuery:query rows:&rows error:&error];
+	[db performQuery:query rows:&rows error:&error];
 	return rows;
 }
 
@@ -566,7 +566,7 @@
 	NSString * query = [[NSString alloc] initWithFormat:@"SELECT url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions FROM files WHERE revision >= %lld ORDER BY revision ASC LIMIT %lld;", [rev longLongValue], [limit longLongValue]];
 	//DebugLog(@"%@", query);
 	
-	uint64_t rowCount = [filesDB performQuery:query rows:&rows error:&error];
+	uint64_t rowCount = [db performQuery:query rows:&rows error:&error];
 	if (error)
 	{
 		DebugLog(@"error: %@", error);
@@ -638,7 +638,7 @@
 	NSString * query = [[NSString alloc] initWithFormat:@"SELECT url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions FROM files WHERE revision >= %lld ORDER BY revision ASC LIMIT %lld;", [rev longLongValue], [limit longLongValue]];
 	//DebugLog(@"%@", query);
 	
-	uint64_t rowCount = [filesDB performQuery:query rows:&rows error:&error];
+	uint64_t rowCount = [db performQuery:query rows:&rows error:&error];
 	if (error)
 	{
 		DebugLog(@"error: %@", error);

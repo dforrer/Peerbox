@@ -6,7 +6,7 @@
 #import "Constants.h"
 
 NSString * const APP_NAME = @"Peerbox";
-int const MAX_REVS_PER_REQUEST = 1000;
+int const MAX_REVS_PER_REQUEST = 400;
 int const MAX_CONCURRENT_DOWNLOADS	= 16;
 BOOL const IGNORE_RESOURCE_FORKS = FALSE;
 int const MAX_VERSIONS_PER_FILE = 100;
