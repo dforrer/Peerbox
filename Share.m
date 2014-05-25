@@ -111,7 +111,7 @@
 - (NSDictionary*) plistEncoded
 {
 	//DebugLog(@"plistEncoded: Share");
-
+	
 	NSMutableDictionary * rv = [[NSMutableDictionary alloc] init];
 	[rv setObject:shareId forKey:@"shareId"];
 	[rv setObject:[root absoluteString] forKey:@"root"];
@@ -141,13 +141,13 @@
 	// Causes the sqlite-file to shrink after deletions
 	//--------------------------------------------------
 	[db performQuery:@"PRAGMA auto_vacuum = FULL" rows:nil error:&error];
-
-
+	
+	
 	// Create Table "files" + index
 	//------------------------------
 	[db performQuery:@"CREATE TABLE IF NOT EXISTS files (uid TEXT PRIMARY KEY, url TEXT, revision SQLITE3_INT64 UNIQUE, fileSize SQLITE3_INT64, contentModDate TEXT, attributesModDate TEXT, isSet INTEGER, extAttributes TEXT, versions TEXT)" rows:nil error:&error];
 	[db performQuery:@"CREATE INDEX IF NOT EXISTS index_files_revision ON files (revision);" rows:nil error:&error];
-
+	
 	
 	// Create Table "Revisions"
 	//------------------------------------
@@ -264,51 +264,61 @@
 		NSString * versionsJSON = [[NSString alloc] initWithData:versionsData encoding:NSUTF8StringEncoding];
 		
 		
-
-		/* 
+		
+		/*
 		 Revisions-Table-Layout:
-			peerID TEXT,
-			relURL TEXT, 
-			revision SQLITE3_INT64, 
-			isSet INTEGER, 
-			extAttributes TEXT, 
-			versions TEXT, 
-			isDir INTEGER, 
-			lastMatchAttemptDate TEXT
+		 peerID TEXT,
+		 relURL TEXT,
+		 revision SQLITE3_INT64,
+		 isSet INTEGER,
+		 extAttributes TEXT,
+		 versions TEXT,
+		 isDir INTEGER,
+		 lastMatchAttemptDate TEXT
 		 */
 		
 		
-		// Try INSERT
-		//------------
-		NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO revisions (peerID, relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate) VALUES ('%@', '%@', %lld, %i, '%@', '%@', %i, '%@');", [p peerID], [r relURL], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt]];
-		int rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
-		if (error)
-		{
-			DebugLog(@"ERROR during INSERT");
-		}
+		// Perform SELECT to check if row exists
+		//---------------------------------------
 		
-		// Check if the UPDATE failed
-		//----------------------------
-		if (rv == -1)
+		NSString * querySELECT = [[NSString alloc] initWithFormat:@"SELECT isSet FROM revisions WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString]];
+		int rv = (int) [db performQuery:querySELECT rows:nil error:&error];
+		
+		
+		if (rv > 0)
 		{
 			// Try UPDATE
 			//------------
-			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE revisions SET peerID='%@', relURL='%@', revision=%lld, isSet=%i, extAttributes='%@', versions='%@', isDir=%i, lastMatchAttemptDate='%@' WHERE peerID='%@' AND relURL='%@';", [p peerID], [r relURL], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [p peerID], [r relURL]];
+			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE revisions SET peerID='%@', relURL='%@', revision=%lld, isSet=%i, extAttributes='%@', versions='%@', isDir=%i, lastMatchAttemptDate='%@' WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [p peerID], [[r relURL] sqlString]];
 			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error)
 			{
 				DebugLog(@"ERROR during UPDATE");
 			}
 		}
+		else
+		{
+			
+			DebugLog(@"setRevision: rv == %i", rv);
+			
+			// Try INSERT
+			//------------
+			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO revisions (peerID, relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate) VALUES ('%@', '%@', %lld, %i, '%@', '%@', %i, '%@');", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt]];
+			rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
+			if (error)
+			{
+				DebugLog(@"ERROR during INSERT");
+			}
+		}
 	}
 }
-
 
 
 - (void) removeRevision:(Revision*)r forPeer:(Peer*)p;
 {
 	NSError * error;
-	NSString * query = [NSString stringWithFormat:@"DELETE FROM revisions WHERE peerID='%@' AND relURL='%@';", [p peerID], [r relURL]];
+	NSString * query = [NSString stringWithFormat:@"DELETE FROM revisions WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString]];
+	DebugLog(@"query: %@", query);
 	[db performQuery:query rows:nil error:&error];
 }
 
@@ -316,14 +326,14 @@
 
 /*
  Revisions-Table-Layout:
-	peerID TEXT,
-	relURL TEXT,
-	revision SQLITE3_INT64,
-	isSet INTEGER,
-	extAttributes TEXT,
-	versions TEXT,
-	isDir INTEGER,
-	lastMatchAttemptDate TEXT
+ peerID TEXT,
+ relURL TEXT,
+ revision SQLITE3_INT64,
+ isSet INTEGER,
+ extAttributes TEXT,
+ versions TEXT,
+ isDir INTEGER,
+ lastMatchAttemptDate TEXT
  */
 
 /**
@@ -346,7 +356,7 @@
 	// Parsing the results-array into a Revision-Object
 	//--------------------------------------------------
 	Revision * rv = [[Revision alloc] init];
-
+	
 	[rv setRelURL:rows[0][0]];
 	[rv setRevision:rows[0][1]];
 	[rv setIsSet:rows[0][2]];
@@ -367,14 +377,14 @@
 	}
 	[rv setIsDir:rows[0][5]];
 	[rv setLastMatchAttempt:[NSDate dateWithString:rows[0][6]]];
-
+	
 	
 	// Setting the Peer-Attribute of the Revision
 	//--------------------------------------------
 	[rv setPeer:p];
 	
 	return rv;
-
+	
 }
 
 
@@ -469,7 +479,7 @@
 				DebugLog(@"ERROR during INSERT");
 			}
 		}
-	return rv;
+		return rv;
 	}
 }
 
@@ -555,7 +565,7 @@
 
 
 /**
- * Returns an NSArray-Object 
+ * Returns an NSArray-Object
  * used for requests to /shares/<shareId>/revisions
  */
 - (NSArray*) getFilesAsJSONwithLimit: (NSNumber*) limit
