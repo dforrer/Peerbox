@@ -125,7 +125,17 @@
 	if (fh == nil)
 	{
 		DebugLog(@"ERROR: Failure to create empty file at %@", [fullURL path]);
-		return;
+		NSError * error = nil;
+		[[NSFileManager defaultManager] createDirectoryAtURL:[fullURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&error];
+		if (error != nil)
+		{
+			DebugLog(@"ERROR creating directory: %@", error);
+			return;
+		}
+		
+		// Retry
+		//-------
+		fh = [FileHelper fileForWritingAtPath:[fullURL path]];
 	}
 	[fh closeFile];
 	
