@@ -451,7 +451,7 @@
 			{
 				[o addDependency:[[matcherQueue operations] lastObject]];
 			}
-			[matcherQueue addOperation: o];
+			[matcherQueue addOperation:o];
 		}
 		
 		
