@@ -341,7 +341,7 @@
  */
 - (Revision*) nextRevisionForPeer:(Peer*)p
 {
-	NSString * query = [[NSString alloc] initWithFormat:@"SELECT relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate, fileSize FROM revisions WHERE peerID='%@' ORDER BY relURL DESC, isDir DESC, isSet ASC LIMIT 1;", [p peerID]];
+	NSString * query = [[NSString alloc] initWithFormat:@"SELECT relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate, fileSize FROM revisions WHERE peerID='%@' ORDER BY fileSize ASC LIMIT 1;", [p peerID]];
 	
 	NSArray * rows;
 	NSError * error;
