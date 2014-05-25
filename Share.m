@@ -235,8 +235,7 @@
 #pragma mark -----------------------
 #pragma mark Getter/Setter Revision
 
-
-- (void) setRevision:(Revision*)r forPeer:(Peer*)p;
+- (void) setRevision:(Revision*)r forPeer:(Peer*)p
 {
 	@autoreleasepool
 	{
@@ -282,8 +281,13 @@
 		//---------------------------------------
 		
 		NSString * querySELECT = [[NSString alloc] initWithFormat:@"SELECT isSet FROM revisions WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString]];
-		int rv = (int) [db performQuery:querySELECT rows:nil error:&error];
-		
+		NSArray * rows;
+		int rv = (int) [db performQuery:querySELECT rows:&rows error:&error];
+		if (error)
+		{
+			DebugLog(@"ERROR during performQuery");
+			return;
+		}
 		
 		if (rv > 0)
 		{
@@ -298,9 +302,6 @@
 		}
 		else
 		{
-			
-			DebugLog(@"setRevision: rv == %i", rv);
-			
 			// Try INSERT
 			//------------
 			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO revisions (peerID, relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate) VALUES ('%@', '%@', %lld, %i, '%@', '%@', %i, '%@');", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt]];
@@ -314,11 +315,10 @@
 }
 
 
-- (void) removeRevision:(Revision*)r forPeer:(Peer*)p;
+- (void) removeRevision:(Revision*)r forPeer:(Peer*)p
 {
 	NSError * error;
 	NSString * query = [NSString stringWithFormat:@"DELETE FROM revisions WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString]];
-	DebugLog(@"query: %@", query);
 	[db performQuery:query rows:nil error:&error];
 }
 

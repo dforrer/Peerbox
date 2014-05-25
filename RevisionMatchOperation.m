@@ -50,13 +50,14 @@
 	//--------------------------------------------------------------
 	if (![rev canBeMatchedInstantly])
 	{
+		DebugLog(@"Revision CAN'T be matched instantly");
 		[[[rev peer] share] setRevision:rev forPeer:[rev peer]];
 		return;
 	}
 		
 	// match directory
 	//-----------------
-	if ([rev isDir])
+	if ([[rev isDir] boolValue])
 	{
 		[self matchDir];
 		return;

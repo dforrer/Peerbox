@@ -48,10 +48,8 @@
 
 // Revision-Management
 //---------------------
-- (void) setRevision:(Revision*)r
-		   forPeer:(Peer*)p;
-- (void) removeRevision:(Revision*)r
-			 forPeer:(Peer*)p;
+- (void) setRevision:(Revision*)r forPeer:(Peer*)p;
+- (void) removeRevision:(Revision*)r forPeer:(Peer*)p;
 - (Revision*) nextRevisionForPeer:(Peer*)p;
 
 

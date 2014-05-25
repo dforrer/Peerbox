@@ -425,6 +425,7 @@
 			[r setRelURL:key];
 			[r setRevision:revision];
 			[r setIsSet:isSet];
+			//DebugLog(@"key: %@ hasSuffix:%@",key, [NSNumber numberWithBool:[key hasSuffix:@"/"]]);
 			[r setIsDir:[NSNumber numberWithBool:[key hasSuffix:@"/"]]];
 			[r setExtAttributes:extendedAttributes];
 			[r setVersions:versions];
