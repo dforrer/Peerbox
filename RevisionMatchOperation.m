@@ -284,11 +284,13 @@
 				{
 					// Move existing file to the trash
 					//---------------------------------
-					[[NSFileManager defaultManager] removeItemAtURL:fullURL error:&error];
+					BOOL success = [[NSFileManager defaultManager] removeItemAtURL:fullURL error:&error];
 					
-					if (error)
+					if (error || success)
 					{
 						DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
+						remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
+						
 						//	[remoteState setIsSetBOOL:FALSE];
 						//	[[peer share] setFile:remoteState];
 					}
