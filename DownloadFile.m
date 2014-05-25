@@ -161,6 +161,7 @@
 - (void) cancel
 {
 	[connection cancel];
+	[download closeFile];
 }
 
 /*
@@ -192,8 +193,8 @@
 			DebugLog(@"HTTP-ERROR: didReceiveResponse statusCode: %li", statusCode);
 			[self->connection cancel];  // stop connecting; no more delegate messages
 			hasFailed = TRUE;
-			[delegate downloadFileHasFailed:self];
-			return;
+			[download closeFile];
+			return [delegate downloadFileHasFailed:self];
 		}
 	}
 	[download seekToFileOffset:0];
@@ -224,6 +225,7 @@
 	
 	// Notify Revision-Instance that the download has failed
 	//-------------------------------------------------------
+	[download closeFile];
 	[delegate downloadFileHasFailed:self];
 }
 
@@ -247,6 +249,8 @@
 	sha1OfDownload = output;
 
 	//[decryptor finish];
+
+	[download closeFile];
 
 	// Notify Revision-Instance that the download has finished
 	//---------------------------------------------------------
