@@ -417,6 +417,7 @@
 		{
 			NSDictionary * rev	= [[dict objectForKey:@"revisions"] objectForKey:key];
 			NSNumber * revision = [rev objectForKey:@"revision"];
+			NSNumber * fileSize = [rev objectForKey:@"fileSize"];
 			NSNumber * isSet	= [rev objectForKey:@"isSet"];
 			NSMutableDictionary * extendedAttributes	= [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"extendedAttributes"]];
 			NSMutableDictionary * versions			= [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"versions"]];
@@ -424,6 +425,7 @@
 			Revision * r = [[Revision alloc] init];
 			[r setRelURL:key];
 			[r setRevision:revision];
+			[r setFileSize:fileSize];
 			[r setIsSet:isSet];
 			//DebugLog(@"key: %@ hasSuffix:%@",key, [NSNumber numberWithBool:[key hasSuffix:@"/"]]);
 			[r setIsDir:[NSNumber numberWithBool:[key hasSuffix:@"/"]]];
