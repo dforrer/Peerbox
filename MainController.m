@@ -135,8 +135,8 @@
 		NSString * modelPath = [[config workingDir] stringByAppendingPathComponent:@"model.plist"];
 		if (![FileHelper fileFolderExists:modelPath] )
 		{
-			// CASE: model.plist DOESN'T exist
-			//---------------------------------
+			// "model.plist" DOESN'T exist
+			//-----------------------------
 			[self generatePeerId];
 			return;
 		}
@@ -144,6 +144,8 @@
 		NSDictionary * model = [[NSDictionary alloc] initWithContentsOfFile:modelPath];
 		if (!model)
 		{
+			// File "model.plist" DOESN'T contain a dictionary
+			//-------------------------------------------------
 			[self generatePeerId];
 			return;
 		}
@@ -522,6 +524,11 @@
 	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
 	[newState setVersions:[NSMutableDictionary dictionaryWithDictionary:[[d rev] versions]]];
 	[[[[d rev] peer] share] setFile:newState];
+	
+	// Remove Revision from db
+	//-------------------------
+	[[[[d rev] peer] share] removeRevision:[d rev] forPeer:[[d rev] peer]];
+	[fileDownloads removeObject:d];
 }
 
 
@@ -532,7 +539,7 @@
 - (void) downloadFileHasFailed:(DownloadFile*)d
 {
 	DebugLog(@"ERROR: downloadFileHasFailed");
-
+	[fileDownloads removeObject:d];
 }
 
 
@@ -774,8 +781,8 @@
 - (void) downloadRevisionsFromPeers
 {
 	DebugLog(@"downloadRevisionsFromPeers");
-	// For every announced NetService...
-	//-----------------------------------
+	// For every Share ....
+	//----------------------
 	for (id key in myShares)
 	{
 		Share * s = [myShares objectForKey:key];
@@ -800,75 +807,31 @@
 
 - (void) matchFiles
 {
-
-}
-
-
-/*
-- (void) matchRevisions
-{
-	DebugLog(@"MainModel: matchRevisions called");
+	// For every Share ....
+	//----------------------
 	for (id key in myShares)
 	{
 		Share * s = [myShares objectForKey:key];
 		for (Peer * p in [s allPeers])
 		{
-			if ([[p downloadedRevsWithFilesToAdd] count] == 0)
+			NSNetService * ns = [bonjourSearcher getNetServiceForName:[p peerID]];
+			
+			// Compare currentRev (on remote peer) with lastDownloadedRev
+			//------------------------------------------------------------
+			if (ns != nil && [fileDownloads count] < MAX_CONCURRENT_DOWNLOADS)
 			{
-				continue;
-			}
-			// Match DELETE-Revisions
-			//------------------------
-			DebugLog(@"+++ Match DELETE-Revisions");
-			
-			NSArray * sortedKeys = [[[p downloadedRevsWithIsSetFalse] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-			for (id key in [sortedKeys reverseObjectEnumerator])
-			{
-				DebugLog(@"---------------------");
-				DebugLog(@"key: %@", key);
-				DebugLog(@"---------------------");
-				Revision * r = [[p downloadedRevsWithIsSetFalse] objectForKey:key];
-				[r match];
-				[p removeRevision:r];
-			}
-			
-			// Match DIR-Revisions
-			//---------------------
-			DebugLog(@"+++ Match DIR-Revisions");
-			
-			sortedKeys = [[[p downloadedRevsWithIsDirTrue] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-			for (id key in [sortedKeys reverseObjectEnumerator])
-			{
-				DebugLog(@"---------------------");
-				DebugLog(@"key: %@", key);
-				DebugLog(@"---------------------");
-				Revision * r = [[p downloadedRevsWithIsDirTrue] objectForKey:key];
-				[r match];
-				[p removeRevision:r];
-			}
-			
-			// Match FILE-Revisions
-			//----------------------
-			DebugLog(@"+++ Match FILE-Revisions");
-			
-			if ([fileDownloads count] <= MAX_CONCURRENT_DOWNLOADS / 2)
-			{
-				NSArray * fileRevs = [p getNextFileRevisions:(int)(MAX_CONCURRENT_DOWNLOADS - [fileDownloads count])];
-				for (Revision * r in fileRevs)
+				Revision * r = [s nextRevisionForPeer:p];
+				if (r)
 				{
-					DebugLog(@"---------------------");
-					DebugLog(@"key: %@", key);
-					DebugLog(@"---------------------");
-					[r setDelegate:self];
-					[fileDownloads addObject:r];
-					[r match];
+					DownloadFile * d = [[DownloadFile alloc] initWithNetService:ns andRevision:r andConfig:config];
+					[fileDownloads addObject:d];
+					[d setDelegate:self];
+					[d start];
 				}
 			}
 		}
 	}
- 
 }
-*/
 
 
 
