@@ -130,7 +130,7 @@
 		fp = fopen([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding],"w");/* open for writing */
 		if(fp == nil)
 		{
-			printf("\n fopen() Error!!!\n");
+			DebugLog(@"fopen() Error on file: %s", [[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
 			return;
 		}
 		fclose(fp); /* close the file */
