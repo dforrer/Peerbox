@@ -121,8 +121,20 @@
 	
 	// Create empty file
 	//-------------------
-	[[NSFileManager defaultManager] createFileAtPath:[fullURL path] contents:nil attributes:nil];
-	
+	BOOL success = [[NSFileManager defaultManager] createFileAtPath:[fullURL path] contents:nil attributes:nil];
+	if (success == NO)
+	{
+		// Let's try the same thing with C-Code
+		//--------------------------------------
+		FILE *fp;
+		fp = fopen([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding],"w");/* open for writing */
+		if(fp == nil)
+		{
+			printf("\n fopen() Error!!!\n");
+			return;
+		}
+		fclose(fp); /* close the file */
+	}
 	// Set extended attributes
 	//-------------------------
 	for (id key in [rev extAttributes])
