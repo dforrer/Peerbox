@@ -99,6 +99,11 @@
 		
 		[self updateFSWatcher];
 		
+		
+		// Schedule timer for commit and begin on databases
+		//--------------------------------------------------
+		[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(commitAndBeginAllShareDBs) userInfo:nil repeats:YES];
+		
 	}
 	return self;
 }
@@ -292,13 +297,19 @@
 	[config setMyPeerID:[FileHelper sha1OfNSData:random]];
 }
 
-
+- (void) commitAndBeginAllShareDBs
+{
+	for (Share * s in [myShares allValues])
+	{
+		[s commitAndBegin];
+	}
+}
 
 - (void) commitAllShareFilesDBs
 {
 	for (Share * s in [myShares allValues])
 	{
-		[s filesDBCommit];
+		[s dbCommit];
 	}
 }
 

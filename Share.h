@@ -35,9 +35,9 @@
 							biggestRev:(NSNumber**)biggestRev;
 - (NSNumber*) nextRevision;
 - (NSNumber*) currentRevision;
-- (void) filesDBBegin;
-- (void) filesDBCommit;
-
+- (void) dbBegin;
+- (void) dbCommit;
+- (void) commitAndBegin;
 
 // Peer-Management
 //-----------------

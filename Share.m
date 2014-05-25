@@ -73,10 +73,6 @@
 	}
 	
 	[db performQuery:@"BEGIN" rows:nil error:&error];
-	
-	// Schedule timer for commit and begin on database
-	//------------------------------------------------
-	[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(commitAndBegin) userInfo:nil repeats:YES];
 }
 
 
@@ -164,18 +160,18 @@
 		
 		if (newTotalChanges > totalChanges)
 		{
-			[self filesDBCommit];
+			[self dbCommit];
 			DebugLog(@"uncommited: %i", (newTotalChanges-totalChanges));
 			DebugLog(@"\tnewTotalChanges: %i", newTotalChanges);
 			DebugLog(@"\ttotalChanges: %i", totalChanges);
 			totalChanges = newTotalChanges;
-			[self filesDBBegin];
+			[self dbBegin];
 		}
 	}
 }
 
 
-- (void) filesDBBegin
+- (void) dbBegin
 {
 	NSError * error;
 	[db performQuery: @"BEGIN" rows:nil error:&error];
@@ -186,7 +182,7 @@
 }
 
 
-- (void) filesDBCommit
+- (void) dbCommit
 {
 	NSError * error;
 	[db performQuery: @"COMMIT" rows:nil error:&error];
