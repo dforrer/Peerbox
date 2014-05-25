@@ -91,7 +91,7 @@
 	// Prepare POST-Data
 	//-------------------
 	NSMutableDictionary * postData = [[NSMutableDictionary alloc] init];
-	NSString * relUrl = [rev relURL];
+	NSString * relUrl = [[rev relURL] stringByRemovingPercentEncoding];
 	[postData setObject:relUrl forKey:@"relUrl"];
 	NSError * error;
 	NSData * rv = [[CJSONSerializer serializer] serializeObject: postData
