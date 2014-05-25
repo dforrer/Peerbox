@@ -121,7 +121,7 @@
 	
 	// Create empty file
 	//-------------------
-	NSString * tmpPath = [NSString stringWithFormat:@"%@/tmp", [config downloadsDir]];
+	NSString * tmpPath = [[config downloadsDir] stringByAppendingPathComponent:@"tmp"];
 	NSFileHandle * fh = [FileHelper fileForWritingAtPath:tmpPath];
 	[fh closeFile];
 	
