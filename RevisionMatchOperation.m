@@ -44,16 +44,9 @@
 - (void) match
 {
 	DebugLog(@"match");
-	[rev updateLastMatchAttempt];
+	//[rev updateLastMatchAttempt];
 	
-	// Store Revision in Share->db, if the file requires a download
-	//--------------------------------------------------------------
-	if (![rev canBeMatchedInstantly])
-	{
-		DebugLog(@"Revision CAN'T be matched instantly");
-		[[[rev peer] share] setRevision:rev forPeer:[rev peer]];
-		return;
-	}
+
 		
 	// match directory
 	//-----------------
@@ -155,6 +148,15 @@
 {
 	DebugLog(@"matchRemoteState");
 	
+	// Store Revision in Share->db, if the file requires a download
+	//--------------------------------------------------------------
+	if (![rev canBeMatchedInstantly])
+	{
+		DebugLog(@"Revision CAN'T be matched instantly");
+		[[[rev peer] share] setRevision:rev forPeer:[rev peer]];
+		return;
+	}
+	
 	// match zero-length files
 	//-------------------------
 	if ([rev isZeroLengthFile])
@@ -195,7 +197,7 @@
 	}
 }
 
-/*
+/**
  *
  */
 - (void) handleFileConflicts

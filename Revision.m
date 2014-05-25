@@ -25,7 +25,7 @@
 @synthesize peer;
 @synthesize lastMatchAttempt;
 @synthesize isDir;
-
+@synthesize fileSize;
 
 
 - (BOOL) isZeroLengthFile

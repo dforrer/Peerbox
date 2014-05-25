@@ -53,6 +53,7 @@
 @property (nonatomic, readwrite, strong) NSString * relURL;
 @property (nonatomic, readwrite, strong) NSNumber * revision;
 @property (nonatomic, readwrite, strong) NSNumber * isSet;
+@property (nonatomic, readwrite, strong) NSNumber * fileSize;
 @property (nonatomic, readwrite, strong) NSDictionary * extAttributes;
 @property (nonatomic, readwrite, strong) NSDictionary * versions;
 @property (nonatomic, readwrite, strong) NSNumber * isDir;

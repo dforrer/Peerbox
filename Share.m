@@ -151,7 +151,7 @@
 	
 	// Create Table "Revisions"
 	//------------------------------------
-	[db performQuery:@"CREATE TABLE IF NOT EXISTS revisions (peerID TEXT, relURL TEXT, revision SQLITE3_INT64, isSet INTEGER, extAttributes TEXT, versions TEXT, isDir INTEGER, lastMatchAttemptDate TEXT)" rows:nil error:&error];
+	[db performQuery:@"CREATE TABLE IF NOT EXISTS revisions (peerID TEXT, relURL TEXT, revision SQLITE3_INT64, fileSize SQLITE3_INT64, isSet INTEGER, extAttributes TEXT, versions TEXT, isDir INTEGER, lastMatchAttemptDate TEXT)" rows:nil error:&error];
 }
 
 
@@ -293,7 +293,7 @@
 		{
 			// Try UPDATE
 			//------------
-			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE revisions SET peerID='%@', relURL='%@', revision=%lld, isSet=%i, extAttributes='%@', versions='%@', isDir=%i, lastMatchAttemptDate='%@' WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [p peerID], [[r relURL] sqlString]];
+			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE revisions SET peerID='%@', relURL='%@', revision=%lld, fileSize=%lld, isSet=%i, extAttributes='%@', versions='%@', isDir=%i, lastMatchAttemptDate='%@' WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue],[[r fileSize] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [p peerID], [[r relURL] sqlString]];
 			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error)
 			{
@@ -304,7 +304,7 @@
 		{
 			// Try INSERT
 			//------------
-			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO revisions (peerID, relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate) VALUES ('%@', '%@', %lld, %i, '%@', '%@', %i, '%@');", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt]];
+			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO revisions (peerID, relURL, revision, fileSize, isSet, extAttributes, versions, isDir, lastMatchAttemptDate) VALUES ('%@', '%@', %lld, %lld, %i, '%@', '%@', %i, '%@');", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue],[[r fileSize] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt]];
 			rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
 			if (error)
 			{
@@ -341,7 +341,7 @@
  */
 - (Revision*) nextRevisionForPeer:(Peer*)p
 {
-	NSString * query = [[NSString alloc] initWithFormat:@"SELECT relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate FROM revisions WHERE peerID='%@' ORDER BY relURL DESC, isDir DESC, isSet ASC LIMIT 1;", [p peerID]];
+	NSString * query = [[NSString alloc] initWithFormat:@"SELECT relURL, revision, isSet, extAttributes, versions, isDir, lastMatchAttemptDate, fileSize FROM revisions WHERE peerID='%@' ORDER BY relURL DESC, isDir DESC, isSet ASC LIMIT 1;", [p peerID]];
 	
 	NSArray * rows;
 	NSError * error;
@@ -377,7 +377,7 @@
 	}
 	[rv setIsDir:rows[0][5]];
 	[rv setLastMatchAttempt:[NSDate dateWithString:rows[0][6]]];
-	
+	[rv setFileSize:rows[0][7]];
 	
 	// Setting the Peer-Attribute of the Revision
 	//--------------------------------------------
@@ -670,6 +670,10 @@
 		// Revision
 		//----------
 		[f setObject:rows[i][1] forKey:@"revision"];
+		
+		// fileSize
+		//----------
+		[f setObject:rows[i][2] forKey:@"fileSize"];
 		
 		// isSet
 		//-------
