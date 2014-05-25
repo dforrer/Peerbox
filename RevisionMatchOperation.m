@@ -46,8 +46,8 @@
 	DebugLog(@"match");
 	//[rev updateLastMatchAttempt];
 	
-	
-	
+
+		
 	// match directory
 	//-----------------
 	if ([[rev isDir] boolValue])
@@ -119,22 +119,11 @@
 {
 	DebugLog(@"matchZeroLengthFile");
 	
-	// First create empty file, then move file
-	//-----------------------------------------
-	NSString * tmpPath = [NSString stringWithFormat:@"%@/tmp", [config downloadsDir]];
-	[[NSFileManager defaultManager] createFileAtPath:tmpPath contents:nil attributes:nil];
-	NSError * error;
-	[[NSFileManager defaultManager] moveItemAtPath:tmpPath toPath:[fullURL path] error:&error];
-	if (error)
-	{
-		int rv = rename([tmpPath cStringUsingEncoding:NSUTF8StringEncoding], [[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
-		if (rv != 0)
-		{
-			DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
-			return;
-		}
-	}
-		
+	// Create empty file
+	//-------------------
+	NSFileHandle * fh = [FileHelper fileForWritingAtPath:[fullURL path]];
+	[fh closeFile];
+	
 	// Set extended attributes
 	//-------------------------
 	for (id key in [rev extAttributes])
