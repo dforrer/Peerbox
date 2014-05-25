@@ -121,8 +121,19 @@
 	
 	// Create empty file
 	//-------------------
-	NSFileHandle * fh = [FileHelper fileForWritingAtPath:[fullURL path]];
+	NSString * tmpPath = [NSString stringWithFormat:@"%@/tmp", [config downloadsDir]];
+	NSFileHandle * fh = [FileHelper fileForWritingAtPath:tmpPath];
 	[fh closeFile];
+	
+	// Move the file
+	//---------------
+	NSError * error;
+	[[NSFileManager defaultManager] moveItemAtPath:tmpPath toPath:[fullURL path] error:&error];
+	if (error)
+	{
+		DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
+		return;
+	}
 	
 	// Set extended attributes
 	//-------------------------
