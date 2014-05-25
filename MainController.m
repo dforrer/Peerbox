@@ -818,15 +818,20 @@
 			
 			// Compare currentRev (on remote peer) with lastDownloadedRev
 			//------------------------------------------------------------
-			if (ns != nil && [fileDownloads count] < MAX_CONCURRENT_DOWNLOADS)
+			if (ns != nil)
 			{
 				Revision * r = [s nextRevisionForPeer:p];
-				if (r)
+
+				while (r != nil && [fileDownloads count] < MAX_CONCURRENT_DOWNLOADS)
 				{
+					[s removeRevision:r forPeer:p];
+					
 					DownloadFile * d = [[DownloadFile alloc] initWithNetService:ns andRevision:r andConfig:config];
 					[fileDownloads addObject:d];
 					[d setDelegate:self];
 					[d start];
+
+					r = [s nextRevisionForPeer:p];
 				}
 			}
 		}
