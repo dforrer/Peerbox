@@ -72,6 +72,7 @@
 		fsWatcherQueueRestartet = FALSE;
 		fileDownloads = [[NSMutableArray alloc] init];
 		matcherQueue  = [[NSOperationQueue alloc] init];
+		[matcherQueue addObserver:self forKeyPath:@"operations" options:0 context:NULL]; // KVO
 		
 		[self setupHTTPServer];
 		[self createWorkingDirectories];
@@ -444,10 +445,6 @@
 		DebugLog(@"biggestRev: %@", biggestRev);
 		[[d peer] setLastDownloadedRev:biggestRev];
 	}
-	
-	// Restart Revision-Download
-	//---------------------------
-	[self downloadRevisionsFromPeers];
 }
 
 
@@ -527,9 +524,29 @@
 
 
 /**
- * OVERRIDE: RevisionDelegate
+ * KVO: matcherQueue->operations
  */
-
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                         change:(NSDictionary *)change context:(void *)context
+{
+	if (object == matcherQueue && [keyPath isEqualToString:@"operations"])
+	{
+		if ([matcherQueue.operations count] == 0)
+		{
+			// Do something here when your queue has completed
+			NSLog(@"queue has completed");
+			
+			// Restart Revision-Download
+			//---------------------------
+			[self downloadRevisionsFromPeers];
+		}
+	}
+	else
+	{
+		[super observeValueForKeyPath:keyPath ofObject:object
+						   change:change context:context];
+	}
+}
 
 /*
 - (void) revisionMatched:(Revision*) rev
