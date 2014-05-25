@@ -529,6 +529,14 @@
 	//-------------------------
 	[[[[d rev] peer] share] removeRevision:[d rev] forPeer:[[d rev] peer]];
 	[fileDownloads removeObject:d];
+	
+	
+	// Download more files
+	//---------------------
+	if ([fileDownloads count] < MAX_CONCURRENT_DOWNLOADS / 2)
+	{
+		[self matchFiles];
+	}
 }
 
 
@@ -540,6 +548,14 @@
 {
 	DebugLog(@"ERROR: downloadFileHasFailed");
 	[fileDownloads removeObject:d];
+	
+	
+	// Download more files
+	//---------------------
+	if ([fileDownloads count] < MAX_CONCURRENT_DOWNLOADS / 2)
+	{
+		[self matchFiles];
+	}
 }
 
 

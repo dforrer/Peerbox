@@ -46,8 +46,8 @@
 	DebugLog(@"match");
 	//[rev updateLastMatchAttempt];
 	
-
-		
+	
+	
 	// match directory
 	//-----------------
 	if ([[rev isDir] boolValue])
@@ -119,22 +119,19 @@
 {
 	DebugLog(@"matchZeroLengthFile");
 	
-	// Create empty file
-	//-------------------
-	BOOL success = [[NSFileManager defaultManager] createFileAtPath:[fullURL path] contents:nil attributes:nil];
-	if (success == NO)
+	// First create empty file, then move file
+	//-----------------------------------------
+	NSString * tmpPath = [NSString stringWithFormat:@"%@/tmp", [config downloadsDir]];
+	[[NSFileManager defaultManager] createFileAtPath:tmpPath contents:nil attributes:nil];
+	NSError * error;
+	[[NSFileManager defaultManager] moveItemAtPath:tmpPath toPath:[fullURL path] error:&error];
+	if (error)
 	{
-		// Let's try the same thing with C-Code
-		//--------------------------------------
-		FILE *fp;
-		fp = fopen([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding],"w");/* open for writing */
-		if(fp == nil)
-		{
-			DebugLog(@"fopen() Error on file: %s", [[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
-			return;
-		}
-		fclose(fp); /* close the file */
+		DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
+		return;
 	}
+	
+	
 	// Set extended attributes
 	//-------------------------
 	for (id key in [rev extAttributes])
