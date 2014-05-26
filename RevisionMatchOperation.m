@@ -66,6 +66,18 @@
 	//----------------------
 	[self handleFileConflicts];
 }
+/**
+ * Set extended attributes
+ * This works, but does not dispaly correctly in the Finder
+ */
+ - (void) setExtAttributes
+{
+	for (id key in [rev extAttributes])
+	{
+		NSData * extAttrBinary = [[NSData alloc] initWithBase64EncodedString:[[rev extAttributes] objectForKey:key] options:0];
+		[FileHelper setValue:extAttrBinary forName:key onFile:[fullURL path]];
+	}
+}
 
 /*
  * Revision = Directory
@@ -84,15 +96,8 @@
 			DebugLog(@"ERROR creating directory: %@", error);
 			return;
 		}
-		
-		// Set extended attributes
-		// This works, but does not dispaly correctly in the Finder
-		//----------------------------------------------------------
-		for (id key in [rev extAttributes])
-		{
-			NSData * extAttrBinary = [[NSData alloc] initWithBase64EncodedString:[[rev extAttributes] objectForKey:key] options:0];
-			[FileHelper setValue:extAttrBinary forName:key onFile:[fullURL path]];
-		}
+	
+		[self setExtAttributes];
 	}
 	else
 	{
@@ -146,14 +151,7 @@
 	}
 	[fh closeFile];
 	
-	
-	// Set extended attributes
-	//-------------------------
-	for (id key in [rev extAttributes])
-	{
-		NSData * extAttrBinary = [[NSData alloc] initWithBase64EncodedString:[[rev extAttributes] objectForKey:key] options:0];
-		[FileHelper setValue:extAttrBinary forName:key onFile:[fullURL path]];
-	}
+	[self setExtAttributes];
 	
 	// Set remoteState in Share s
 	//----------------------------
