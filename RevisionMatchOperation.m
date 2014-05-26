@@ -305,7 +305,7 @@
 					//---------------------------------
 					BOOL success = [[NSFileManager defaultManager] removeItemAtURL:fullURL error:&error];
 					
-					if (error || success)
+					if (error || !success)
 					{
 						DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
 						remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
