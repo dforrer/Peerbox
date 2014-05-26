@@ -79,7 +79,7 @@
 
 - (void) main
 {
-	DebugLog(@"--- SingleFileOperation");
+	DebugLog(@"--- FileScanOperation");
 	if ([FileHelper fileFolderExists:[fileURL path]])
 	{
 		// File exists on HD (ADDED/CHANGED)
@@ -104,7 +104,7 @@
 			//---------------------
 			if ([f isDir])
 			{
-				[self scanSubDirectoriesOfFile: f];
+				[self scanSubDirectoriesOfFile:f];
 			}
 		}
 		else

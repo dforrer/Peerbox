@@ -507,7 +507,7 @@
 	if ( [self isDir] )
 	{
 		[self setVersions:[NSMutableDictionary dictionaryWithObject:@"0" forKey:@"1"]];
-		return TRUE;;
+		return TRUE;
 	}
 	
 	if ( [isSet boolValue] )
