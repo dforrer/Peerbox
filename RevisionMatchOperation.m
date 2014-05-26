@@ -66,6 +66,9 @@
 	//----------------------
 	[self handleFileConflicts];
 }
+
+
+
 /**
  * Set extended attributes
  * This works, but does not dispaly correctly in the Finder
@@ -78,6 +81,8 @@
 		[FileHelper setValue:extAttrBinary forName:key onFile:[fullURL path]];
 	}
 }
+
+
 
 /*
  * Revision = Directory
@@ -189,7 +194,7 @@
 
 
 
-- (void) createConflictedCopy
+- (NSURL*) createConflictedCopy
 {
 	File * localState = [[[rev peer] share] getFileForURL:fullURL];
 	
@@ -211,12 +216,11 @@
 		if (error)
 		{
 			DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
+			return nil;
 		}
-		
-		// Force FSWatcher to rescan this file
-		//-------------------------------------
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:conflictedCopyURL];
+		return conflictedCopyURL;
 	}
+	return nil;
 }
 
 /**
@@ -268,7 +272,12 @@
 			
 			// (WITH CONFLICT)
 			
-			[self createConflictedCopy];
+			NSURL* conflictedCopyURL = [self createConflictedCopy];
+		
+			// Force FSWatcher to rescan this file
+			//-------------------------------------
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:conflictedCopyURL];
+
 			
 			// Delete localState
 			//-------------------
@@ -327,31 +336,13 @@
 			if ([[config myPeerID] isLessThan:[[rev peer] peerID]])
 			{
 				// (myPeerId < otherPeerId)
-				[self createConflictedCopy];
+
+				NSURL* conflictedCopyURL = [self createConflictedCopy];
 				
-				/*
-				 // Create CONFLICTEDCOPY
-				 //-----------------------
-				 NSError * error;
-				 NSURL * conflictedCopyURL;
-				 if ( [[NSFileManager defaultManager] isReadableFileAtPath:[[localState url] path]] )
-				 {
-				 // Rename localState-File to "xxx conflicted copy on abc193848.xxx"
-				 //-----------------------------------------------------------------
-				 NSURL * superdir = [fullURL URLByDeletingLastPathComponent];
-				 NSString * oldFilename = [[fullURL lastPathComponent] stringByDeletingPathExtension];
-				 NSString * newFilename = [oldFilename stringByAppendingString:[NSString stringWithFormat:@" conflicted copy on %@", myPeerID]];
-				 newFilename = [newFilename stringByAppendingPathExtension:[fullURL pathExtension]];
-				 conflictedCopyURL = [superdir URLByAppendingPathComponent:newFilename];
-				 
-				 [[NSFileManager defaultManager] moveItemAtPath:[[localState url] path] toPath:[conflictedCopyURL path] error:&error];
-				 if (error)
-				 {
-				 DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
-				 }
-				 }
-				 */
-				
+				// Force FSWatcher to rescan this file
+				//-------------------------------------
+				[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:conflictedCopyURL];
+
 				// Delete localState
 				//-------------------
 				[[[rev peer] share] removeFile:localState];
