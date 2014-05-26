@@ -401,36 +401,7 @@
 	DebugLog(@"downloadSharesHasFailed: Whatever...!");
 }
 
-/**
- * Helper function for downloadRevisionsHasFinished
- */
-- (void) createRevisionMatchOperationForKey:(id)key andDict:(NSDictionary*)dict andDownloadRevisions:(DownloadRevisions*)d
-{
-		NSDictionary * rev	= [[dict objectForKey:@"revisions"] objectForKey:key];
-		NSNumber * revision = [rev objectForKey:@"revision"];
-		NSNumber * fileSize = [rev objectForKey:@"fileSize"];
-		NSNumber * isSet	= [rev objectForKey:@"isSet"];
-		NSMutableDictionary * extendedAttributes	= [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"extendedAttributes"]];
-		NSMutableDictionary * versions			= [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"versions"]];
-		
-		Revision * r = [[Revision alloc] init];
-		[r setRelURL:key];
-		[r setRevision:revision];
-		[r setFileSize:fileSize];
-		[r setIsSet:isSet];
-		//DebugLog(@"key: %@ hasSuffix:%@",key, [NSNumber numberWithBool:[key hasSuffix:@"/"]]);
-		[r setIsDir:[NSNumber numberWithBool:[key hasSuffix:@"/"]]];
-		[r setExtAttributes:extendedAttributes];
-		[r setVersions:versions];
-		[r setPeer:[d peer]];
-		
-		RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithRevision:r andConfig:config];
-		if ([matcherQueue operationCount] > 0)
-		{
-			[o addDependency:[[matcherQueue operations] lastObject]];
-		}
-		[matcherQueue addOperation:o];
-}
+
 
 /**
  * OVERRIDE: DownloadRevisionsDelegate
@@ -455,39 +426,51 @@
 	//-------------------------------------------------
 	if ([[dict objectForKey:@"revisions"] count] > 0)
 	{
-		// 1. Filter out DELETE-Revisions
-		//--------------------------------
-		NSSet * deletes = [[dict objectForKey:@"revisions"] keysOfEntriesPassingTest:
-					    ^BOOL(id key, id obj, BOOL *stop) {
-						    if ([[obj objectForKey:@"isSet"] boolValue] == FALSE) {
-							    return YES;
-						    } else {
-							    return NO;
-						    }
-					    }];
-		NSArray * sortedKeys = [[deletes allObjects] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-		for (id key in [sortedKeys reverseObjectEnumerator])
+		// Sort the downloaded revisions by the revision-number
+		//------------------------------------------------------
+		NSArray * keysSortedByRevision = [[dict objectForKey:@"revisions"] keysSortedByValueUsingComparator: ^(id obj1, id obj2)
 		{
-			[self createRevisionMatchOperationForKey:key andDict:[dict objectForKey:@"revisions"] andDownloadRevisions:d];
-		}
+			if ([[obj1 objectForKey:@"revision"] longLongValue] > [[obj2 objectForKey:@"revision"] longLongValue])
+			{
+				return (NSComparisonResult)NSOrderedDescending;
+			}
+			if ([[obj1 objectForKey:@"revision"] longLongValue] < [[obj2 objectForKey:@"revision"] longLongValue])
+			{
+				return (NSComparisonResult)NSOrderedAscending;
+			}
+			return (NSComparisonResult)NSOrderedSame;
+		}];
 		
-		// 2. Filter out Add Dir-Revisions
-		//--------------------------------
-		NSSet * addDirs = [[dict objectForKey:@"revisions"] keysOfEntriesPassingTest:
-					    ^BOOL(id key, id obj, BOOL *stop) {
-						    if ([[obj objectForKey:@"isSet"] boolValue] == TRUE && [key hasSuffix:@"/"]) {
-							    return YES;
-						    } else {
-							    return NO;
-						    }
-					    }];
-		
-		sortedKeys = [[addDirs allObjects] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-		for (id key in sortedKeys)
+		// Create a RevisionMatchOperation for every downloaded revision
+		//---------------------------------------------------------------
+		for (id key in keysSortedByRevision)
 		{
-			[self createRevisionMatchOperationForKey:key andDict:[dict objectForKey:@"revisions"] andDownloadRevisions:d];
+			NSDictionary * rev	= [[dict objectForKey:@"revisions"] objectForKey:key];
+			NSNumber * revision = [rev objectForKey:@"revision"];
+			NSNumber * fileSize = [rev objectForKey:@"fileSize"];
+			NSNumber * isSet	= [rev objectForKey:@"isSet"];
+			NSMutableDictionary * extendedAttributes	= [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"extendedAttributes"]];
+			NSMutableDictionary * versions			= [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"versions"]];
+			
+			Revision * r = [[Revision alloc] init];
+			[r setRelURL:key];
+			[r setRevision:revision];
+			[r setFileSize:fileSize];
+			[r setIsSet:isSet];
+			//DebugLog(@"key: %@ hasSuffix:%@",key, [NSNumber numberWithBool:[key hasSuffix:@"/"]]);
+			[r setIsDir:[NSNumber numberWithBool:[key hasSuffix:@"/"]]];
+			[r setExtAttributes:extendedAttributes];
+			[r setVersions:versions];
+			[r setPeer:[d peer]];
+			
+			RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithRevision:r andConfig:config];
+			if ([matcherQueue operationCount] > 0)
+			{
+				[o addDependency:[[matcherQueue operations] lastObject]];
+			}
+			[matcherQueue addOperation:o];
 		}
-		
+				
 		
 		// Get biggest revision from response->revisions
 		//-----------------------------------------------
