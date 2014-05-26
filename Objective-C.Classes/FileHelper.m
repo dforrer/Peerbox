@@ -515,7 +515,7 @@
 
 
 + (NSFileHandle*) fileForWritingAtPath: (NSString*) path {
-	NSFileHandle * h = [NSFileHandle fileHandleForWritingAtPath: path];
+	NSFileHandle * h = [NSFileHandle fileHandleForWritingAtPath: path];	// NO creation call
 	if (h == nil) {
 		[[NSFileManager defaultManager] createFileAtPath: path contents: nil attributes: nil];
 		h = [NSFileHandle fileHandleForWritingAtPath: path];
