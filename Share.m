@@ -555,7 +555,7 @@
 	NSArray * rows;
 	NSError * error;
 	NSString * urlPath = [[u absoluteString] sqlString];
-	NSString * query = [NSString stringWithFormat:@"SELECT url FROM files WHERE isSet=%i AND url != '%@' AND url LIKE '%@%%'", b, urlPath, urlPath];
+	NSString * query = [NSString stringWithFormat:@"SELECT url FROM files WHERE isSet=%i AND url != '%@' AND url LIKE '%@%%' ORDER BY url DESC", b, urlPath, urlPath];
 	[db performQuery:query rows:&rows error:&error];
 	return rows;
 }
