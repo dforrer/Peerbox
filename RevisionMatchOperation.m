@@ -65,6 +65,14 @@
 	// match 'normal' files
 	//----------------------
 	[self handleFileConflicts];
+	
+	/*
+	 * Force FSWatcher to rescan this file:
+	 * Why? Because otherwise a file/folder is created
+	 * without the program knowing about.
+	 */
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:fullURL];
 }
 
 
