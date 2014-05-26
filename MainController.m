@@ -655,6 +655,8 @@
 - (void) fsWatcherEvent: (NSNotification *)notification
 {
 	NSURL * fileURL = [notification object];
+	DebugLog(@"fsWatcherEvent: %@", fileURL);
+
 	for ( Share * share in [myShares allValues] )
 	{
 		if ( ![FileHelper URL:fileURL hasAsRootURL:[share root]] )

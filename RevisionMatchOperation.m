@@ -53,6 +53,7 @@
 	if ([[rev isDir] boolValue])
 	{
 		[self matchDir];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:fullURL];		
 		return;
 	}
 	
