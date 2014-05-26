@@ -53,7 +53,7 @@
 	if ([[rev isDir] boolValue])
 	{
 		[self matchDir];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:fullURL];		
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:fullURL];
 		return;
 	}
 	
@@ -128,6 +128,9 @@
 			if (rv != 0)
 			{
 				DebugLog(@"DEL of Dir failed, there must be other files in this directory");
+				File * localState = [[[rev peer] share] getFileForURL:fullURL];
+				[localState setIsSetBOOL:FALSE];
+				[[[rev peer] share] setFile:localState];
 			}
 		}
 	}
@@ -319,8 +322,8 @@
 						DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
 						remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
 						
-						//	[remoteState setIsSetBOOL:FALSE];
-						//	[[peer share] setFile:remoteState];
+						[localState setIsSetBOOL:FALSE];
+						[[[rev peer] share] setFile:localState];
 					}
 				}
 			}

@@ -79,7 +79,7 @@
 
 - (void) main
 {
-	DebugLog(@"--- FileScanOperation");
+	DebugLog(@"--- FileScanOperation: %@", [fileURL absoluteString]);
 	if ([FileHelper fileFolderExists:[fileURL path]])
 	{
 		// File exists on HD (ADDED/CHANGED)
@@ -148,7 +148,7 @@
 		{
 			// File doesn't exists in Share
 			//------------------------------
-			DebugLog(@"File doesn't exists in Share");
+			DebugLog(@"File doesn't exists in Share: %@", fileURL);
 			// DO NOTHING
 		}
 		else
@@ -171,7 +171,7 @@
 						File * g	= [share getFileForURL:[NSURL URLWithString:a[0]]];
 						DebugLog(@"filesToDelete: %@", a[0]);
 						[g setIsSetBOOL:FALSE];
-						[share setFile: g];
+						[share setFile:g];
 					}
 				}
 			}
