@@ -455,7 +455,6 @@
 			[r setRevision:revision];
 			[r setFileSize:fileSize];
 			[r setIsSet:isSet];
-			//DebugLog(@"key: %@ hasSuffix:%@",key, [NSNumber numberWithBool:[key hasSuffix:@"/"]]);
 			[r setIsDir:[NSNumber numberWithBool:[key hasSuffix:@"/"]]];
 			[r setExtAttributes:extendedAttributes];
 			[r setVersions:versions];
@@ -638,7 +637,7 @@
 
 	for (Share * share in [myShares allValues])
 	{
-		if (![FileHelper URL:fileURL hasAsRootURL:[share root]] || [fileURL isEqualTo:[share root]])
+		if (![FileHelper URL:fileURL hasAsRootURL:[share root]])
 		{
 			continue;
 		}
