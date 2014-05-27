@@ -93,8 +93,6 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsDir" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsFile" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsSymlink" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsSymlink" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(matchFiles) name:@"MatchFilesEvent" object:nil];
 		
 		
 		[self updateFSWatcher];
@@ -307,7 +305,7 @@
 	}
 }
 
-- (void) commitAllShareFilesDBs
+- (void) commitAllShareDBs
 {
 	for (Share * s in [myShares allValues])
 	{

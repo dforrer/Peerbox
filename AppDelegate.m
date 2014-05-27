@@ -63,7 +63,7 @@
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
 	DebugLog(@"applicationWillTerminate");
-	[mm commitAllShareFilesDBs];
+	[mm commitAllShareDBs];
 	[mm saveModel];
 }
 

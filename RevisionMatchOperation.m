@@ -44,10 +44,6 @@
 - (void) match
 {
 	DebugLog(@"match");
-	//[rev updateLastMatchAttempt];
-	
-
-		
 	// match directory
 	//-----------------
 	if ([[rev isDir] boolValue])
@@ -57,11 +53,13 @@
 		return;
 	}
 	
-	// Remove Revision from db:
-	// in case a file was added, not yet downloaded
-	// and deleted again.
-	//----------------------------------------------
+	/*
+	 * Remove Revision from db:
+	 * in case a file was added, not yet downloaded
+	 * and deleted again.
+	 */
 	[[[rev peer] share] removeRevision:rev forPeer:[rev peer]];
+
 	
 	// match 'normal' files
 	//----------------------
