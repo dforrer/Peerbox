@@ -53,7 +53,7 @@
 	if ([[rev isDir] boolValue])
 	{
 		[self matchDir];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:fullURL];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:[fullURL URLByDeletingLastPathComponent]];
 		return;
 	}
 	
@@ -73,7 +73,7 @@
 	 * without the program knowing about.
 	 */
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:fullURL];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:[fullURL URLByDeletingLastPathComponent]];
 }
 
 
@@ -286,9 +286,9 @@
 			
 			NSURL* conflictedCopyURL = [self createConflictedCopy];
 		
-			// Force FSWatcher to rescan this file
-			//-------------------------------------
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:conflictedCopyURL];
+			// Force FSWatcher to rescan this the super-dir
+			//----------------------------------------------
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:[conflictedCopyURL URLByDeletingLastPathComponent]];
 
 			
 			// Delete localState
@@ -351,9 +351,9 @@
 
 				NSURL* conflictedCopyURL = [self createConflictedCopy];
 				
-				// Force FSWatcher to rescan this file
-				//-------------------------------------
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:conflictedCopyURL];
+				// Force FSWatcher to rescan the super-dir
+				//-----------------------------------------
+				[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:[conflictedCopyURL URLByDeletingLastPathComponent]];
 
 				// Delete localState
 				//-------------------

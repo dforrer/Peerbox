@@ -602,26 +602,7 @@
 	}
 }
 
-/*
-- (void) revisionMatched:(Revision*) rev
-{
-	DebugLog(@"revisionMatched called");
-	[[[rev peer] share] removeDownloadedRevision:rev forPeer:[rev peer]];
-	[fileDownloads removeObject:rev];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:[[rev remoteState] url]];
-	
-	if ([fileDownloads count] <= MAX_CONCURRENT_DOWNLOADS / 2 && [matcherQueue operationCount] < 2)
-	{
-		RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithMainModel:self];
-		if ([matcherQueue operationCount] > 0)
-		{
-			[o addDependency:[[matcherQueue operations] lastObject]];
-		}
-		[matcherQueue addOperation: o];
-	}
-}
 
-*/
 
 #pragma mark -----------------------
 #pragma mark Controlling FSWatcher
