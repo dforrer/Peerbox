@@ -76,18 +76,7 @@
 
 
 
-/**
- * Set extended attributes
- * This works, but does not dispaly correctly in the Finder
- */
- - (void) setExtAttributes
-{
-	for (id key in [rev extAttributes])
-	{
-		NSData * extAttrBinary = [[NSData alloc] initWithBase64EncodedString:[[rev extAttributes] objectForKey:key] options:0];
-		[FileHelper setValue:extAttrBinary forName:key onFile:[fullURL path]];
-	}
-}
+
 
 
 
@@ -108,8 +97,8 @@
 			DebugLog(@"ERROR creating directory: %@", error);
 			return;
 		}
-	
-		[self setExtAttributes];
+		
+		[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
 	}
 	else
 	{
@@ -126,9 +115,13 @@
 			if (rv != 0)
 			{
 				DebugLog(@"DEL of Dir failed, there must be other files in this directory");
+	
+				
+				/*
 				File * localState = [[[rev peer] share] getFileForURL:fullURL];
 				[localState setIsSetBOOL:FALSE];
 				[[[rev peer] share] setFile:localState];
+				*/
 			}
 		}
 	}
@@ -166,7 +159,7 @@
 	}
 	[fh closeFile];
 	
-	[self setExtAttributes];
+	[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
 	
 	// Set remoteState in Share s
 	//----------------------------
@@ -248,10 +241,12 @@
 		
 		// (No checking for conflicts)
 		
+		/*
 		// Delete localState
 		//-------------------
 		[[[rev peer] share] removeFile:localState];
-		
+		*/
+		 
 		// Match remoteState
 		//-------------------
 		[self matchRemoteState];
@@ -288,10 +283,11 @@
 			//----------------------------------------------
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:conflictedCopyURL];
 
-			
+			/*
 			// Delete localState
 			//-------------------
 			[[[rev peer] share] removeFile:localState];
+			*/
 			
 			return;
 		}
@@ -319,9 +315,10 @@
 					{
 						DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
 						remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
-						
+						/*
 						[localState setIsSetBOOL:FALSE];
 						[[[rev peer] share] setFile:localState];
+						*/
 					}
 				}
 			}
@@ -352,10 +349,12 @@
 				// Force FSWatcher to rescan the super-dir
 				//-----------------------------------------
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:conflictedCopyURL];
-
+				
+				/*
 				// Delete localState
 				//-------------------
 				[[[rev peer] share] removeFile:localState];
+				*/
 				
 				// Match remoteState
 				//-------------------
@@ -379,10 +378,12 @@
 			{
 				// (localState:versions:biggestKey < remoteState:versions:biggestKey)
 				
+				/*
 				// Delete localState
 				//-------------------
 				[[[rev peer] share] removeFile:localState];
-				
+				*/
+				 
 				// Match remoteState
 				//-------------------
 				return [self matchRemoteState];

@@ -20,6 +20,7 @@
 - (BOOL) isDir;
 - (BOOL) hasConflictingVersionsWithFile:(File*)f;
 + (BOOL) versions:(NSDictionary*)v1 hasConflictsWithVersions:(NSDictionary*)v2;
++ (void) matchExtAttributes:(NSDictionary*)dict onURL:(NSURL*)url;
 
 // Setter
 //--------
