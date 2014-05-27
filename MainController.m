@@ -636,13 +636,9 @@
 	NSURL * fileURL = [notification object];
 	DebugLog(@"fsWatcherEvent: %@", fileURL);
 
-	for ( Share * share in [myShares allValues] )
+	for (Share * share in [myShares allValues])
 	{
-		if ([fileURL isEqualTo:[share root]])
-		{
-			continue;
-		}
-		if ( ![FileHelper URL:fileURL hasAsRootURL:[share root]] )
+		if (![FileHelper URL:fileURL hasAsRootURL:[share root]] || [fileURL isEqualTo:[share root]])
 		{
 			continue;
 		}
@@ -650,7 +646,7 @@
 		/*
 		 * If the 'operationCount' gets bigger than 20 the application
 		 * should cancelAll ongoing operations,
-		 * sleep for 7 seconds and then scan all the shares.
+		 * sleep for 5 seconds and then scan all the shares.
 		 */
 		
 		if ([fsWatcherQueue operationCount] > 20)
@@ -661,7 +657,7 @@
 				[fsWatcherQueue setSuspended:TRUE];
 				[self performSelector: @selector(restartFSWatcherQueue)
 						 withObject: nil
-						 afterDelay: 7.0];
+						 afterDelay: 5.0];
 				fsWatcherQueueRestartet = TRUE;
 			}
 			continue;
