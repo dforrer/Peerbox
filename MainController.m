@@ -539,11 +539,11 @@
 	[newState setVersions:[NSMutableDictionary dictionaryWithDictionary:[[d rev] versions]]];
 	[[[[d rev] peer] share] setFile:newState];
 	
-	// Remove Revision from db
-	//-------------------------
-	[[[[d rev] peer] share] removeRevision:[d rev] forPeer:[[d rev] peer]];
+	
 	[fileDownloads removeObject:d];
 	
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:fullURL];
 	
 	// Download more files
 	//---------------------
