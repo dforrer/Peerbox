@@ -298,6 +298,7 @@
 		//-------------------------------------
 		NSNumber * biggestRev;
 		NSDictionary * dictFromRev = [requestForShare getFilesAsJSONDictWithLimit:[NSNumber numberWithInt:MAX_REVS_PER_REQUEST] startingFromRev:fromRev biggestRev:&biggestRev];
+		DebugLog(@"dictFromRev:\%@", dictFromRev);
 		if ([dictFromRev count] == 0 || dictFromRev == nil)
 		{
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
