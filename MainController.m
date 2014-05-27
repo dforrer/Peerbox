@@ -638,6 +638,10 @@
 
 	for ( Share * share in [myShares allValues] )
 	{
+		if ([fileURL isEqualTo:[share root]])
+		{
+			continue;
+		}
 		if ( ![FileHelper URL:fileURL hasAsRootURL:[share root]] )
 		{
 			continue;
