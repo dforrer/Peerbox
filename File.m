@@ -48,13 +48,16 @@
 		if (self = [super init])
 		{
 			// if it's a symbolic link
-			if ([FileHelper isSymbolicLink:p]) {
+			if ([FileHelper isSymbolicLink:p])
+			{
 				DebugLog(@"initWithPath: %@", p);
-				if (![FileHelper replaceSymlinkAtPath:p]) {
+				if (![FileHelper replaceSymlinkAtPath:p])
+				{
 					return nil;
 				}
-				if ([FileHelper isDirectory:p]) {
-					[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEvent" object:[NSURL fileURLWithPath:p]];
+				if ([FileHelper isDirectory:p])
+				{
+					[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:[NSURL fileURLWithPath:p]];
 				}
 			}
 			url		= [NSURL fileURLWithPath:p];
