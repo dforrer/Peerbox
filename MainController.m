@@ -355,7 +355,6 @@
  */
 - (void) downloadSharesHasFinishedWithResponseDict:(NSDictionary*)d
 {
-	DebugLog(@"downloadSharesHasFinishedWithResponseDict");
 	// Store response in model
 	//-------------------------
 	NSArray * sharesRemote = [d objectForKey:@"shares"];
@@ -373,7 +372,6 @@
 		Share * s = [myShares objectForKey:[dict objectForKey:@"shareId"]];
 		if ( s )
 		{
-			DebugLog(@"Share exists: %@", [s shareId]);
 			// Check if s(hare) contains a peer with peerId
 			//----------------------------------------------
 			Peer * p = [s getPeerForID:[d objectForKey:@"peerId"]];
@@ -406,13 +404,11 @@
  */
 - (void) downloadRevisionsHasFinished:(DownloadRevisions*)d
 {
-	DebugLog(@"downloadRevisionsHasFinished");
 	NSError * error;
 	
 	// Convert NSData to NSDictionary
 	//--------------------------------
 	NSDictionary * dict = [NSDictionary dictionaryWithJSONData:[d response] error:&error];
-	DebugLog(@"response:\n%@", dict);
 	if (error)
 	{
 		DebugLog(@"response-count:%li", [[dict objectForKey:@"revisions"] count]);
@@ -774,7 +770,6 @@
  */
 - (void) downloadSharesFromPeers
 {
-	DebugLog(@"downloadShares() called...");
 	// For every announced NetService...
 	//-----------------------------------
 	for (id key in [bonjourSearcher resolvedServices])
@@ -795,7 +790,6 @@
  */
 - (void) downloadRevisionsFromPeers
 {
-	DebugLog(@"downloadRevisionsFromPeers");
 	// For every Share ....
 	//----------------------
 	for (id key in myShares)
@@ -810,7 +804,6 @@
 			if (ns != nil
 			    && ([[p currentRev] longLongValue] > [[p lastDownloadedRev] longLongValue]))
 			{
-				DebugLog(@"revisionsDownload alloc");
 				DownloadRevisions * d = [[DownloadRevisions alloc] initWithNetService:ns andPeer:p];
 				[d setDelegate:self];
 				[d start];
