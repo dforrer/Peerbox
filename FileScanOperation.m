@@ -34,7 +34,7 @@
 
 - (void) main
 {
-	return [share scanURL:fileURL];
+	[share scanURL:fileURL recursive:YES];
 }
 
 

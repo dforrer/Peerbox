@@ -544,8 +544,6 @@
 	
 	
 	[fileDownloads removeObject:d];
-	
-	[share scanURL:fullURL];
 		
 	// Download more files
 	//---------------------

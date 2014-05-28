@@ -391,54 +391,31 @@
 #pragma mark -----------------------
 #pragma mark Getter/Setter File
 
-- (void) scanSubDirectoriesOfFile: (File*) f
+- (void) scanSubDirectoriesOfURL:(NSURL*)url
 {
-	NSArray * dirTree = [FileHelper scanDirectoryRecursive:[f url]];
+	NSArray * dirTree = [FileHelper scanDirectoryRecursive:url];
 	for (NSURL * u in dirTree)
 	{
 		@autoreleasepool
 		{
-			if ([[u lastPathComponent] isEqualToString:@".DS_Store"])
-			{
-				continue;
-			}
-			File * f = [self getFileForURL:u];
-			if (f == nil)
-			{
-				f = [[File alloc] initAsNewFileWithPath:[u path]];
-				if (f == nil)
-				{
-					return;
-				}
-				[self setFile:f];
-				continue;
-			}
-			[f setUrl:u];
-			[f updateIsSet];
-			[f updateFileSize];
-			[f updateContentModDate];
-			[f updateAttributesModDate];
-			if ([f isEqualToFile:[self getFileForURL:u]])
-			{
-				continue;
-			}
-			[f updateExtAttributes];
-			if (![f updateVersions])
-			{
-				return;
-			}
-			[self setFile:f];
+			[self scanURL:u recursive:NO];
 		}
 	}
 }
 
 
-- (void) scanURL:(NSURL*)fileURL
+- (void) scanURL:(NSURL*)fileURL recursive:(BOOL)recursive
 {
-	
-	DebugLog(@"--- FileScanOperation: %@", [fileURL absoluteString]);
+	DebugLog(@"scanURL: %@", [fileURL absoluteString]);
 	
 	if (![FileHelper URL:fileURL hasAsRootURL:[self root]])
+	{
+		return;
+	}
+	
+	// Ignore .DS_Store
+	//------------------
+	if ([[fileURL lastPathComponent] isEqualToString:@".DS_Store"])
 	{
 		return;
 	}
@@ -448,8 +425,8 @@
 		// File exists on HD (ADDED/CHANGED)
 		//-----------------------------------
 		DebugLog(@"File exists on HD");
+		
 		File * f = [self getFileForURL:fileURL];
-		[f setUrl:fileURL];
 		
 		if (f == nil)
 		{
@@ -463,11 +440,11 @@
 			}
 			[self setFile:f];
 			
-			// CHECK for directory
-			//---------------------
-			if ([f isDir])
+			// Recursive scan on dirs
+			//------------------------
+			if (recursive && [f isDir])
 			{
-				[self scanSubDirectoriesOfFile:f];
+				[self scanSubDirectoriesOfURL:[f url]];
 			}
 		}
 		else
@@ -475,6 +452,7 @@
 			// File exists in Share
 			//----------------------
 			DebugLog(@"File exists in Share");
+			[f setUrl:fileURL];
 			[f updateIsSet];
 			[f updateFileSize];
 			[f updateContentModDate];
@@ -492,12 +470,12 @@
 				return;
 			}
 			[self setFile:f];
-			
-			// CHECK for directory
-			//---------------------
-			if ([f isDir])
+
+			// Recursive scan on dirs
+			//------------------------
+			if (recursive && [f isDir])
 			{
-				[self scanSubDirectoriesOfFile: f];
+				[self scanSubDirectoriesOfURL:[f url]];
 			}
 		}
 	}

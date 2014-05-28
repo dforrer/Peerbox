@@ -46,12 +46,8 @@
 				return;
 			}
 			NSURL * u = [NSURL URLWithString:urlsAsStrings[i][0]];
-			File * f = [share getFileForURL:u];
-			[f updateIsSet];
-			if (![[f isSet] boolValue])
-			{
-				[share setFile:f];
-			}
+
+			[share scanURL:u recursive:NO];
 		}
 	}
 	
@@ -66,36 +62,7 @@
 			{
 				return;
 			}
-			if ([[u lastPathComponent] isEqualToString:@".DS_Store"])
-			{
-				continue;
-			}
-			File * f = [share getFileForURL:u];
-			if (f == nil)
-			{
-				f = [[File alloc] initAsNewFileWithPath:[u path]];
-				if (f == nil)
-				{
-					//DebugLog(@"f == nil");
-				}
-				[share setFile:f];
-				continue;
-			}
-			[f setUrl:u];
-			[f updateIsSet];
-			[f updateFileSize];
-			[f updateContentModDate];
-			[f updateAttributesModDate];
-			if ([f isEqualToFile:[share getFileForURL:u]])
-			{
-				continue;
-			}
-			[f updateExtAttributes];
-			if (![f updateVersions])
-			{
-				continue;
-			}
-			[share setFile:f];
+			[share scanURL:u recursive:NO];
 		}
 	}
 }

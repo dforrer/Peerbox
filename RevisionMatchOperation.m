@@ -70,7 +70,7 @@
 	 * Why? Because otherwise a file/folder is created
 	 * without the program knowing about.
 	 */
-	[[[rev peer] share] scanURL:fullURL];
+	[[[rev peer] share] scanURL:fullURL recursive:NO];
 }
 
 
@@ -181,7 +181,7 @@
 			
 			NSURL* conflictedCopyURL = [self createConflictedCopy];
 			
-			[[[rev peer] share] scanURL:conflictedCopyURL];
+			[[[rev peer] share] scanURL:conflictedCopyURL recursive:NO];
 			
 			/*
 			 // Delete localState
@@ -246,7 +246,7 @@
 				
 				NSURL* conflictedCopyURL = [self createConflictedCopy];
 				
-				[[[rev peer] share] scanURL:conflictedCopyURL];
+				[[[rev peer] share] scanURL:conflictedCopyURL recursive:NO];
 								
 				/*
 				 // Delete localState
