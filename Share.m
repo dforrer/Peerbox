@@ -136,7 +136,7 @@
 	
 	// Causes the sqlite-file to shrink after deletions
 	//--------------------------------------------------
-	[db performQuery:@"PRAGMA auto_vacuum = FULL" rows:nil error:&error];
+	//[db performQuery:@"PRAGMA auto_vacuum = FULL" rows:nil error:&error];
 	
 	
 	// Create Table "files" + index
