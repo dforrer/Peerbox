@@ -70,7 +70,7 @@
 	 * Why? Because otherwise a file/folder is created
 	 * without the program knowing about.
 	 */
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:fullURL];
+	[[[rev peer] share] scanURL:fullURL];
 }
 
 
@@ -181,9 +181,7 @@
 			
 			NSURL* conflictedCopyURL = [self createConflictedCopy];
 			
-			// Force FSWatcher to scan the conflicted-copy
-			//---------------------------------------------
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:conflictedCopyURL];
+			[[[rev peer] share] scanURL:conflictedCopyURL];
 			
 			/*
 			 // Delete localState
@@ -248,10 +246,8 @@
 				
 				NSURL* conflictedCopyURL = [self createConflictedCopy];
 				
-				// Force FSWatcher to scan the conflicted-copy
-				//---------------------------------------------
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:conflictedCopyURL];
-				
+				[[[rev peer] share] scanURL:conflictedCopyURL];
+								
 				/*
 				 // Delete localState
 				 //-------------------
