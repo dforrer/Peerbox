@@ -545,9 +545,8 @@
 	
 	[fileDownloads removeObject:d];
 	
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:fullURL];
-	
+	[share scanURL:fullURL];
+		
 	// Download more files
 	//---------------------
 	if ([fileDownloads count] < MAX_CONCURRENT_DOWNLOADS / 2)
