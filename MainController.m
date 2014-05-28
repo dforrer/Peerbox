@@ -493,7 +493,10 @@
  */
 - (void) downloadFileHasFinished:(DownloadFile*)d
 {
-	NSURL * fullURL = [NSURL URLWithString:[[d rev] relURL] relativeToURL:[[[[d rev] peer] share] root]];
+	Share * share		= [[[d rev] peer] share];
+	Revision * revision	= [d rev];
+	
+	NSURL * fullURL = [NSURL URLWithString:[revision relURL] relativeToURL:[share root]];
 	
 	// Continue matching the file
 	//----------------------------
@@ -529,15 +532,15 @@
 	
 	// Set extended attributes
 	//-------------------------
-	for (id key in [[d rev] extAttributes])
+	for (id key in [revision extAttributes])
 	{
-		NSData * extAttrBinary = [[NSData alloc] initWithBase64EncodedString:[[[d rev] extAttributes] objectForKey:key] options:0];
+		NSData * extAttrBinary = [[NSData alloc] initWithBase64EncodedString:[[revision extAttributes] objectForKey:key] options:0];
 		[FileHelper setValue:extAttrBinary forName:key onFile:[fullURL path]];
 	}
 	
 	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
-	[newState setVersions:[NSMutableDictionary dictionaryWithDictionary:[[d rev] versions]]];
-	[[[[d rev] peer] share] setFile:newState];
+	[newState setVersions:[NSMutableDictionary dictionaryWithDictionary:[revision versions]]];
+	[share setFile:newState];
 	
 	
 	[fileDownloads removeObject:d];
