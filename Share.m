@@ -406,7 +406,7 @@
 
 - (void) scanURL:(NSURL*)fileURL recursive:(BOOL)recursive
 {
-	DebugLog(@"scanURL: %@", [fileURL absoluteString]);
+	//	DebugLog(@"scanURL: %@", [fileURL absoluteString]);
 	
 	if (![FileHelper URL:fileURL hasAsRootURL:[self root]])
 	{
@@ -424,7 +424,7 @@
 	{
 		// File exists on HD (ADDED/CHANGED)
 		//-----------------------------------
-		DebugLog(@"File exists on HD");
+		//	DebugLog(@"File exists on HD");
 		
 		File * f = [self getFileForURL:fileURL];
 		
@@ -432,7 +432,7 @@
 		{
 			// File doesn't exist in Share
 			//-----------------------------
-			DebugLog(@"File doesn't exist in Share");
+			//	DebugLog(@"File doesn't exist in Share");
 			f = [[File alloc] initAsNewFileWithPath:[fileURL path]];
 			if (f == nil)
 			{
@@ -451,7 +451,7 @@
 		{
 			// File exists in Share
 			//----------------------
-			DebugLog(@"File exists in Share");
+			//	DebugLog(@"File exists in Share");
 			[f setUrl:fileURL];
 			[f updateIsSet];
 			[f updateFileSize];
@@ -461,7 +461,7 @@
 			{
 				// DO NOTHING
 				//------------
-				DebugLog(@"DO NOTHING");
+				//	DebugLog(@"DO NOTHING");
 				return;
 			}
 			[f updateExtAttributes];
@@ -483,30 +483,30 @@
 	{
 		// File doesn't exist on HD (DELETE)
 		//-----------------------------------
-		DebugLog(@"File doesn't exist on HD");
+		//	DebugLog(@"File doesn't exist on HD");
 		File * f = [self getFileForURL:fileURL];
 		if (f == nil)
 		{
 			// File doesn't exists in Share
 			//------------------------------
-			DebugLog(@"File doesn't exists in Share: %@", fileURL);
+			//	DebugLog(@"File doesn't exists in Share: %@", fileURL);
 			// DO NOTHING
 		}
 		else
 		{
 			// File exists in Share
-			DebugLog(@"File exists in Share");
+			//	DebugLog(@"File exists in Share");
 			if ([f isDir])
 			{
 				// File is directory
-				DebugLog(@"File is directory");
+				//	DebugLog(@"File is directory");
 				NSArray * filesToDelete = [self getURLsBelowURL:[f url] withIsSet:YES];
 				for (NSArray * a in filesToDelete)
 				{
 					@autoreleasepool
 					{
 						File * g	= [self getFileForURL:[NSURL URLWithString:a[0]]];
-						DebugLog(@"filesToDelete: %@", a[0]);
+						//	DebugLog(@"filesToDelete: %@", a[0]);
 						[g setIsSetBOOL:FALSE];
 						[self setFile:g];
 					}
