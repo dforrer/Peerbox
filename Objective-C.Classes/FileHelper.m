@@ -22,7 +22,7 @@
 	NSError *error1;
 	[[NSFileManager defaultManager] setAttributes:dict ofItemAtPath:filepath error:&error1];
 	if (error1) {
-	//DebugLog(@"setFilePermissionsTo777: %@", error1);
+		DebugLog(@"setFilePermissionsTo777: %@", error1);
 	}
 }
 
@@ -65,9 +65,9 @@
 
 + (BOOL) replaceSymlinkAtPath: (NSString*) path
 {
-//DebugLog(@"PATH: %@\n", path);
+	DebugLog(@"PATH: %@\n", path);
 	NSString * pointsTo = [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath:path error:nil];
-//DebugLog(@"POINTS TO: %@\n", pointsTo);
+	DebugLog(@"POINTS TO: %@\n", pointsTo);
 	NSString * newPath;
 	
 	if (![pointsTo hasPrefix:@"/"])
@@ -80,14 +80,14 @@
 		newPath = pointsTo;
 	}
 	
-//DebugLog(@"NEWPATH: %@\n", newPath);
+	DebugLog(@"NEWPATH: %@\n", newPath);
 	
 	NSError * error;
 	[[NSFileManager defaultManager] removeItemAtPath:path error:&error];
 	
 	if (error)
 	{
-	//DebugLog(@"ERROR 1: %@\n", error);
+		DebugLog(@"ERROR 1: %@\n", error);
 		return FALSE;
 	}
 	
@@ -104,7 +104,7 @@
 		// symlink contains an absolute path from
 		// a different system.
 		
-	//DebugLog(@"ERROR 2: %@\n", error);
+		DebugLog(@"ERROR 2: %@\n", error);
 		return FALSE;
 	}
 	return TRUE;
@@ -358,7 +358,7 @@
 		
 		if (!fh)
 		{
-		//DebugLog(@"sha1OfFile failed");
+			DebugLog(@"sha1OfFile failed");
 			return nil;
 		}
 		
@@ -537,7 +537,7 @@
 		BOOL success = [fm removeItemAtPath:[NSString stringWithFormat:@"%@/%@", directory, file] error:&error];
 		if (!success || error)
 		{
-		//DebugLog(@"%@", error);
+			DebugLog(@"%@", error);
 			errorOccurred = TRUE;
 			// it failed.
 		}
@@ -564,12 +564,12 @@
 		length = [(NSData *)value length];
 	}
 	else {
-	//DebugLog(@"%s.. unsupported data type, %@", __PRETTY_FUNCTION__, NSStringFromClass([value class]));
+		DebugLog(@"%s.. unsupported data type, %@", __PRETTY_FUNCTION__, NSStringFromClass([value class]));
 		return FALSE;
 	}
 	
 	if (0 != (err = setxattr([filePath UTF8String], [name UTF8String], bytes, length, 0, 0))) {
-	//DebugLog(@"%s.. failed to setxattr(%@), %s", __PRETTY_FUNCTION__, filePath, strerror(errno));
+		DebugLog(@"%s.. failed to setxattr(%@), %s", __PRETTY_FUNCTION__, filePath, strerror(errno));
 	}
 	
 	return TRUE;
@@ -585,7 +585,7 @@
 	void *buffer[4096];
 	
 	if (0 > (size = getxattr([filePath UTF8String], [name UTF8String], buffer, sizeof(buffer), 0, 0)) || size > sizeof(buffer)) {
-	//DebugLog(@"%s.. failed to getxattr(%@), %s", __PRETTY_FUNCTION__, filePath, strerror(errno));
+		DebugLog(@"%s.. failed to getxattr(%@), %s", __PRETTY_FUNCTION__, filePath, strerror(errno));
 		return nil;
 	}
 	
@@ -605,7 +605,7 @@
 	if (0 > (size = listxattr([filePath UTF8String], buffer, sizeof(buffer), 00))
 	    || size > sizeof(buffer))
 	{
-	//DebugLog(@"%s.. failed to listxattr(%@), %s", __PRETTY_FUNCTION__, filePath, strerror(errno));
+		DebugLog(@"%s.. failed to listxattr(%@), %s", __PRETTY_FUNCTION__, filePath, strerror(errno));
 		return nil;
 	}
 	

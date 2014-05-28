@@ -50,7 +50,7 @@
 			// if it's a symbolic link
 			if ([FileHelper isSymbolicLink:p])
 			{
-			//DebugLog(@"initWithPath: %@", p);
+				DebugLog(@"initWithPath: %@", p);
 				if (![FileHelper replaceSymlinkAtPath:p])
 				{
 					return nil;
@@ -244,9 +244,9 @@
 	// Finding the smallest shared revision
 	//-------------------------------------
 	smallestSharedVersion = MAX(local_smallest , remote_smallest);
-//DebugLog(@"shared smallest: %i", smallestSharedVersion);
+	DebugLog(@"shared smallest: %i", smallestSharedVersion);
 	biggestSharedVersion  = MIN(local_biggest  , remote_biggest);
-//DebugLog(@"shared biggest:  %i", biggestSharedVersion);
+	DebugLog(@"shared biggest:  %i", biggestSharedVersion);
 
 	if ( (biggestSharedVersion - smallestSharedVersion) < 0)
 	{
@@ -257,8 +257,8 @@
 	while (i <= biggestSharedVersion
 		  && [[[self versions] objectForKey:[NSString stringWithFormat:@"%i", i]] isEqualToString:[[f versions] objectForKey:[NSString stringWithFormat:@"%i", i]]])
 	{
-	//DebugLog(@"%i: %@", i, [[self versions] objectForKey:[NSString stringWithFormat:@"%i", i]]);
-	//DebugLog(@"%i: %@", i, [[f versions] objectForKey:[NSString stringWithFormat:@"%i", i]]);
+		DebugLog(@"%i: %@", i, [[self versions] objectForKey:[NSString stringWithFormat:@"%i", i]]);
+		DebugLog(@"%i: %@", i, [[f versions] objectForKey:[NSString stringWithFormat:@"%i", i]]);
 		i++;
 	}
 	return !(i == biggestSharedVersion + 1);
@@ -298,9 +298,9 @@
 	// Finding the smallest shared revision
 	//-------------------------------------
 	smallestSharedVersion = MAX(local_smallest , remote_smallest);
-//DebugLog(@"shared smallest: %i", smallestSharedVersion);
+	DebugLog(@"shared smallest: %i", smallestSharedVersion);
 	biggestSharedVersion  = MIN(local_biggest  , remote_biggest);
-//DebugLog(@"shared biggest:  %i", biggestSharedVersion);
+	DebugLog(@"shared biggest:  %i", biggestSharedVersion);
 	
 	if ( (biggestSharedVersion - smallestSharedVersion) < 0)
 	{
@@ -311,8 +311,8 @@
 	while (i <= biggestSharedVersion
 		  && [[v1 objectForKey:[NSString stringWithFormat:@"%i", i]] isEqualToString:[v2 objectForKey:[NSString stringWithFormat:@"%i", i]]])
 	{
-	//DebugLog(@"%i: %@", i, [v1 objectForKey:[NSString stringWithFormat:@"%i", i]]);
-	//DebugLog(@"%i: %@", i, [v2 objectForKey:[NSString stringWithFormat:@"%i", i]]);
+		DebugLog(@"%i: %@", i, [v1 objectForKey:[NSString stringWithFormat:@"%i", i]]);
+		DebugLog(@"%i: %@", i, [v2 objectForKey:[NSString stringWithFormat:@"%i", i]]);
 		i++;
 	}
 	return !(i == biggestSharedVersion + 1);
@@ -373,37 +373,37 @@
 	}
 	if (![[self revision] isEqualToNumber:[f revision]])
 	{
-		//DebugLog(@"isEqualToFile: revision");
+		//	DebugLog(@"isEqualToFile: revision");
 		return FALSE;
 	}
 	if (![[self fileSize] isEqualToNumber:[f fileSize]])
 	{
-		//DebugLog(@"isEqualToFile: fileSize");
+		//	DebugLog(@"isEqualToFile: fileSize");
 		return FALSE;
 	}
 	if (![[self contentModDate] isEqualToDate:[f contentModDate]])
 	{
-		//DebugLog(@"isEqualToFile: contentModDate");
+		//	DebugLog(@"isEqualToFile: contentModDate");
 		return FALSE;
 	}
 	if (![[self attributesModDate] isEqualToDate:[f attributesModDate]])
 	{
-		//DebugLog(@"isEqualToFile: attributesModDate");
+		//	DebugLog(@"isEqualToFile: attributesModDate");
 		return FALSE;
 	}
 	if (![[self isSet] isEqualToNumber:[f isSet]])
 	{
-		//DebugLog(@"isEqualToFile: isSet");
+		//	DebugLog(@"isEqualToFile: isSet");
 		return FALSE;
 	}
 	if (![[self extAttributes] isEqualToDictionary:[f extAttributes]])
 	{
-		//DebugLog(@"isEqualToFile: extAttributes");
+		//	DebugLog(@"isEqualToFile: extAttributes");
 		return FALSE;
 	}
 	if (![[self versions] isEqualToDictionary:[f versions]])
 	{
-		//DebugLog(@"isEqualToFile: versions");
+		//	DebugLog(@"isEqualToFile: versions");
 		return FALSE;
 	}
 	return TRUE;
@@ -424,16 +424,16 @@
 
 - (void) print
 {
-//DebugLog(@"--------------------");
-//DebugLog(@"url:                %@", url);
-//DebugLog(@"revision:           %@", revision);
-//DebugLog(@"fileSize:           %@", fileSize);
-//DebugLog(@"contentModDate:     %@", contentModDate);
-//DebugLog(@"attributesModDate:  %@", attributesModDate);
-//DebugLog(@"isSet:              %@", isSet);
-//DebugLog(@"extAttributes: %@", extAttributes);
-//DebugLog(@"versions:           %@", versions);
-//DebugLog(@"--------------------");
+	DebugLog(@"--------------------");
+	DebugLog(@"url:                %@", url);
+	DebugLog(@"revision:           %@", revision);
+	DebugLog(@"fileSize:           %@", fileSize);
+	DebugLog(@"contentModDate:     %@", contentModDate);
+	DebugLog(@"attributesModDate:  %@", attributesModDate);
+	DebugLog(@"isSet:              %@", isSet);
+	DebugLog(@"extAttributes: %@", extAttributes);
+	DebugLog(@"versions:           %@", versions);
+	DebugLog(@"--------------------");
 }
 
 

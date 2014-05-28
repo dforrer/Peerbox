@@ -31,7 +31,7 @@
  */
 - (void) main
 {
-//DebugLog(@"ShareScanOperation");
+	DebugLog(@"ShareScanOperation");
 
 	// Search DELETED Files
 	//----------------------

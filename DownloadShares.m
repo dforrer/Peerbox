@@ -92,7 +92,7 @@
 - (void) connection:(NSURLConnection*)connection didFailWithError:(NSError*)error 
 {
 	// Handle the error properly
-//DebugLog(@"Error: %@", error);
+	DebugLog(@"Error: %@", error);
 	hasFailed = TRUE;
 }
 

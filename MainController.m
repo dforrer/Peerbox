@@ -152,7 +152,7 @@
 		//--------------
 		[config setMyPeerID:[model objectForKey:@"myPeerID"]];
 		
-	//DebugLog(@"%myPeerID: %@", [config myPeerID]);
+		DebugLog(@"%myPeerID: %@", [config myPeerID]);
 		
 		// Set myShares
 		//--------------
@@ -198,7 +198,7 @@
 	NSString * path = [[config workingDir] stringByAppendingPathComponent:@"model.plist"];
 	if (![model writeToFile:path atomically:TRUE])
 	{
-	//DebugLog(@"AN ERROR OCCURED DURING SAVING OF: model.plist");
+		DebugLog(@"AN ERROR OCCURED DURING SAVING OF: model.plist");
 	}
 }
 
@@ -253,13 +253,13 @@
 	
 	if( ![httpServer start:&error] )
 	{
-	//DebugLog(@"Error starting HTTP Server: %@", error);
+		DebugLog(@"Error starting HTTP Server: %@", error);
 	}
 	else
 	{
-	//DebugLog(@"Server started");
-	//DebugLog(@"address: localhost");
-	//DebugLog(@"port: %i", [httpServer listeningPort]);
+		DebugLog(@"Server started");
+		DebugLog(@"address: localhost");
+		DebugLog(@"port: %i", [httpServer listeningPort]);
 	}
 }
 
@@ -323,8 +323,8 @@
 	NSDictionary * resolvedServices = [bonjourSearcher resolvedServices];
 	for (NSNetService *aNetService in [resolvedServices allValues])
 	{
-	//DebugLog(@"ResolvedServiceName: %@, hostname: %@",[aNetService name], [aNetService hostName]);
-	//DebugLog(@"\thostname: %@", [aNetService hostName]);
+		DebugLog(@"ResolvedServiceName: %@, hostname: %@",[aNetService name], [aNetService hostName]);
+		DebugLog(@"\thostname: %@", [aNetService hostName]);
 	}
 }
 
@@ -332,13 +332,13 @@
 
 - (void) printMyShares
 {
-//DebugLog(@"myPeerId: %@", [config myPeerID]);
+	DebugLog(@"myPeerId: %@", [config myPeerID]);
 	for (Share * s in [myShares allValues])
 	{
-	//DebugLog(@"%@", s);
+		DebugLog(@"%@", s);
 		for (Peer * p in [s allPeers])
 		{
-		//DebugLog(@"%@", p);
+			DebugLog(@"%@", p);
 		}
 	}
 }
@@ -355,14 +355,14 @@
  */
 - (void) downloadSharesHasFinishedWithResponseDict:(NSDictionary*)d
 {
-//DebugLog(@"downloadSharesHasFinishedWithResponseDict");
+	DebugLog(@"downloadSharesHasFinishedWithResponseDict");
 	// Store response in model
 	//-------------------------
 	NSArray * sharesRemote = [d objectForKey:@"shares"];
 	
 	if (!sharesRemote)
 	{
-	//DebugLog(@"ERROR 11: shares is nil");
+		DebugLog(@"ERROR 11: shares is nil");
 		return;
 	}
 	
@@ -373,7 +373,7 @@
 		Share * s = [myShares objectForKey:[dict objectForKey:@"shareId"]];
 		if ( s )
 		{
-		//DebugLog(@"Share exists: %@", [s shareId]);
+			DebugLog(@"Share exists: %@", [s shareId]);
 			// Check if s(hare) contains a peer with peerId
 			//----------------------------------------------
 			Peer * p = [s getPeerForID:[d objectForKey:@"peerId"]];
@@ -396,7 +396,7 @@
  */
 - (void) downloadSharesHasFailed
 {
-//DebugLog(@"downloadSharesHasFailed: Whatever...!");
+	DebugLog(@"downloadSharesHasFailed: Whatever...!");
 }
 
 
@@ -406,16 +406,16 @@
  */
 - (void) downloadRevisionsHasFinished:(DownloadRevisions*)d
 {
-//DebugLog(@"downloadRevisionsHasFinished");
+	DebugLog(@"downloadRevisionsHasFinished");
 	NSError * error;
 	
 	// Convert NSData to NSDictionary
 	//--------------------------------
 	NSDictionary * dict = [NSDictionary dictionaryWithJSONData:[d response] error:&error];
-//DebugLog(@"response:\n%@", dict);
+	DebugLog(@"response:\n%@", dict);
 	if (error)
 	{
-	//DebugLog(@"response-count:%li", [[dict objectForKey:@"revisions"] count]);
+		DebugLog(@"response-count:%li", [[dict objectForKey:@"revisions"] count]);
 		return;
 	}
 	
@@ -472,7 +472,7 @@
 		// Get biggest revision from response->revisions
 		//-----------------------------------------------
 		NSNumber * biggestRev = [dict objectForKey:@"biggestRev"];
-	//DebugLog(@"biggestRev: %@", biggestRev);
+		DebugLog(@"biggestRev: %@", biggestRev);
 		[[d peer] setLastDownloadedRev:biggestRev];
 	}
 }
@@ -510,7 +510,7 @@
 			[[NSFileManager defaultManager] removeItemAtURL:fullURL error:&error];
 			if (error)
 			{
-			//DebugLog(@"ERROR: removeItemAtURL failed!, %@", error);
+				DebugLog(@"ERROR: removeItemAtURL failed!, %@", error);
 				return;
 			}
 		}
@@ -524,7 +524,7 @@
 			[[NSFileManager defaultManager] moveItemAtPath:[d downloadPath] toPath:[fullURL path] error:&error];
 			if (error)
 			{
-			//DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
+				DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
 				return;
 			}
 		}
@@ -560,7 +560,7 @@
  */
 - (void) downloadFileHasFailed:(DownloadFile*)d
 {
-//DebugLog(@"ERROR: downloadFileHasFailed");
+	DebugLog(@"ERROR: downloadFileHasFailed");
 	[fileDownloads removeObject:d];
 	
 	
@@ -610,7 +610,7 @@
  */
 - (void) restartFSWatcherQueue
 {
-//DebugLog(@"restartFSWatcherQueue");
+	DebugLog(@"restartFSWatcherQueue");
 	[fsWatcherQueue cancelAllOperations];
 	
 	// Do the rescan
@@ -635,7 +635,7 @@
 - (void) fsWatcherEvent: (NSNotification *)notification
 {
 	NSURL * fileURL = [notification object];
-//DebugLog(@"fsWatcherEvent: %@", fileURL);
+	DebugLog(@"fsWatcherEvent: %@", fileURL);
 
 	for (Share * share in [myShares allValues])
 	{
@@ -654,7 +654,7 @@
 		{
 			if (fsWatcherQueueRestartet == FALSE)
 			{
-			//DebugLog(@"fswatcherQueueRestartet == FALSE");
+				DebugLog(@"fswatcherQueueRestartet == FALSE");
 				[fsWatcherQueue setSuspended:TRUE];
 				[self performSelector: @selector(restartFSWatcherQueue)
 						 withObject: nil
@@ -687,7 +687,7 @@
 	{
 		[a addObject:[[s root] path]];
 	}
-//DebugLog(@"%@", a);
+	DebugLog(@"%@", a);
 	[fswatcher setPaths:a];
 	[fswatcher startWatching];
 }
@@ -774,7 +774,7 @@
  */
 - (void) downloadSharesFromPeers
 {
-//DebugLog(@"downloadShares() called...");
+	DebugLog(@"downloadShares() called...");
 	// For every announced NetService...
 	//-----------------------------------
 	for (id key in [bonjourSearcher resolvedServices])
@@ -795,7 +795,7 @@
  */
 - (void) downloadRevisionsFromPeers
 {
-//DebugLog(@"downloadRevisionsFromPeers");
+	DebugLog(@"downloadRevisionsFromPeers");
 	// For every Share ....
 	//----------------------
 	for (id key in myShares)
@@ -810,7 +810,7 @@
 			if (ns != nil
 			    && ([[p currentRev] longLongValue] > [[p lastDownloadedRev] longLongValue]))
 			{
-			//DebugLog(@"revisionsDownload alloc");
+				DebugLog(@"revisionsDownload alloc");
 				DownloadRevisions * d = [[DownloadRevisions alloc] initWithNetService:ns andPeer:p];
 				[d setDelegate:self];
 				[d start];

@@ -161,7 +161,9 @@
 		if (newTotalChanges > totalChanges)
 		{
 			[self dbCommit];
-		//DebugLog(@"UNCOMMITED: %i", (newTotalChanges-totalChanges));
+			DebugLog(@"uncommited: %i", (newTotalChanges-totalChanges));
+			DebugLog(@"\tnewTotalChanges: %i", newTotalChanges);
+			DebugLog(@"\ttotalChanges: %i", totalChanges);
 			totalChanges = newTotalChanges;
 			[self dbBegin];
 		}
@@ -175,7 +177,7 @@
 	[db performQuery: @"BEGIN" rows:nil error:&error];
 	if (error)
 	{
-	//DebugLog(@"%@", error);
+		DebugLog(@"%@", error);
 	}
 }
 
@@ -186,7 +188,7 @@
 	[db performQuery: @"COMMIT" rows:nil error:&error];
 	if (error)
 	{
-	//DebugLog(@"%@", error);
+		DebugLog(@"%@", error);
 	}
 }
 
@@ -239,7 +241,7 @@
 		NSData * extAttrData = [[CJSONSerializer serializer] serializeObject:[r extAttributes] error:&error];
 		if (error)
 		{
-		//DebugLog(@"CJSONSerializer Error: %@", error);
+			DebugLog(@"CJSONSerializer Error: %@", error);
 			extAttrData = [NSData data];
 		}
 		NSString * extAttrJSON = [[NSString alloc] initWithData:extAttrData encoding:NSUTF8StringEncoding];
@@ -251,7 +253,7 @@
 		NSData * versionsData = [[CJSONSerializer serializer] serializeObject:[r versions] error:&error];
 		if (error)
 		{
-		//DebugLog(@"CJSONSerializer Error: %@", error);
+			DebugLog(@"CJSONSerializer Error: %@", error);
 			versionsData = [NSData data];
 		}
 		NSString * versionsJSON = [[NSString alloc] initWithData:versionsData encoding:NSUTF8StringEncoding];
@@ -279,7 +281,7 @@
 		int rv = (int) [db performQuery:querySELECT rows:&rows error:&error];
 		if (error)
 		{
-		//DebugLog(@"ERROR during performQuery");
+			DebugLog(@"ERROR during performQuery");
 			return;
 		}
 		
@@ -288,11 +290,11 @@
 			// Try UPDATE
 			//------------
 			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE revisions SET peerID='%@', relURL='%@', revision=%lld, fileSize=%lld, isSet=%i, extAttributes='%@', versions='%@', isDir=%i, lastMatchAttemptDate='%@' WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue],[[r fileSize] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [p peerID], [[r relURL] sqlString]];
-		//DebugLog(@"%@", queryUPDATE);
+			DebugLog(@"%@", queryUPDATE);
 			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error)
 			{
-			//DebugLog(@"ERROR during UPDATE");
+				DebugLog(@"ERROR during UPDATE");
 			}
 		}
 		else
@@ -300,11 +302,11 @@
 			// Try INSERT
 			//------------
 			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO revisions (peerID, relURL, revision, fileSize, isSet, extAttributes, versions, isDir, lastMatchAttemptDate) VALUES ('%@', '%@', %lld, %lld, %i, '%@', '%@', %i, '%@');", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue], [[r fileSize] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt]];
-		//DebugLog(@"%@", queryINSERT);
+			DebugLog(@"%@", queryINSERT);
 			rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
 			if (error)
 			{
-			//DebugLog(@"ERROR during INSERT");
+				DebugLog(@"ERROR during INSERT");
 			}
 		}
 	}
@@ -361,14 +363,14 @@
 	[rv setExtAttributes:[NSDictionary dictionaryWithJSONString:rows[0][3] error:&error]];
 	if (error)
 	{
-	//DebugLog(@"A JSON-Error was encountered!");
+		DebugLog(@"A JSON-Error was encountered!");
 		exit(-1);
 	}
 	error = nil;
 	[rv setVersions:[NSDictionary dictionaryWithJSONString:rows[0][4] error:&error]];
 	if (error)
 	{
-	//DebugLog(@"A JSON-Error was encountered!");
+		DebugLog(@"A JSON-Error was encountered!");
 		exit(-1);
 	}
 	[rv setIsDir:rows[0][5]];
@@ -404,7 +406,7 @@
 
 - (void) scanURL:(NSURL*)fileURL recursive:(BOOL)recursive
 {
-	//DebugLog(@"scanURL: %@", [fileURL absoluteString]);
+	//	DebugLog(@"scanURL: %@", [fileURL absoluteString]);
 	
 	if (![FileHelper URL:fileURL hasAsRootURL:[self root]])
 	{
@@ -422,7 +424,7 @@
 	{
 		// File exists on HD (ADDED/CHANGED)
 		//-----------------------------------
-		//DebugLog(@"File exists on HD");
+		//	DebugLog(@"File exists on HD");
 		
 		File * f = [self getFileForURL:fileURL];
 		
@@ -430,7 +432,7 @@
 		{
 			// File doesn't exist in Share
 			//-----------------------------
-			//DebugLog(@"File doesn't exist in Share");
+			//	DebugLog(@"File doesn't exist in Share");
 			f = [[File alloc] initAsNewFileWithPath:[fileURL path]];
 			if (f == nil)
 			{
@@ -449,7 +451,7 @@
 		{
 			// File exists in Share
 			//----------------------
-			//DebugLog(@"File exists in Share");
+			//	DebugLog(@"File exists in Share");
 			[f setUrl:fileURL];
 			[f updateIsSet];
 			[f updateFileSize];
@@ -459,7 +461,7 @@
 			{
 				// DO NOTHING
 				//------------
-				//DebugLog(@"DO NOTHING");
+				//	DebugLog(@"DO NOTHING");
 				return;
 			}
 			[f updateExtAttributes];
@@ -481,30 +483,30 @@
 	{
 		// File doesn't exist on HD (DELETE)
 		//-----------------------------------
-		//DebugLog(@"File doesn't exist on HD");
+		//	DebugLog(@"File doesn't exist on HD");
 		File * f = [self getFileForURL:fileURL];
 		if (f == nil)
 		{
 			// File doesn't exists in Share
 			//------------------------------
-			//DebugLog(@"File doesn't exists in Share: %@", fileURL);
+			//	DebugLog(@"File doesn't exists in Share: %@", fileURL);
 			// DO NOTHING
 		}
 		else
 		{
 			// File exists in Share
-			//DebugLog(@"File exists in Share");
+			//	DebugLog(@"File exists in Share");
 			if ([f isDir])
 			{
 				// File is directory
-				//DebugLog(@"File is directory");
+				//	DebugLog(@"File is directory");
 				NSArray * filesToDelete = [self getURLsBelowURL:[f url] withIsSet:YES];
 				for (NSArray * a in filesToDelete)
 				{
 					@autoreleasepool
 					{
 						File * g	= [self getFileForURL:[NSURL URLWithString:a[0]]];
-						//DebugLog(@"filesToDelete: %@", a[0]);
+						//	DebugLog(@"filesToDelete: %@", a[0]);
 						[g setIsSetBOOL:FALSE];
 						[self setFile:g];
 					}
@@ -564,7 +566,7 @@
 		NSData * extAttrData = [[CJSONSerializer serializer] serializeObject:[f extAttributes] error:&error];
 		if (error)
 		{
-		//DebugLog(@"CJSONSerializer Error: %@", error);
+			DebugLog(@"CJSONSerializer Error: %@", error);
 			extAttrData = [NSData data];
 		}
 		NSString * extAttrJSON = [[NSString alloc] initWithData:extAttrData encoding:NSUTF8StringEncoding];
@@ -576,7 +578,7 @@
 		NSData * versionsData = [[CJSONSerializer serializer] serializeObject:[f versions] error:&error];
 		if (error)
 		{
-		//DebugLog(@"CJSONSerializer Error: %@", error);
+			DebugLog(@"CJSONSerializer Error: %@", error);
 			versionsData = [NSData data];
 		}
 		NSString * versionsJSON = [[NSString alloc] initWithData:versionsData encoding:NSUTF8StringEncoding];
@@ -590,7 +592,7 @@
 			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE files SET url='%@', revision=%lld, fileSize=%lld, contentModDate='%@', attributesModDate='%@', isSet=%i, extAttributes='%@', versions='%@' WHERE uid='%@';",[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[[[f url] absoluteString] lowercaseString] sqlString]];
 			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error) {
-			//DebugLog(@"ERROR during UPDATE");
+				DebugLog(@"ERROR during UPDATE");
 			}
 		}
 		else
@@ -600,7 +602,7 @@
 			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO files (uid, url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions) VALUES ('%@', '%@',%lld, %lld, '%@','%@',%i,'%@','%@');", [[[[f url] absoluteString] lowercaseString] sqlString],[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString]];
 			rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
 			if (error) {
-			//DebugLog(@"ERROR during INSERT");
+				DebugLog(@"ERROR during INSERT");
 			}
 		}
 		return rv;
@@ -639,14 +641,14 @@
 	[rv setExtAttributes:[NSMutableDictionary dictionaryWithJSONString:rows[0][6] error:&error]];
 	if (error)
 	{
-	//DebugLog(@"A JSON-Error was encountered!");
+		DebugLog(@"A JSON-Error was encountered!");
 		exit(-1);
 	}
 	error = nil;
 	[rv setVersions:[NSDictionary dictionaryWithJSONString:rows[0][7] error:&error]];
 	if (error)
 	{
-	//DebugLog(@"A JSON-Error was encountered!");
+		DebugLog(@"A JSON-Error was encountered!");
 		exit(-1);
 	}
 	
@@ -703,7 +705,7 @@
 	uint64_t rowCount = [db performQuery:query rows:&rows error:&error];
 	if (error)
 	{
-	//DebugLog(@"error: %@", error);
+		DebugLog(@"error: %@", error);
 		return nil;
 	}
 	
@@ -738,7 +740,7 @@
 		NSMutableDictionary * extAttr = [NSMutableDictionary dictionaryWithJSONString:rows[i][6] error:&theError];
 		if (theError)
 		{
-		//DebugLog(@"A JSON-Error was encountered!");
+			DebugLog(@"A JSON-Error was encountered!");
 			return nil;
 		}
 		[f setObject:extAttr forKey:@"extendedAttributes"];
@@ -775,7 +777,7 @@
 	uint64_t rowCount = [db performQuery:query rows:&rows error:&error];
 	if (error)
 	{
-	//DebugLog(@"error: %@", error);
+		DebugLog(@"error: %@", error);
 		return nil;
 	}
 	
@@ -809,7 +811,7 @@
 		NSMutableDictionary * extAttr = [NSMutableDictionary dictionaryWithJSONString:rows[i][6] error:&error2];
 		if (error2)
 		{
-		//DebugLog(@"A JSON-Error was encountered!");
+			DebugLog(@"A JSON-Error was encountered!");
 			return nil;
 		}
 		[f setObject:extAttr forKey:@"extendedAttributes"];

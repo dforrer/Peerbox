@@ -50,7 +50,7 @@
 		{
 			[data setLength:bytesRead];
 			[encryptor addData:data];
-		//DebugLog(@"Sent %ld bytes to decryptor", (unsigned long)bytesRead);
+			DebugLog(@"Sent %ld bytes to decryptor", (unsigned long)bytesRead);
 		}
 	};
 	
