@@ -22,7 +22,7 @@
 
 // File-Management
 //-----------------
-- (int) setFile:(File*)f;
+- (int) setFile:(File*)f;	// should only be used by helper-classes of Share-class
 - (File*) getFileForURL:(NSURL*)u;
 - (File*) getFileForRev:(NSNumber*)rev;
 - (void) removeFile:(File*)f;
