@@ -161,9 +161,7 @@
 		if (newTotalChanges > totalChanges)
 		{
 			[self dbCommit];
-			DebugLog(@"uncommited: %i", (newTotalChanges-totalChanges));
-			DebugLog(@"\tnewTotalChanges: %i", newTotalChanges);
-			DebugLog(@"\ttotalChanges: %i", totalChanges);
+			DebugLog(@"UNCOMMITED: %i", (newTotalChanges-totalChanges));
 			totalChanges = newTotalChanges;
 			[self dbBegin];
 		}
@@ -290,7 +288,7 @@
 			// Try UPDATE
 			//------------
 			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE revisions SET peerID='%@', relURL='%@', revision=%lld, fileSize=%lld, isSet=%i, extAttributes='%@', versions='%@', isDir=%i, lastMatchAttemptDate='%@' WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue],[[r fileSize] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [p peerID], [[r relURL] sqlString]];
-			DebugLog(@"%@", queryUPDATE);
+			//DebugLog(@"%@", queryUPDATE);
 			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error)
 			{
@@ -302,7 +300,7 @@
 			// Try INSERT
 			//------------
 			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO revisions (peerID, relURL, revision, fileSize, isSet, extAttributes, versions, isDir, lastMatchAttemptDate) VALUES ('%@', '%@', %lld, %lld, %i, '%@', '%@', %i, '%@');", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue], [[r fileSize] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt]];
-			DebugLog(@"%@", queryINSERT);
+			//DebugLog(@"%@", queryINSERT);
 			rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
 			if (error)
 			{
