@@ -145,9 +145,10 @@
 	[db performQuery:@"CREATE INDEX IF NOT EXISTS index_files_revision ON files (revision);" rows:nil error:&error];
 	
 	
-	// Create Table "Revisions"
-	//------------------------------------
+	// Create Table "Revisions" + index
+	//----------------------------------
 	[db performQuery:@"CREATE TABLE IF NOT EXISTS revisions (peerID TEXT, relURL TEXT, revision SQLITE3_INT64, fileSize SQLITE3_INT64, isSet INTEGER, extAttributes TEXT, versions TEXT, isDir INTEGER, lastMatchAttemptDate TEXT)" rows:nil error:&error];
+	[db performQuery:@"CREATE INDEX IF NOT EXISTS index_revisions_fileSize ON revisions (peerID, fileSize);" rows:nil error:&error];
 }
 
 
