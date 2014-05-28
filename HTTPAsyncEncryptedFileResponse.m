@@ -62,7 +62,7 @@
 		filePath			= [fpath copy];
 		if (filePath == nil)
 		{
-			DebugLog(@"%@: Init failed - Nil filePath", THIS_FILE);
+		//DebugLog(@"%@: Init failed - Nil filePath", THIS_FILE);
 			
 			return nil;
 		}
@@ -105,7 +105,7 @@
 	if (bytesRead < 0)
 	{
 		// Throw an error
-		DebugLog(@"ERROR 3: bytesRead < 0")
+	//DebugLog(@"ERROR 3: bytesRead < 0")
 		[self abort];
 	}
 	else if (bytesRead == 0)
@@ -123,7 +123,7 @@
 
 - (void) abort
 {
-	DebugLog(@"ABORTED");
+//DebugLog(@"ABORTED");
 	[connection responseDidAbort:self];
 	aborted = YES;
 }
@@ -161,7 +161,7 @@
 - (BOOL) isDone
 {
 	BOOL result = finishedReading;
-	DebugLog(@"isDone - %@", (result ? @"YES" : @"NO"));
+//DebugLog(@"isDone - %@", (result ? @"YES" : @"NO"));
 	return result;
 }
 
@@ -180,7 +180,7 @@
 
 - (void) connectionDidClose
 {
-	DebugLog(@"connectionDidClose");
+//DebugLog(@"connectionDidClose");
 	[readStream close];
 	readStream	= nil;
 	filePath		= nil;
@@ -191,7 +191,7 @@
 
 - (void) dealloc
 {
-	DebugLog(@"dealloc");
+//DebugLog(@"dealloc");
 }
 
 

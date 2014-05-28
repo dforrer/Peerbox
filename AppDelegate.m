@@ -38,7 +38,7 @@
 {
 	@autoreleasepool
 	{
-		DebugLog(@"applicationDidFinishLaunching");
+	//DebugLog(@"applicationDidFinishLaunching");
 		mm = [[Singleton data] mainModel];
 		[sharesTableView reloadData];
 	}
@@ -53,7 +53,7 @@
  */
 - (BOOL) applicationShouldTerminateAfterLastWindowClosed: (NSApplication *)theApplication
 {
-	DebugLog(@"applicationShouldTerminateAfterLastWindowClosed");
+//DebugLog(@"applicationShouldTerminateAfterLastWindowClosed");
 	return YES;
 }
 
@@ -62,7 +62,7 @@
  */
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
-	DebugLog(@"applicationWillTerminate");
+//DebugLog(@"applicationWillTerminate");
 	[mm commitAllShareDBs];
 	[mm saveModel];
 }

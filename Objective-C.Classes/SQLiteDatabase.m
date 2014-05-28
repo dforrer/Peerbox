@@ -32,7 +32,7 @@
 		//---------------------------
 		if (retval != SQLITE_OK)
 		{
-			DebugLog(@"[SQLITE] Unable to open database!");
+		//DebugLog(@"[SQLITE] Unable to open database!");
 			return nil; // if it fails, return nil obj
 		}
 	}
@@ -101,7 +101,7 @@
 				}
 				else
 				{
-					DebugLog(@"[SQLITE] UNKNOWN DATATYPE");
+				//DebugLog(@"[SQLITE] UNKNOWN DATATYPE");
 				}
 				if (value != nil)
 				{

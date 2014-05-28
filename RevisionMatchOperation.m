@@ -43,7 +43,7 @@
  */
 - (void) match
 {
-	DebugLog(@"match");
+//DebugLog(@"match");
 	// match directory
 	//-----------------
 	if ([[rev isDir] boolValue])
@@ -88,12 +88,12 @@
 	{
 		// Revision = ADD-Directory
 		//--------------------------
-		DebugLog(@"ADD-Directory");
+	//DebugLog(@"ADD-Directory");
 		NSError * error = nil;
 		[[NSFileManager defaultManager] createDirectoryAtURL:fullURL withIntermediateDirectories:YES attributes:nil error:&error];
 		if (error != nil)
 		{
-			DebugLog(@"ERROR creating directory: %@", error);
+		//DebugLog(@"ERROR creating directory: %@", error);
 			return;
 		}
 		
@@ -103,7 +103,7 @@
 	{
 		// Revision = DELETE-Directory
 		//-----------------------------
-		DebugLog(@"DEL-Directory");
+	//DebugLog(@"DEL-Directory");
 		if ([FileHelper fileFolderExists:[fullURL path]])
 		{
 			// C implementation
@@ -113,7 +113,7 @@
 			int rv = rmdir([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
 			if (rv != 0)
 			{
-				DebugLog(@"DEL of Dir failed, there must be other files in this directory");
+			//DebugLog(@"DEL of Dir failed, there must be other files in this directory");
 				
 				
 				/*
@@ -139,7 +139,7 @@
 	//----------------------------------------------------------
 	if ( ([[localState isSet] intValue] == 0 || localState == nil) && [[rev isSet] intValue] == 1)
 	{
-		DebugLog(@"A");
+	//DebugLog(@"A");
 		
 		// (No checking for conflicts)
 		
@@ -161,7 +161,7 @@
 	//-----------------------------------------------------------------------------
 	if ( ([[localState isSet] intValue] == 0 || localState == nil) && [[rev isSet] intValue] == 0)
 	{
-		DebugLog(@"B  (doing nothing)");
+	//DebugLog(@"B  (doing nothing)");
 	}
 	
 	
@@ -169,13 +169,13 @@
 	//---------------------------------------------------------
 	if ( [[localState isSet] intValue] == 1 && [[rev isSet] intValue] == 0)
 	{
-		DebugLog(@"C");
+	//DebugLog(@"C");
 		
 		// check for conflicts
 		//---------------------
 		if ([File versions:[rev versions] hasConflictsWithVersions:[localState versions]])
 		{
-			DebugLog(@"C1");
+		//DebugLog(@"C1");
 			
 			// (WITH CONFLICT)
 			
@@ -193,7 +193,7 @@
 		}
 		else
 		{
-			DebugLog(@"C2");
+		//DebugLog(@"C2");
 			
 			// (WITHOUT CONFLICT)
 			
@@ -213,7 +213,7 @@
 					
 					if (error || !success)
 					{
-						DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
+					//DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
 						remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
 						/*
 						 [localState setIsSetBOOL:FALSE];
@@ -232,12 +232,12 @@
 	//--------------------------------------------------------------------------------
 	if ( [[localState isSet] intValue] == 1 && [[rev isSet] intValue] == 1)
 	{
-		DebugLog(@"D");
+	//DebugLog(@"D");
 		// check for conflicts
 		//---------------------
 		if ([File versions:[rev versions] hasConflictsWithVersions:[localState versions]])
 		{
-			DebugLog(@"D1");
+		//DebugLog(@"D1");
 			// (WITH CONFLICT)
 			
 			if ([[config myPeerID] isLessThan:[[rev peer] peerID]])
@@ -261,14 +261,14 @@
 			else
 			{
 				// (myPeerId >= otherPeerId)
-				DebugLog(@"DO NOTHING because myPeerId >= otherPeerId");
+			//DebugLog(@"DO NOTHING because myPeerId >= otherPeerId");
 				
 				// DO NOTHING
 			}
 		}
 		else
 		{
-			DebugLog(@"D2");
+		//DebugLog(@"D2");
 			
 			// (WITHOUT CONFLICT)
 			
@@ -291,7 +291,7 @@
 				// (localState:versions:biggestKey >= remoteState:versions:biggestKey)
 				
 				// DO NOTHING
-				DebugLog(@"DO NOTHING");
+			//DebugLog(@"DO NOTHING");
 			}
 		}
 	}
@@ -300,7 +300,7 @@
 
 - (void) matchZeroLengthFile
 {
-	DebugLog(@"matchZeroLengthFile");
+//DebugLog(@"matchZeroLengthFile");
 	
 	// Create empty file
 	//-------------------
@@ -314,12 +314,12 @@
 	
 	if (fh == nil)
 	{
-		DebugLog(@"ERROR: Failure to create empty file at %@", [fullURL path]);
+	//DebugLog(@"ERROR: Failure to create empty file at %@", [fullURL path]);
 		NSError * error = nil;
 		[[NSFileManager defaultManager] createDirectoryAtURL:[fullURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&error];
 		if (error != nil)
 		{
-			DebugLog(@"ERROR creating directory: %@", error);
+		//DebugLog(@"ERROR creating directory: %@", error);
 			return;
 		}
 		
@@ -346,13 +346,13 @@
  */
 - (void) matchRemoteState
 {
-	DebugLog(@"matchRemoteState");
+//DebugLog(@"matchRemoteState");
 	
 	// Store Revision in Share->db, if the file requires a download
 	//--------------------------------------------------------------
 	if (![rev canBeMatchedInstantly])
 	{
-		DebugLog(@"Revision CAN'T be matched instantly");
+	//DebugLog(@"Revision CAN'T be matched instantly");
 		[[[rev peer] share] setRevision:rev forPeer:[rev peer]];
 		return;
 	}
@@ -388,7 +388,7 @@
 		[[NSFileManager defaultManager] moveItemAtPath:[[localState url] path] toPath:[conflictedCopyURL path] error:&error];
 		if (error)
 		{
-			DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
+		//DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
 			return nil;
 		}
 		return conflictedCopyURL;

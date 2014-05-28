@@ -125,7 +125,7 @@
 		NSData * response = [[CJSONSerializer serializer] serializeObject:responseDict error:&error];
 		if ( error )
 		{
-			DebugLog(@"A CJSON error occurec!");
+		//DebugLog(@"A CJSON error occurec!");
 		}
 		return [[HTTPDataResponse alloc] initWithData:response];
 	}
@@ -136,7 +136,7 @@
 	if ( [method isEqualToString:@"GET"]
 	    && [path isEqualToString:@"/shares"])
 	{
-		DebugLog(@"GET-REQUEST to URI /shares");
+	//DebugLog(@"GET-REQUEST to URI /shares");
 		NSMutableArray * tmpArray = [NSMutableArray array];
 		for ( Share * s in [allShares allValues ])
 		{
@@ -155,7 +155,7 @@
 		NSData * response = [[CJSONSerializer serializer] serializeObject:responseDict error:&error];
 		if ( error )
 		{
-			DebugLog(@"A CJSON error occurred!");
+		//DebugLog(@"A CJSON error occurred!");
 		}
 		return [[HTTPDataResponse alloc] initWithData:response];
 	}
@@ -170,7 +170,7 @@
 	    && [[pathComponents objectAtIndex:1] isEqualToString:@"shares"]
 	    && [[pathComponents objectAtIndex:3] isEqualToString:@"revisions"])
 	{
-		DebugLog(@"POST-REQUEST to URI /shares/<shareId>/revisions");
+	//DebugLog(@"POST-REQUEST to URI /shares/<shareId>/revisions");
 		
 		NSString * shareId = [[pathComponents objectAtIndex: 2] stringByRemovingPercentEncoding];
 		Share * requestForShare = [allShares objectForKey:shareId];
@@ -180,7 +180,7 @@
 		//-------------
 		if (requestForShare == nil)
 		{
-			DebugLog(@"ERROR 4: 404")
+		//DebugLog(@"ERROR 4: 404")
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
 		}
 		
@@ -220,7 +220,7 @@
 		NSData * response = [[CJSONSerializer serializer] serializeObject:responseDict error:&error];
 		if (error)
 		{
-			DebugLog(@"ERROR 5: 403")
+		//DebugLog(@"ERROR 5: 403")
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
 		}
 		
@@ -245,7 +245,7 @@
 	    && [[pathComponents objectAtIndex:1] isEqualToString:@"shares"]
 	    && [[pathComponents objectAtIndex:3] isEqualToString:@"revisionsDict"])
 	{
-		DebugLog(@"POST-REQUEST to URI /shares/<shareId>/revisionsDict");
+	//DebugLog(@"POST-REQUEST to URI /shares/<shareId>/revisionsDict");
 		
 		NSString * shareId = [[pathComponents objectAtIndex: 2] stringByRemovingPercentEncoding];
 		Share * requestForShare = [allShares objectForKey:shareId];
@@ -255,7 +255,7 @@
 		//------------------------------------
 		if (requestForShare == nil)
 		{
-			DebugLog(@"requestForShare == nil");
+		//DebugLog(@"requestForShare == nil");
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
 		}
 		
@@ -264,7 +264,7 @@
 		NSData * postData = [request body];
 		if (!postData)
 		{
-			DebugLog(@"ERROR 8: postData is nil");
+		//DebugLog(@"ERROR 8: postData is nil");
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
 		}
 /*
@@ -274,7 +274,7 @@
 			postData = [RNDecryptor decryptData:postData withPassword:[requestForShare secret] error:&error];
 			if (error)
 			{
-				DebugLog(@"ERROR 6");
+			//DebugLog(@"ERROR 6");
 			}
 		}
 */
@@ -282,7 +282,7 @@
 		NSDictionary * postDict = [NSDictionary dictionaryWithJSONData:postData error:&error];
 		if (error)
 		{
-			DebugLog(@"ERROR 9: %@", error);
+		//DebugLog(@"ERROR 9: %@", error);
 			return [[HTTPErrorResponse alloc] initWithErrorCode:403];
 		}
 		NSNumber * fromRev = [postDict objectForKey:@"fromRev"];
@@ -312,7 +312,7 @@
 		NSData * response = [[CJSONSerializer serializer] serializeObject:responseDict error:&error];
 		if (error)
 		{
-			DebugLog(@"A CJSON error occurred!");
+		//DebugLog(@"A CJSON error occurred!");
 			return [[HTTPErrorResponse alloc] initWithErrorCode:204]; // "No Content"
 		}
 	
@@ -337,7 +337,7 @@
 	    && [[pathComponents objectAtIndex:1] isEqualToString:@"shares"]
 	    && [[pathComponents objectAtIndex:3] isEqualToString:@"files"])
 	{
-		DebugLog(@"POST-REQUEST to URI /shares/<shareId>/files");
+	//DebugLog(@"POST-REQUEST to URI /shares/<shareId>/files");
 
 		NSString * shareId = [[pathComponents objectAtIndex: 2] stringByRemovingPercentEncoding];
 		Share * requestForShare = [allShares objectForKey:shareId];
@@ -346,7 +346,7 @@
 		//-------------
 		if (requestForShare == nil)
 		{
-			DebugLog(@"ERROR: 404 - Share does not exist")
+		//DebugLog(@"ERROR: 404 - Share does not exist")
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
 		}
 		
@@ -364,14 +364,14 @@
 		NSDictionary * postDict = [NSDictionary dictionaryWithJSONData:postData error:&error];
 		if (error)
 		{
-			DebugLog(@"ERROR: 403 - Postdata is invalid");
+		//DebugLog(@"ERROR: 403 - Postdata is invalid");
 			return [[HTTPErrorResponse alloc] initWithErrorCode:403];
 		}
 		NSString * relUrl = [postDict objectForKey:@"relUrl"];
 		NSURL* rv = [NSURL fileURLWithPathComponents:[NSArray arrayWithObjects:[[requestForShare root] path], relUrl, nil]];
 		if (![FileHelper fileFolderExists:[rv path]])
 		{
-			DebugLog(@"ERROR: 404 - File does not exist")
+		//DebugLog(@"ERROR: 404 - File does not exist")
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
 		}
 		//DebugLog(@"url: %@", rv);
@@ -406,7 +406,7 @@
 	BOOL result = [request appendData:postDataChunk];
 	if (!result)
 	{
-		DebugLog(@"Couldn't append bytes!");
+	//DebugLog(@"Couldn't append bytes!");
 	}
 }
 

@@ -29,12 +29,12 @@
 {
 	if ((self = [super init]))
 	{
-		DebugLog(@"BonjourServiceSearcher: init");
+	//DebugLog(@"BonjourServiceSearcher: init");
 		services = [[NSMutableArray alloc] init];
 		resolvedServices = [[NSMutableDictionary alloc] init];
 		serviceBrowser = [[NSNetServiceBrowser alloc] init];
 		myServiceName = [[NSHost currentHost] localizedName];
-		DebugLog(@"myServiceName: %@", myServiceName);
+	//DebugLog(@"myServiceName: %@", myServiceName);
 		[serviceBrowser setDelegate:self];
 		/*
 		 The following line would search for all bonjour services:
@@ -72,7 +72,7 @@
 	{
 		if (![services containsObject:aNetService])
 		{
-			DebugLog(@"NetService added to services Array: %@",aNetService);
+		//DebugLog(@"NetService added to services Array: %@",aNetService);
 			[services addObject:aNetService];
 			[aNetService setDelegate:self];
 			[aNetService resolveWithTimeout:3];
@@ -91,7 +91,7 @@
 {
 	if ([services containsObject:aNetService])
 	{
-		DebugLog(@"BonjourServiceSearcher: didRemoveService");
+	//DebugLog(@"BonjourServiceSearcher: didRemoveService");
 		[self willChangeValueForKey:@"services"];
 		[services removeObject:aNetService];
 		[resolvedServices removeObjectForKey:[aNetService name]];
@@ -107,7 +107,7 @@
  */
 - (void) netServiceDidResolveAddress: (NSNetService *)aNetService
 {
-	DebugLog(@"BonjourServiceSearcher: didResolveService: \nname: %@, \nhostname: %@",[aNetService name], [aNetService hostName]);
+//DebugLog(@"BonjourServiceSearcher: didResolveService: \nname: %@, \nhostname: %@",[aNetService name], [aNetService hostName]);
 	[resolvedServices setObject:aNetService forKey:[aNetService name]];
 	[delegate bonjourSearcherServiceResolved:aNetService];
 }
@@ -120,7 +120,7 @@
 - (void) netService: (NSNetService *)aNetService
 	 didNotResolve: (NSDictionary *)errorDict
 {
-	DebugLog(@"Resolve failed");
+//DebugLog(@"Resolve failed");
 	[services removeObject:aNetService];
 }
 

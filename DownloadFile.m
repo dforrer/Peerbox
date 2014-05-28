@@ -67,7 +67,7 @@
 		[request setTimeoutInterval:30];
 		[request setHTTPBody: [self preparePostData]];
 		[request setURL: [self urlFromNetService: netService]];
-		DebugLog(@"URL: %@", [request URL]);
+	//DebugLog(@"URL: %@", [request URL]);
 
 
 	/*	decryptor = [[RNDecryptor alloc] initWithPassword:[share secret] handler:
@@ -98,7 +98,7 @@
 												error: &error];
 	if (error)
 	{
-		DebugLog(@"ERROR 1: %@", error);
+	//DebugLog(@"ERROR 1: %@", error);
 	}
 	error = nil;
 	
@@ -114,7 +114,7 @@
 	
 	if (error)
 	{
-		DebugLog(@"ERROR 2: %@", error);
+	//DebugLog(@"ERROR 2: %@", error);
 	}
 	return rv;
 }
@@ -190,7 +190,7 @@
 		long statusCode = [((NSHTTPURLResponse *)response) statusCode];
 		if (statusCode != 200)
 		{
-			DebugLog(@"HTTP-ERROR: didReceiveResponse statusCode: %li", statusCode);
+		//DebugLog(@"HTTP-ERROR: didReceiveResponse statusCode: %li", statusCode);
 			[self->connection cancel];  // stop connecting; no more delegate messages
 			hasFailed = TRUE;
 			[download closeFile];
@@ -220,7 +220,7 @@
 {
 	// Handle the error properly
 	//---------------------------
-	DebugLog(@"Error: %@",error);
+//DebugLog(@"Error: %@",error);
 	hasFailed = TRUE;
 	
 	// Notify Revision-Instance that the download has failed
@@ -234,7 +234,7 @@
 // OVERRIDE
 - (void) connectionDidFinishLoading:(NSURLConnection*)connection
 {
-	DebugLog(@"Download finished");
+//DebugLog(@"Download finished");
 	isFinished = TRUE;
 	
 	// Finish up the sha1
