@@ -22,6 +22,7 @@
 
 // File-Management
 //-----------------
+- (void) scanURL:(NSURL*)fileURL;
 - (int) setFile:(File*)f;	// should only be used by helper-classes of Share-class
 - (File*) getFileForURL:(NSURL*)u;
 - (File*) getFileForRev:(NSNumber*)rev;

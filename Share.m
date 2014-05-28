@@ -391,6 +391,156 @@
 #pragma mark -----------------------
 #pragma mark Getter/Setter File
 
+- (void) scanSubDirectoriesOfFile: (File*) f
+{
+	NSArray * dirTree = [FileHelper scanDirectoryRecursive:[f url]];
+	for (NSURL * u in dirTree)
+	{
+		@autoreleasepool
+		{
+			if ([[u lastPathComponent] isEqualToString:@".DS_Store"])
+			{
+				continue;
+			}
+			File * f = [self getFileForURL:u];
+			if (f == nil)
+			{
+				f = [[File alloc] initAsNewFileWithPath:[u path]];
+				if (f == nil)
+				{
+					return;
+				}
+				[self setFile:f];
+				continue;
+			}
+			[f setUrl:u];
+			[f updateIsSet];
+			[f updateFileSize];
+			[f updateContentModDate];
+			[f updateAttributesModDate];
+			if ([f isEqualToFile:[self getFileForURL:u]])
+			{
+				continue;
+			}
+			[f updateExtAttributes];
+			if (![f updateVersions])
+			{
+				return;
+			}
+			[self setFile:f];
+		}
+	}
+}
+
+
+- (void) scanURL:(NSURL*)fileURL
+{
+	
+	DebugLog(@"--- FileScanOperation: %@", [fileURL absoluteString]);
+	
+	if (![FileHelper URL:fileURL hasAsRootURL:[self root]])
+	{
+		return;
+	}
+	
+	if ([FileHelper fileFolderExists:[fileURL path]])
+	{
+		// File exists on HD (ADDED/CHANGED)
+		//-----------------------------------
+		DebugLog(@"File exists on HD");
+		File * f = [self getFileForURL:fileURL];
+		[f setUrl:fileURL];
+		
+		if (f == nil)
+		{
+			// File doesn't exist in Share
+			//-----------------------------
+			DebugLog(@"File doesn't exist in Share");
+			f = [[File alloc] initAsNewFileWithPath:[fileURL path]];
+			if (f == nil)
+			{
+				return;
+			}
+			[self setFile:f];
+			
+			// CHECK for directory
+			//---------------------
+			if ([f isDir])
+			{
+				[self scanSubDirectoriesOfFile:f];
+			}
+		}
+		else
+		{
+			// File exists in Share
+			//----------------------
+			DebugLog(@"File exists in Share");
+			[f updateIsSet];
+			[f updateFileSize];
+			[f updateContentModDate];
+			[f updateAttributesModDate];
+			if ([f isEqualToFile:[self getFileForURL:fileURL]])
+			{
+				// DO NOTHING
+				//------------
+				DebugLog(@"DO NOTHING");
+				return;
+			}
+			[f updateExtAttributes];
+			if (![f updateVersions])
+			{
+				return;
+			}
+			[self setFile:f];
+			
+			// CHECK for directory
+			//---------------------
+			if ([f isDir])
+			{
+				[self scanSubDirectoriesOfFile: f];
+			}
+		}
+	}
+	else
+	{
+		// File doesn't exist on HD (DELETE)
+		//-----------------------------------
+		DebugLog(@"File doesn't exist on HD");
+		File * f = [self getFileForURL:fileURL];
+		if (f == nil)
+		{
+			// File doesn't exists in Share
+			//------------------------------
+			DebugLog(@"File doesn't exists in Share: %@", fileURL);
+			// DO NOTHING
+		}
+		else
+		{
+			// File exists in Share
+			DebugLog(@"File exists in Share");
+			if ([f isDir])
+			{
+				// File is directory
+				DebugLog(@"File is directory");
+				NSArray * filesToDelete = [self getURLsBelowURL:[f url] withIsSet:YES];
+				for (NSArray * a in filesToDelete)
+				{
+					@autoreleasepool
+					{
+						File * g	= [self getFileForURL:[NSURL URLWithString:a[0]]];
+						DebugLog(@"filesToDelete: %@", a[0]);
+						[g setIsSetBOOL:FALSE];
+						[self setFile:g];
+					}
+				}
+			}
+			[f setIsSetBOOL:FALSE];
+			[self setFile:f];
+		}
+	}
+}
+
+
 
 - (NSNumber*) nextRevision
 {
