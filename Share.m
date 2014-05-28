@@ -161,9 +161,7 @@
 		if (newTotalChanges > totalChanges)
 		{
 			[self dbCommit];
-			DebugLog(@"uncommited: %i", (newTotalChanges-totalChanges));
-			DebugLog(@"\tnewTotalChanges: %i", newTotalChanges);
-			DebugLog(@"\ttotalChanges: %i", totalChanges);
+			DebugLog(@"UNCOMMITED: %i", (newTotalChanges-totalChanges));
 			totalChanges = newTotalChanges;
 			[self dbBegin];
 		}
