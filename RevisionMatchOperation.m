@@ -49,28 +49,27 @@
 	if ([[rev isDir] boolValue])
 	{
 		[self matchDir];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:fullURL];
-		return;
 	}
-	
-	/*
-	 * Remove Revision from db:
-	 * in case a file was added, not yet downloaded
-	 * and deleted again.
-	 */
-	[[[rev peer] share] removeRevision:rev forPeer:[rev peer]];
-
-	
-	// match 'normal' files
-	//----------------------
-	[self handleFileConflicts];
+	else
+	{
+		/*
+		 * Remove Revision from db:
+		 * in case a file was added, not yet downloaded
+		 * and deleted again.
+		 */
+		[[[rev peer] share] removeRevision:rev forPeer:[rev peer]];
+		
+		
+		// match 'normal' files
+		//----------------------
+		[self matchFile];
+	}
 	
 	/*
 	 * Force FSWatcher to rescan this file:
 	 * Why? Because otherwise a file/folder is created
 	 * without the program knowing about.
 	 */
-	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:fullURL];
 }
 
@@ -115,13 +114,188 @@
 			if (rv != 0)
 			{
 				DebugLog(@"DEL of Dir failed, there must be other files in this directory");
-	
+				
 				
 				/*
-				File * localState = [[[rev peer] share] getFileForURL:fullURL];
-				[localState setIsSetBOOL:FALSE];
-				[[[rev peer] share] setFile:localState];
-				*/
+				 File * localState = [[[rev peer] share] getFileForURL:fullURL];
+				 [localState setIsSetBOOL:FALSE];
+				 [[[rev peer] share] setFile:localState];
+				 */
+			}
+		}
+	}
+}
+
+
+
+/**
+ *
+ */
+- (void) matchFile
+{
+	File * localState = [[[rev peer] share] getFileForURL:fullURL];
+	
+	// localState is NOT set, remotestate is set (ADD new file)
+	//----------------------------------------------------------
+	if ( ([[localState isSet] intValue] == 0 || localState == nil) && [[rev isSet] intValue] == 1)
+	{
+		DebugLog(@"A");
+		
+		// (No checking for conflicts)
+		
+		/*
+		 // Delete localState
+		 //-------------------
+		 [[[rev peer] share] removeFile:localState];
+		 */
+		
+		// Match remoteState
+		//-------------------
+		[self matchRemoteState];
+		
+		return;
+	}
+	
+	
+	// localState is NOT set, remotestate is NOT set (DELETE non-existing file)
+	//-----------------------------------------------------------------------------
+	if ( ([[localState isSet] intValue] == 0 || localState == nil) && [[rev isSet] intValue] == 0)
+	{
+		DebugLog(@"B  (doing nothing)");
+	}
+	
+	
+	// localState is set, remotestate is NOT set (DELETE file)
+	//---------------------------------------------------------
+	if ( [[localState isSet] intValue] == 1 && [[rev isSet] intValue] == 0)
+	{
+		DebugLog(@"C");
+		
+		// check for conflicts
+		//---------------------
+		if ([File versions:[rev versions] hasConflictsWithVersions:[localState versions]])
+		{
+			DebugLog(@"C1");
+			
+			// (WITH CONFLICT)
+			
+			NSURL* conflictedCopyURL = [self createConflictedCopy];
+			
+			// Force FSWatcher to scan the conflicted-copy
+			//---------------------------------------------
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:conflictedCopyURL];
+			
+			/*
+			 // Delete localState
+			 //-------------------
+			 [[[rev peer] share] removeFile:localState];
+			 */
+			
+			return;
+		}
+		else
+		{
+			DebugLog(@"C2");
+			
+			// (WITHOUT CONFLICT)
+			
+			// Make sure we only delete a file...
+			// if the remoteState->Versions is bigger than on localState
+			//-----------------------------------------------------------
+			if ([[localState getLastVersionKey] intValue] <= [[rev getLastVersionKey] intValue])
+			{
+				// Delete FILE
+				//-------------
+				NSError * error;
+				if ( [[NSFileManager defaultManager] isReadableFileAtPath:[fullURL path]] )
+				{
+					// Move existing file to the trash
+					//---------------------------------
+					BOOL success = [[NSFileManager defaultManager] removeItemAtURL:fullURL error:&error];
+					
+					if (error || !success)
+					{
+						DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
+						remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
+						/*
+						 [localState setIsSetBOOL:FALSE];
+						 [[[rev peer] share] setFile:localState];
+						 */
+					}
+				}
+			}
+			return;
+		}
+		
+	}
+	
+	
+	// localState is set, remotestate is set (ADD file, but there may be a conflicts)
+	//--------------------------------------------------------------------------------
+	if ( [[localState isSet] intValue] == 1 && [[rev isSet] intValue] == 1)
+	{
+		DebugLog(@"D");
+		// check for conflicts
+		//---------------------
+		if ([File versions:[rev versions] hasConflictsWithVersions:[localState versions]])
+		{
+			DebugLog(@"D1");
+			// (WITH CONFLICT)
+			
+			if ([[config myPeerID] isLessThan:[[rev peer] peerID]])
+			{
+				// (myPeerId < otherPeerId)
+				
+				NSURL* conflictedCopyURL = [self createConflictedCopy];
+				
+				// Force FSWatcher to scan the conflicted-copy
+				//---------------------------------------------
+				[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:conflictedCopyURL];
+				
+				/*
+				 // Delete localState
+				 //-------------------
+				 [[[rev peer] share] removeFile:localState];
+				 */
+				
+				// Match remoteState
+				//-------------------
+				return [self matchRemoteState];
+			}
+			else
+			{
+				// (myPeerId >= otherPeerId)
+				DebugLog(@"DO NOTHING because myPeerId >= otherPeerId");
+				
+				// DO NOTHING
+			}
+		}
+		else
+		{
+			DebugLog(@"D2");
+			
+			// (WITHOUT CONFLICT)
+			
+			if ([[localState getLastVersionKey] intValue] < [[rev getLastVersionKey] intValue])
+			{
+				// (localState:versions:biggestKey < remoteState:versions:biggestKey)
+				
+				/*
+				 // Delete localState
+				 //-------------------
+				 [[[rev peer] share] removeFile:localState];
+				 */
+				
+				// Match remoteState
+				//-------------------
+				return [self matchRemoteState];
+			}
+			else
+			{
+				// (localState:versions:biggestKey >= remoteState:versions:biggestKey)
+				
+				// DO NOTHING
+				DebugLog(@"DO NOTHING");
 			}
 		}
 	}
@@ -136,7 +310,7 @@
 	//-------------------
 	NSFileHandle * fh = [FileHelper fileForWritingAtPath:[fullURL path]];
 	
-	/* 
+	/*
 	 * Because file-creation might fail, if the
 	 * super-directories weren't readily created
 	 * we have to make sure it is done again here
@@ -226,177 +400,5 @@
 	return nil;
 }
 
-/**
- *
- */
-- (void) handleFileConflicts
-{
-	File * localState = [[[rev peer] share] getFileForURL:fullURL];
-	
-	// localState is NOT set, remotestate is set (ADD new file)
-	//----------------------------------------------------------
-	if ( ([[localState isSet] intValue] == 0 || localState == nil) && [[rev isSet] intValue] == 1)
-	{
-		DebugLog(@"A");
-		
-		// (No checking for conflicts)
-		
-		/*
-		// Delete localState
-		//-------------------
-		[[[rev peer] share] removeFile:localState];
-		*/
-		 
-		// Match remoteState
-		//-------------------
-		[self matchRemoteState];
-		
-		return;
-	}
-	
-	
-	// localState is NOT set, remotestate is NOT set (DELETE non-existing file)
-	//-----------------------------------------------------------------------------
-	if ( ([[localState isSet] intValue] == 0 || localState == nil) && [[rev isSet] intValue] == 0)
-	{
-		DebugLog(@"B  (doing nothing)");
-	}
-	
-	
-	// localState is set, remotestate is NOT set (DELETE file)
-	//---------------------------------------------------------
-	if ( [[localState isSet] intValue] == 1 && [[rev isSet] intValue] == 0)
-	{
-		DebugLog(@"C");
-		
-		// check for conflicts
-		//---------------------
-		if ([File versions:[rev versions] hasConflictsWithVersions:[localState versions]])
-		{
-			DebugLog(@"C1");
-			
-			// (WITH CONFLICT)
-			
-			NSURL* conflictedCopyURL = [self createConflictedCopy];
-		
-			// Force FSWatcher to rescan this the super-dir
-			//----------------------------------------------
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:conflictedCopyURL];
-
-			/*
-			// Delete localState
-			//-------------------
-			[[[rev peer] share] removeFile:localState];
-			*/
-			
-			return;
-		}
-		else
-		{
-			DebugLog(@"C2");
-			
-			// (WITHOUT CONFLICT)
-			
-			// Make sure we only delete a file...
-			// if the remoteState->Versions is bigger than on localState
-			//-----------------------------------------------------------
-			if ([[localState getLastVersionKey] intValue] <= [[rev getLastVersionKey] intValue])
-			{
-				// Delete FILE
-				//-------------
-				NSError * error;
-				if ( [[NSFileManager defaultManager] isReadableFileAtPath:[fullURL path]] )
-				{
-					// Move existing file to the trash
-					//---------------------------------
-					BOOL success = [[NSFileManager defaultManager] removeItemAtURL:fullURL error:&error];
-					
-					if (error || !success)
-					{
-						DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
-						remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
-						/*
-						[localState setIsSetBOOL:FALSE];
-						[[[rev peer] share] setFile:localState];
-						*/
-					}
-				}
-			}
-			return;
-		}
-		
-	}
-	
-	
-	// localState is set, remotestate is set (ADD file, but there may be a conflicts)
-	//--------------------------------------------------------------------------------
-	if ( [[localState isSet] intValue] == 1 && [[rev isSet] intValue] == 1)
-	{
-		DebugLog(@"D");
-		// check for conflicts
-		//---------------------
-		if ([File versions:[rev versions] hasConflictsWithVersions:[localState versions]])
-		{
-			DebugLog(@"D1");
-			// (WITH CONFLICT)
-			
-			if ([[config myPeerID] isLessThan:[[rev peer] peerID]])
-			{
-				// (myPeerId < otherPeerId)
-
-				NSURL* conflictedCopyURL = [self createConflictedCopy];
-				
-				// Force FSWatcher to rescan the super-dir
-				//-----------------------------------------
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:conflictedCopyURL];
-				
-				/*
-				// Delete localState
-				//-------------------
-				[[[rev peer] share] removeFile:localState];
-				*/
-				
-				// Match remoteState
-				//-------------------
-				return [self matchRemoteState];
-			}
-			else
-			{
-				// (myPeerId >= otherPeerId)
-				DebugLog(@"DO NOTHING because myPeerId >= otherPeerId");
-				
-				// DO NOTHING
-			}
-		}
-		else
-		{
-			DebugLog(@"D2");
-			
-			// (WITHOUT CONFLICT)
-			
-			if ([[localState getLastVersionKey] intValue] < [[rev getLastVersionKey] intValue])
-			{
-				// (localState:versions:biggestKey < remoteState:versions:biggestKey)
-				
-				/*
-				// Delete localState
-				//-------------------
-				[[[rev peer] share] removeFile:localState];
-				*/
-				 
-				// Match remoteState
-				//-------------------
-				return [self matchRemoteState];
-			}
-			else
-			{
-				// (localState:versions:biggestKey >= remoteState:versions:biggestKey)
-				
-				// DO NOTHING
-				DebugLog(@"DO NOTHING");
-			}
-		}
-	}
-}
 
 @end
