@@ -460,15 +460,12 @@
 			[f updateAttributesModDate];
 			if ([f isEqualToFile:[self getFileForURL:fileURL]])
 			{
-				// DO NOTHING
-				//------------
-				//	DebugLog(@"DO NOTHING");
-				return;
+				return;	// DOING NOTHING
 			}
 			[f updateExtAttributes];
 			if (![f updateVersions])
 			{
-				return;
+				return;	// Update Versions
 			}
 			[self setFile:f];
 

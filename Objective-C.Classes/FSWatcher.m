@@ -161,25 +161,13 @@ static void callback(ConstFSEventStreamRef streamRef,
 		}
 		else if (eventFlags[i] & kFSEventStreamEventFlagItemIsFile)
 		{
-			// Filter out .DS_Store Files
-			//---------------------------
-			if (![[[paths objectAtIndex:i] lastPathComponent] isEqualToString:@".DS_Store"])
-			{
-				NSURL * u = [NSURL fileURLWithPath:[paths objectAtIndex:i] isDirectory:NO];
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:u];
-			}
-			
+			NSURL * u = [NSURL fileURLWithPath:[paths objectAtIndex:i] isDirectory:NO];
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsFile" object:u];
 		}
 		else if (eventFlags[i] & kFSEventStreamEventFlagItemIsSymlink)
 		{
-			// Filter out .DS_Store Files
-			//---------------------------
-			if (![[[paths objectAtIndex:i] lastPathComponent] isEqualToString:@".DS_Store"])
-			{
-				NSURL * u = [NSURL fileURLWithPath:[paths objectAtIndex:i]];
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsSymlink" object:u];
-			}
-			
+			NSURL * u = [NSURL fileURLWithPath:[paths objectAtIndex:i]];
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsSymlink" object:u];
 		}
 		else if ( eventFlags[i] & kFSEventStreamEventFlagMustScanSubDirs )
 		{
