@@ -162,7 +162,7 @@
 		
 		if ([[aTableColumn identifier] isEqualToString:@"ShareID"])
 		{
-			return [shareAtIndex shareId];
+			return [[shareAtIndex shareId] stringByRemovingPercentEncoding];
 		}
 		
 		if ([[aTableColumn identifier] isEqualToString:@"Path"])

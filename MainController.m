@@ -690,7 +690,7 @@
 		return nil;
 	}
 	
-	shareId = [shareId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	shareId = [shareId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
 	
 	if (![[myShares allKeys] containsObject:shareId])
 	{
@@ -704,9 +704,7 @@
 		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
 		[fsWatcherQueue addOperation:o];
 		[self updateFSWatcher];
-		
-		[s dbBegin];
-		
+				
 		return s;
 	}
 	return nil;
