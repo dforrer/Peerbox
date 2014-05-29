@@ -20,6 +20,7 @@
 		65384C7919313B540070F0A9 /* Unit Tests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6510B90C1924DE1F00808055 /* Unit Tests-Info.plist */; };
 		65384C7A19313B610070F0A9 /* FileHelper Unit Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F0EBED18FDAEAE0044A9AB /* FileHelper Unit Tests.m */; };
 		65384C7B19313E810070F0A9 /* FileHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943FA19269B4A00A58A83 /* FileHelper.m */; };
+		65384C811936F1400070F0A9 /* FileMatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 65384C801936F1400070F0A9 /* FileMatchOperation.m */; };
 		6547B5A6188D91B1005F3BD4 /* DownloadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 6547B5A5188D91B1005F3BD4 /* DownloadFile.m */; };
 		6564985B18708DF800BBB3D1 /* ShareScanOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6564985A18708DF800BBB3D1 /* ShareScanOperation.m */; };
 		656AA41F188AB6BF007C6ED9 /* DownloadShares.m in Sources */ = {isa = PBXBuildFile; fileRef = 656AA41E188AB6BF007C6ED9 /* DownloadShares.m */; };
@@ -119,6 +120,8 @@
 		652F704C184F71D3004E13C5 /* MyHTTPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyHTTPConnection.m; sourceTree = "<group>"; };
 		65384C741930C0AB0070F0A9 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
 		65384C751930C0AB0070F0A9 /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
+		65384C7F1936F1400070F0A9 /* FileMatchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileMatchOperation.h; sourceTree = "<group>"; };
+		65384C801936F1400070F0A9 /* FileMatchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileMatchOperation.m; sourceTree = "<group>"; };
 		6547B5A4188D91A5005F3BD4 /* DownloadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadFile.h; sourceTree = "<group>"; };
 		6547B5A5188D91B1005F3BD4 /* DownloadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadFile.m; sourceTree = "<group>"; };
 		6564985918708DF700BBB3D1 /* ShareScanOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareScanOperation.h; sourceTree = "<group>"; };
@@ -563,6 +566,8 @@
 				657657D818D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m */,
 				650F1FDC1930942F00771814 /* RevisionMatchOperation.h */,
 				650F1FDD1930942F00771814 /* RevisionMatchOperation.m */,
+				65384C7F1936F1400070F0A9 /* FileMatchOperation.h */,
+				65384C801936F1400070F0A9 /* FileMatchOperation.m */,
 				65AD01E4186E0DBA00DC6A1B /* FileScanOperation.h */,
 				65AD01E5186E0DBA00DC6A1B /* FileScanOperation.m */,
 				6564985918708DF700BBB3D1 /* ShareScanOperation.h */,
@@ -782,6 +787,7 @@
 				6564985B18708DF800BBB3D1 /* ShareScanOperation.m in Sources */,
 				658945D719269B4C00A58A83 /* HTTPDataResponse.m in Sources */,
 				65A1213419046F830082C251 /* Revision.m in Sources */,
+				65384C811936F1400070F0A9 /* FileMatchOperation.m in Sources */,
 				656AA41F188AB6BF007C6ED9 /* DownloadShares.m in Sources */,
 				658946D519269B4C00A58A83 /* NSDictionary_JSONExtensions.m in Sources */,
 				658945C319269B4C00A58A83 /* DDNumber.m in Sources */,

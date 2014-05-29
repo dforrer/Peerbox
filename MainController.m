@@ -21,6 +21,7 @@
 #import "HTTPServer.h"
 #import "MyHTTPConnection.h"
 #import "RevisionMatchOperation.h"
+#import "FileMatchOperation.h"
 #import "Revision.h"
 
 /**
@@ -489,54 +490,14 @@
  */
 - (void) downloadFileHasFinished:(DownloadFile*)d
 {
-	Share * share		= [[[d rev] peer] share];
-	Revision * revision	= [d rev];
-	
-	NSURL * fullURL = [NSURL URLWithString:[revision relURL] relativeToURL:[share root]];
-	
-	// Continue matching the file
-	//----------------------------
-	if ( [[NSFileManager defaultManager] isReadableFileAtPath:[d downloadPath]] )
+
+	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
+	if ([matcherQueue operationCount] > 0)
 	{
-		// Move existing file to the trash
-		//---------------------------------
-		NSError * error;
-		if ( [[NSFileManager defaultManager] isReadableFileAtPath:[fullURL path]] )
-		{
-			[[NSFileManager defaultManager] removeItemAtURL:fullURL error:&error];
-			if (error)
-			{
-				DebugLog(@"ERROR: removeItemAtURL failed!, %@", error);
-				return;
-			}
-		}
-		error = nil;
-		if ([d downloadPath] != nil && [fullURL path] != nil)
-		{
-			[[NSFileManager defaultManager] createDirectoryAtPath:[[fullURL URLByDeletingLastPathComponent] path]
-								 withIntermediateDirectories:YES
-											   attributes:nil
-												   error:nil];
-			[[NSFileManager defaultManager] moveItemAtPath:[d downloadPath] toPath:[fullURL path] error:&error];
-			if (error)
-			{
-				DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
-				return;
-			}
-		}
+		[o addDependency:[[matcherQueue operations] lastObject]];
 	}
+	[matcherQueue addOperation:o];
 	
-	// Set extended attributes
-	//-------------------------
-	for (id key in [revision extAttributes])
-	{
-		NSData * extAttrBinary = [[NSData alloc] initWithBase64EncodedString:[[revision extAttributes] objectForKey:key] options:0];
-		[FileHelper setValue:extAttrBinary forName:key onFile:[fullURL path]];
-	}
-	
-	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
-	[newState setVersions:[NSMutableDictionary dictionaryWithDictionary:[revision versions]]];
-	[share setFile:newState];
 	
 	
 	[fileDownloads removeObject:d];
