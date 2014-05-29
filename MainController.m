@@ -471,6 +471,8 @@
 		NSNumber * biggestRev = [dict objectForKey:@"biggestRev"];
 		DebugLog(@"biggestRev: %@", biggestRev);
 		[[d peer] setLastDownloadedRev:biggestRev];
+		
+		[self saveModel];
 	}
 }
 
