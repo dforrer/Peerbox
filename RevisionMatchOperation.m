@@ -48,7 +48,7 @@
 	File * remoteState= [[File alloc] initWithShare:[[rev peer] share] relUrl:[rev relURL] isSet:[rev isSet] extAttributesAsBase64:[rev extAttributes] versions:[NSMutableDictionary dictionaryWithDictionary:[rev versions]]];
 	if ([localState isCoreEqualToFile:remoteState])
 	{
-		DebugLog(@"match: isCoreEqualToFile -> YES");
+		//DebugLog(@"match: isCoreEqualToFile -> YES");
 		return;
 	}
 	
