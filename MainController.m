@@ -32,12 +32,8 @@
 	NSMutableDictionary * myShares;	// shareId = key of NSDictionary
 	
 	NSOperationQueue * fsWatcherQueue;
-	BOOL fsWatcherQueueRestartet;
-	
 	NSOperationQueue * matcherQueue;
 }
-
-
 
 
 
@@ -68,11 +64,10 @@
 		NSString * serviceType = [NSString stringWithFormat:@"_%@._tcp.", APP_NAME];
 		bonjourSearcher = [[BonjourSearcher alloc] initWithServiceType:serviceType andDomain:@"local" andMyName:[config myPeerID]];
 		
-		fswatcher		 = [[FSWatcher alloc] init];
-		fsWatcherQueue  = [[NSOperationQueue alloc] init];
-		fsWatcherQueueRestartet = FALSE;
-		fileDownloads = [[NSMutableArray alloc] init];
-		matcherQueue  = [[NSOperationQueue alloc] init];
+		fswatcher		= [[FSWatcher alloc] init];
+		fsWatcherQueue	= [[NSOperationQueue alloc] init];
+		fileDownloads	= [[NSMutableArray alloc] init];
+		matcherQueue	= [[NSOperationQueue alloc] init];
 		[matcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL]; // KVO
 		
 		[self setupHTTPServer];
@@ -582,7 +577,6 @@
 		[fsWatcherQueue  addOperation: o];
 	}
 	[fsWatcherQueue setSuspended:FALSE];
-	fsWatcherQueueRestartet = FALSE;
 }
 
 
@@ -613,7 +607,7 @@
 		
 		if ([fsWatcherQueue operationCount] > 20)
 		{
-			if (fsWatcherQueueRestartet == FALSE)
+			if (![fsWatcherQueue isSuspended])
 			{
 				[fsWatcherQueue cancelAllOperations];
 				DebugLog(@"fswatcherQueueRestartet == FALSE");
@@ -621,9 +615,8 @@
 				[self performSelector: @selector(restartFSWatcherQueue)
 						 withObject: nil
 						 afterDelay: 5.0];
-				fsWatcherQueueRestartet = TRUE;
 			}
-			continue;
+			return;
 		}
 		
 		FileScanOperation * o = [[FileScanOperation alloc] initWithURL:fileURL andShare:share];
