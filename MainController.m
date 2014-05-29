@@ -73,7 +73,7 @@
 		fsWatcherQueueRestartet = FALSE;
 		fileDownloads = [[NSMutableArray alloc] init];
 		matcherQueue  = [[NSOperationQueue alloc] init];
-		[matcherQueue addObserver:self forKeyPath:@"operations" options:0 context:NULL]; // KVO
+		[matcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL]; // KVO
 		
 		[self setupHTTPServer];
 		[self createWorkingDirectories];
@@ -541,9 +541,9 @@
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                          change:(NSDictionary *)change context:(void *)context
 {
-	if (object == matcherQueue && [keyPath isEqualToString:@"operations"])
+	if (object == matcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
-		if ([matcherQueue.operations count] == 0)
+		if ([matcherQueue operationCount] == 0)
 		{
 			// Do something here when your queue has completed
 			NSLog(@"queue has completed");
@@ -573,14 +573,6 @@
 {
 	DebugLog(@"restartFSWatcherQueue");
 	[fsWatcherQueue cancelAllOperations];
-	
-	if ([matcherQueue operationCount] > 0)
-	{
-		[self performSelector: @selector(restartFSWatcherQueue)
-				 withObject: nil
-				 afterDelay: 5.0];
-	}
-	
 	
 	// Do the rescan
 	//--------------
