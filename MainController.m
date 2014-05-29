@@ -596,7 +596,7 @@
 - (void) fsWatcherEvent: (NSNotification *)notification
 {
 	NSURL * fileURL = [notification object];
-	DebugLog(@"fsWatcherEvent: %@", fileURL);
+	//DebugLog(@"fsWatcherEvent: %@", fileURL);
 
 	for (Share * share in [myShares allValues])
 	{
