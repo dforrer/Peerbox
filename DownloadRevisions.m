@@ -84,8 +84,11 @@
 		
 		// Resolve IP and prepare URL:
 		// http://<hostname>/shares/<shareId>/revisionsDict
-		//--------------------------------------------
-		NSURL* u = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%ld/shares/%@/revisionsDict", [netService hostName], [netService port], [[peer share] shareId]]];
+		//--------------------------------------------------
+		
+		NSString * shareIDurlEncoded = [[[peer share] shareId] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		
+		NSURL* u = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%ld/shares/%@/revisionsDict", [netService hostName], [netService port], shareIDurlEncoded]];
 		[request setURL:u];
 		
 		// Prepare POST-Data

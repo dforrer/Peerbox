@@ -138,8 +138,9 @@
 - (NSURL*) urlFromNetService: (NSNetService*) n
 {
 	// Prepare URL http://<hostname>/shares/<shareId>/files
-	//---------------------------------------------------------------
-	return [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%ld/shares/%@/files", [n hostName],(long)[n port], [[[rev peer] share] shareId]]];
+	//------------------------------------------------------
+	NSString * shareIDurlEncoded = [[[[rev peer] share] shareId] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	return [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%ld/shares/%@/files", [n hostName],(long)[n port], shareIDurlEncoded]];
 }
 
 
