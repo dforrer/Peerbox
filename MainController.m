@@ -721,6 +721,14 @@
 	
 	[myShares removeObjectForKey:shareId];
 	
+	// Remove .sqlite-File
+	//---------------------
+	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [config workingDir], shareId];
+	NSError * error;
+	[[NSFileManager defaultManager] removeItemAtPath:sqlitePath error:&error];
+
+	// Resave model and update observed directories
+	//----------------------------------------------
 	[self saveModel];
 	[self updateFSWatcher];
 	
