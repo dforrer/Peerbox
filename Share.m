@@ -454,7 +454,7 @@
 			//----------------------
 			//	DebugLog(@"File exists in Share");
 			[f setUrl:fileURL];
-			[f updateIsSet];
+			[f setIsSetBOOL:TRUE];
 			[f updateFileSize];
 			[f updateContentModDate];
 			[f updateAttributesModDate];
