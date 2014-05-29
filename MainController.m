@@ -492,7 +492,9 @@
  */
 - (void) downloadFileHasFinished:(DownloadFile*)d
 {
-
+	[fileDownloads removeObject:d];
+	
+	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
 	if ([matcherQueue operationCount] > 0)
 	{
@@ -502,7 +504,7 @@
 	
 	
 	
-	[fileDownloads removeObject:d];
+	
 		
 	// Download more files
 	//---------------------

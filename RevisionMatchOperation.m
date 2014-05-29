@@ -115,12 +115,16 @@
 			{
 				DebugLog(@"DEL of Dir failed, there must be other files in this directory");
 				
-				
-				/*
 				 File * localState = [[[rev peer] share] getFileForURL:fullURL];
-				 [localState setIsSetBOOL:FALSE];
-				 [[[rev peer] share] setFile:localState];
+	
+				/*
+				 * Because DELETE failed, we set isSet
+				 * to FALSE, so that it will be added
+				 * again after a rescan.
 				 */
+				
+				[localState setIsSetBOOL:FALSE];
+				[[[rev peer] share] setFile:localState];
 			}
 		}
 	}
@@ -215,10 +219,14 @@
 					{
 						DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
 						remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
-						/*
-						 [localState setIsSetBOOL:FALSE];
-						 [[[rev peer] share] setFile:localState];
+						
+						/* 
+						 * Because DELETE failed, we set isSet
+						 * to FALSE, so that it will be added
+						 * again after a rescan.
 						 */
+						[localState setIsSetBOOL:FALSE];
+						[[[rev peer] share] setFile:localState];
 					}
 				}
 			}
