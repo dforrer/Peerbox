@@ -33,8 +33,8 @@
 
 - (void) main
 {
-	Share * share		= [[[d rev] peer] share];
-	Revision * revision	= [d rev];
+	Share    * share    = [[[d rev] peer] share];
+	Revision * revision = [d rev];
 	
 	NSURL * fullURL = [NSURL URLWithString:[revision relURL] relativeToURL:[share root]];
 	
