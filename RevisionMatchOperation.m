@@ -43,7 +43,7 @@
  */
 - (void) match
 {
-	DebugLog(@"match: %@", fullURL);
+	//DebugLog(@"match: %@", fullURL);
 	// match directory
 	//-----------------
 	if ([[rev isDir] boolValue])
