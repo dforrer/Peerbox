@@ -44,6 +44,15 @@
 - (void) match
 {
 	//DebugLog(@"match: %@", fullURL);
+	File * localState = [[[rev peer] share] getFileForURL:fullURL];
+	File * remoteState= [[File alloc] initWithShare:[[rev peer] share] relUrl:[rev relURL] isSet:[rev isSet] extAttributesAsBase64:[rev extAttributes] versions:[NSMutableDictionary dictionaryWithDictionary:[rev versions]]];
+	if ([localState isCoreEqualToFile:remoteState])
+	{
+		DebugLog(@"match: isCoreEqualToFile -> YES");
+		return;
+	}
+	
+	
 	// match directory
 	//-----------------
 	if ([[rev isDir] boolValue])
