@@ -702,6 +702,9 @@
 		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
 		[fsWatcherQueue addOperation:o];
 		[self updateFSWatcher];
+		
+		[s dbBegin];
+		
 		return s;
 	}
 	return nil;
