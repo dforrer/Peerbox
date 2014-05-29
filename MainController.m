@@ -66,8 +66,9 @@
 		
 		fswatcher		= [[FSWatcher alloc] init];
 		fsWatcherQueue	= [[NSOperationQueue alloc] init];
-		fileDownloads	= [[NSMutableArray alloc] init];
 		matcherQueue	= [[NSOperationQueue alloc] init];
+		fileDownloads	= [[NSMutableArray alloc] init];
+
 		[matcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL]; // KVO
 		
 		[self setupHTTPServer];
@@ -531,7 +532,8 @@
 
 
 /**
- * KVO: matcherQueue->operations
+ * KVO: matcherQueue->operationCount
+ * KVO: fsWatcherQueue->operationCount
  */
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                          change:(NSDictionary *)change context:(void *)context
@@ -546,6 +548,28 @@
 			// Restart Revision-Download
 			//---------------------------
 			[self downloadRevisionsFromPeers];
+		}
+	}
+	else if (object == fsWatcherQueue && [keyPath isEqualToString:@"operationCount"])
+	{
+		/*
+		 * If the 'operationCount' gets bigger than 20 the application
+		 * should cancelAll ongoing operations,
+		 * sleep for 5 seconds and then scan all the shares.
+		 */
+		
+		if ([fsWatcherQueue operationCount] > 20)
+		{
+			if (![fsWatcherQueue isSuspended])
+			{
+				[fsWatcherQueue cancelAllOperations];
+				DebugLog(@"fswatcherQueueRestartet == FALSE");
+				[fsWatcherQueue setSuspended:TRUE];
+				[self performSelector: @selector(restartFSWatcherQueue)
+						 withObject: nil
+						 afterDelay: 5.0];
+			}
+			return;
 		}
 	}
 	else
@@ -567,16 +591,16 @@
 - (void) restartFSWatcherQueue
 {
 	DebugLog(@"restartFSWatcherQueue");
-	[fsWatcherQueue cancelAllOperations];
 	
 	// Do the rescan
-	//--------------
+	//---------------
+	[fsWatcherQueue setSuspended:FALSE];
+	
 	for (Share * s in [myShares allValues])
 	{
 		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
 		[fsWatcherQueue  addOperation: o];
 	}
-	[fsWatcherQueue setSuspended:FALSE];
 }
 
 
@@ -589,6 +613,11 @@
  */
 - (void) fsWatcherEvent: (NSNotification *)notification
 {
+	if ([fsWatcherQueue isSuspended])
+	{
+		return;
+	}
+		
 	NSURL * fileURL = [notification object];
 	//DebugLog(@"fsWatcherEvent: %@", fileURL);
 
@@ -599,27 +628,8 @@
 			continue;
 		}
 		
-		/*
-		 * If the 'operationCount' gets bigger than 20 the application
-		 * should cancelAll ongoing operations,
-		 * sleep for 5 seconds and then scan all the shares.
-		 */
-		
-		if ([fsWatcherQueue operationCount] > 20)
-		{
-			if (![fsWatcherQueue isSuspended])
-			{
-				[fsWatcherQueue cancelAllOperations];
-				DebugLog(@"fswatcherQueueRestartet == FALSE");
-				[fsWatcherQueue setSuspended:TRUE];
-				[self performSelector: @selector(restartFSWatcherQueue)
-						 withObject: nil
-						 afterDelay: 5.0];
-			}
-			return;
-		}
-		
-		FileScanOperation * o = [[FileScanOperation alloc] initWithURL:fileURL andShare:share];
+		FileScanOperation * o = [[FileScanOperation alloc] initWithURL:fileURL
+												    andShare:share];
 		if ([fsWatcherQueue operationCount] > 0)
 		{
 			[o addDependency:[[fsWatcherQueue operations] lastObject]];
