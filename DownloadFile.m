@@ -67,7 +67,7 @@
 		[request setTimeoutInterval:30];
 		[request setHTTPBody: [self preparePostData]];
 		[request setURL: [self urlFromNetService: netService]];
-		DebugLog(@"URL: %@", [request URL]);
+	//	DebugLog(@"URL: %@", [request URL]);
 
 
 	/*	decryptor = [[RNDecryptor alloc] initWithPassword:[share secret] handler:
@@ -235,7 +235,7 @@
 // OVERRIDE
 - (void) connectionDidFinishLoading:(NSURLConnection*)connection
 {
-	DebugLog(@"Download finished");
+	//DebugLog(@"Download finished");
 	isFinished = TRUE;
 	
 	// Finish up the sha1
