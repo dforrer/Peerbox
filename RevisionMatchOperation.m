@@ -57,7 +57,7 @@
 	//-----------------
 	if ([[rev isDir] boolValue])
 	{
-		[self matchDir];
+		[self matchDir:localState];
 	}
 	else
 	{
@@ -71,7 +71,7 @@
 		
 		// match 'normal' files
 		//----------------------
-		[self matchFile];
+		[self matchFile:localState];
 	}
 	
 	/*
@@ -91,7 +91,7 @@
 /*
  * Revision = Directory
  */
-- (void) matchDir
+- (void) matchDir:(File*)localState
 {
 	if ([[rev isSet] intValue] == 1)
 	{
@@ -110,31 +110,25 @@
 	}
 	else
 	{
-		// Revision = DELETE-Directory
-		//-----------------------------
-		//DebugLog(@"DEL-Directory");
-		if ([FileHelper fileFolderExists:[fullURL path]])
+		// Revision = DELETE-Directory (C implementation)
+		//------------------------------------------------
+		chdir([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
+		remove(".DS_Store");
+		int rv = rmdir([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
+		if (rv != 0)
 		{
-			// C implementation
-			//------------------
-			chdir([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
-			remove(".DS_Store");
-			int rv = rmdir([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
-			if (rv != 0)
-			{
-				DebugLog(@"DEL of Dir failed, there must be other files in this directory");
-				
-				 File * localState = [[[rev peer] share] getFileForURL:fullURL];
-	
-				/*
-				 * Because DELETE failed, we set isSet
-				 * to FALSE, so that it will be added
-				 * again after a rescan.
-				 */
-				
-				[localState setIsSetBOOL:FALSE];
-				[[[rev peer] share] setFile:localState];
-			}
+			DebugLog(@"DEL of Dir failed, there must be other files in this directory");
+			
+			File * localState = [[[rev peer] share] getFileForURL:fullURL];
+			
+			/*
+			 * Because DELETE failed, we set isSet
+			 * to FALSE, so that it will be added
+			 * again after a rescan.
+			 */
+			
+			[localState setIsSetBOOL:FALSE];
+			[[[rev peer] share] setFile:localState];
 		}
 	}
 }
@@ -144,10 +138,8 @@
 /**
  *
  */
-- (void) matchFile
+- (void) matchFile:(File*)localState
 {
-	File * localState = [[[rev peer] share] getFileForURL:fullURL];
-	
 	// localState is NOT set, remotestate is set (ADD new file)
 	//----------------------------------------------------------
 	if ( ([[localState isSet] intValue] == 0 || localState == nil) && [[rev isSet] intValue] == 1)
@@ -217,26 +209,19 @@
 			{
 				// Delete FILE
 				//-------------
-				NSError * error;
-				if ( [[NSFileManager defaultManager] isReadableFileAtPath:[fullURL path]] )
+				int rv = remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
+				
+				if (rv != 0)
 				{
-					// Move existing file to the trash
-					//---------------------------------
-					BOOL success = [[NSFileManager defaultManager] removeItemAtURL:fullURL error:&error];
-					
-					if (error || !success)
-					{
-						DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
-						remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
+					DebugLog(@"ERROR: during moving of file an error occurred!");
 						
-						/* 
-						 * Because DELETE failed, we set isSet
-						 * to FALSE, so that it will be added
-						 * again after a rescan.
-						 */
-						[localState setIsSetBOOL:FALSE];
-						[[[rev peer] share] setFile:localState];
-					}
+					/*
+					 * Because DELETE failed, we set isSet
+					 * to FALSE, so that it will be added
+					 * again after a rescan.
+					 */
+					[localState setIsSetBOOL:FALSE];
+					[[[rev peer] share] setFile:localState];
 				}
 			}
 			return;
@@ -264,7 +249,7 @@
 				NSURL* conflictedCopyURL = [self createConflictedCopy];
 				
 				[[[rev peer] share] scanURL:conflictedCopyURL recursive:NO];
-								
+				
 				/*
 				 // Delete localState
 				 //-------------------
