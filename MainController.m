@@ -574,6 +574,14 @@
 	DebugLog(@"restartFSWatcherQueue");
 	[fsWatcherQueue cancelAllOperations];
 	
+	if ([matcherQueue operationCount] > 0)
+	{
+		[self performSelector: @selector(restartFSWatcherQueue)
+				 withObject: nil
+				 afterDelay: 5.0];
+	}
+	
+	
 	// Do the rescan
 	//--------------
 	for (Share * s in [myShares allValues])
@@ -615,6 +623,7 @@
 		{
 			if (fsWatcherQueueRestartet == FALSE)
 			{
+				[fsWatcherQueue cancelAllOperations];
 				DebugLog(@"fswatcherQueueRestartet == FALSE");
 				[fsWatcherQueue setSuspended:TRUE];
 				[self performSelector: @selector(restartFSWatcherQueue)
