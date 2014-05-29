@@ -457,12 +457,10 @@
 			[r setPeer:[d peer]];
 			
 			RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithRevision:r andConfig:config];
-			/*
 			if ([matcherQueue operationCount] > 0)
 			{
 				[o addDependency:[[matcherQueue operations] lastObject]];
 			}
-			 */
 			[matcherQueue addOperation:o];
 		}
 				
