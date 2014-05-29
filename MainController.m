@@ -70,6 +70,7 @@
 		fileDownloads	= [[NSMutableArray alloc] init];
 
 		[matcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL]; // KVO
+		[fsWatcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL]; // KVO
 		
 		[self setupHTTPServer];
 		[self createWorkingDirectories];
