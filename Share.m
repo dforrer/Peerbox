@@ -294,7 +294,7 @@
 			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error)
 			{
-				DebugLog(@"ERROR during UPDATE");
+				DebugLog(@"ERROR during UPDATE:\n%@", queryUPDATE);
 			}
 		}
 		else
