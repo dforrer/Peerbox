@@ -119,8 +119,6 @@
 		{
 			DebugLog(@"DEL of Dir failed, there must be other files in this directory");
 			
-			File * localState = [[[rev peer] share] getFileForURL:fullURL];
-			
 			/*
 			 * Because DELETE failed, we set isSet
 			 * to FALSE, so that it will be added
