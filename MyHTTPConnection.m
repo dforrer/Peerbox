@@ -102,13 +102,18 @@
 	if ( [method isEqualToString:@"POST"]
 	    && [path isEqualToString:@"/notification"] )
 	{
+		DebugLog(@"GET-REQUEST to URI /notification");
+		
+		/*
 		NSString *postStr = nil;
 		NSData *postData = [request body];
 		if ( postData )
 		{
 			postStr = [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding];
 		}
-
+		 */
+		
+		[[[Singleton data] mainModel] downloadSharesFromPeers];
 		return [[HTTPErrorResponse alloc] initWithErrorCode:200];
 	}
 	

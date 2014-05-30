@@ -572,23 +572,7 @@
 	}
 }
 
-- (void) addOperation:(NSOperation*)o withDependecyToQueue:(NSOperationQueue*)q
-{
-	if ([q operationCount] > 0)
-	{
-		NSOperation * lastObject = [[q operations] lastObject];
-		if (lastObject == nil)
-		{
-			DebugLog(@"lastObject == NULL");
-			return;
-		}
-		[o addDependency:lastObject];
-	}
-	if (o != nil)
-	{
-		[q addOperation:o];
-	}
-}
+
 
 #pragma mark -----------------------
 #pragma mark Controlling FSWatcher
@@ -665,6 +649,24 @@
 }
 
 
+
+- (void) addOperation:(NSOperation*)o withDependecyToQueue:(NSOperationQueue*)q
+{
+	if ([q operationCount] > 0)
+	{
+		NSOperation * lastObject = [[q operations] lastObject];
+		if (lastObject == nil)
+		{
+			DebugLog(@"lastObject == NULL");
+			return;
+		}
+		[o addDependency:lastObject];
+	}
+	if (o != nil)
+	{
+		[q addOperation:o];
+	}
+}
 
 
 #pragma mark -----------------------

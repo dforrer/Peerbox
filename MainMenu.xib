@@ -729,36 +729,14 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" id="Spe-KR-TG3">
-                        <rect key="frame" x="11" y="13" width="124" height="19"/>
+                        <rect key="frame" x="11" y="13" width="130" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="roundRect" title="Sync" bezelStyle="roundedRect" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IMl-CC-FGP">
+                        <buttonCell key="cell" type="roundRect" title="Manual Sync" bezelStyle="roundedRect" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IMl-CC-FGP">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="cellTitle"/>
                         </buttonCell>
                         <connections>
                             <action selector="downloadShares:" target="494" id="Hik-J8-cXK"/>
-                        </connections>
-                    </button>
-                    <button verticalHuggingPriority="750" id="vA5-0K-Gyh">
-                        <rect key="frame" x="143" y="13" width="148" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="roundRect" title="Download Revisions" bezelStyle="roundedRect" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DZW-LK-r3s">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="cellTitle"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="downloadRevisions:" target="494" id="QVQ-fk-fND"/>
-                        </connections>
-                    </button>
-                    <button verticalHuggingPriority="750" id="5zf-CU-llX">
-                        <rect key="frame" x="299" y="13" width="115" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="roundRect" title="Match Files" bezelStyle="roundedRect" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="isG-gb-WnH">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="cellTitle"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="matchFiles:" target="494" id="q1B-1O-fjy"/>
                         </connections>
                     </button>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="gWA-aW-nND">
