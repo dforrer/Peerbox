@@ -288,6 +288,8 @@
 			}
 			else
 			{
+				[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
+
 				// (localState:versions:biggestKey >= remoteState:versions:biggestKey)
 				
 				// DO NOTHING
