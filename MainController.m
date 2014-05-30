@@ -466,11 +466,7 @@
 			[r setPeer:[d peer]];
 			
 			RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithRevision:r andConfig:config];
-			if ([matcherQueue operationCount] > 0)
-			{
-				[o addDependency:[[matcherQueue operations] lastObject]];
-			}
-			[matcherQueue addOperation:o];
+			[self addOperation:o withDependecyToQueue:matcherQueue];
 		}
 				
 		
@@ -502,13 +498,8 @@
 {
 	[fileDownloads removeObject:d];
 	
-	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
-	if ([matcherQueue operationCount] > 0)
-	{
-		[o addDependency:[[matcherQueue operations] lastObject]];
-	}
-	[matcherQueue addOperation:o];
+	[self addOperation:o withDependecyToQueue:matcherQueue];
 }
 
 
@@ -581,7 +572,23 @@
 	}
 }
 
-
+- (void) addOperation:(NSOperation*)o withDependecyToQueue:(NSOperationQueue*)q
+{
+	if ([q operationCount] > 0)
+	{
+		NSOperation * lastObject = [[q operations] lastObject];
+		if (lastObject == nil)
+		{
+			DebugLog(@"lastObject == NULL");
+			return;
+		}
+		[o addDependency:lastObject];
+	}
+	if (o != nil)
+	{
+		[q addOperation:o];
+	}
+}
 
 #pragma mark -----------------------
 #pragma mark Controlling FSWatcher
@@ -601,7 +608,7 @@
 	for (Share * s in [myShares allValues])
 	{
 		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
-		[fsWatcherQueue  addOperation: o];
+		[self addOperation:o withDependecyToQueue:fsWatcherQueue];
 	}
 }
 
@@ -634,20 +641,7 @@
 		
 		FileScanOperation * o = [[FileScanOperation alloc] initWithURL:fileURL
 												    andShare:share];
-		if ([fsWatcherQueue operationCount] > 0)
-		{
-			NSOperation * lastObject = [[fsWatcherQueue operations] lastObject];
-			if (lastObject == nil)
-			{
-				DebugLog(@"lastObject == NULL");
-				return;
-			}
-			[o addDependency:lastObject];
-		}
-		if (o != nil)
-		{
-			[fsWatcherQueue addOperation:o];
-		}
+		[self addOperation:o withDependecyToQueue:fsWatcherQueue];
 	}
 }
 
@@ -717,7 +711,7 @@
 		[self saveModel];
 		
 		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
-		[fsWatcherQueue addOperation:o];
+		[self addOperation:o withDependecyToQueue:fsWatcherQueue];
 		[self updateFSWatcher];
 		
 		return s;
