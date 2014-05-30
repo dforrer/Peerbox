@@ -502,17 +502,6 @@
 		[o addDependency:[[matcherQueue operations] lastObject]];
 	}
 	[matcherQueue addOperation:o];
-	
-	
-	
-	
-		
-	// Download more files
-	//---------------------
-	if ([fileDownloads count] < MAX_CONCURRENT_DOWNLOADS / 2)
-	{
-		[self matchFiles];
-	}
 }
 
 
@@ -524,14 +513,6 @@
 {
 	DebugLog(@"ERROR: downloadFileHasFailed");
 	[fileDownloads removeObject:d];
-	
-	
-	// Download more files
-	//---------------------
-	if ([fileDownloads count] < MAX_CONCURRENT_DOWNLOADS / 2)
-	{
-		[self matchFiles];
-	}
 }
 
 
