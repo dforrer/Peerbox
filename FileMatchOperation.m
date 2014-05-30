@@ -70,13 +70,8 @@
 		}
 	}
 	
-	// Set extended attributes
-	//-------------------------
-	for (id key in [revision extAttributes])
-	{
-		NSData * extAttrBinary = [[NSData alloc] initWithBase64EncodedString:[[revision extAttributes] objectForKey:key] options:0];
-		[FileHelper setValue:extAttrBinary forName:key onFile:[fullURL path]];
-	}
+	[File matchExtAttributes:[revision extAttributes] onURL:fullURL];
+
 	
 	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
 	[newState setVersions:[NSMutableDictionary dictionaryWithDictionary:[revision versions]]];
