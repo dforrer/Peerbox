@@ -546,7 +546,7 @@
 		
 		if (currentState)
 		{
-			if (![f isCoreEqualToFile:currentState])
+			if (![f isCoreEqualToFile:currentState] || [[f revision] longLongValue] == 0)
 			{
 				[f setRevision:[self nextRevision]];
 			}
