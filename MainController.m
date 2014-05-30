@@ -34,7 +34,8 @@
 	NSMutableDictionary * myShares;	// shareId = key of NSDictionary
 	
 	NSOperationQueue * fsWatcherQueue;
-	NSOperationQueue * matcherQueue;
+	NSOperationQueue * revMatcherQueue;
+	NSOperationQueue * fileMatcherQueue;
 }
 
 
@@ -68,11 +69,12 @@
 		[bonjourSearcher setDelegate:self];
 		
 		fswatcher		= [[FSWatcher alloc] init];
-		fsWatcherQueue	= [[NSOperationQueue alloc] init];
-		matcherQueue	= [[NSOperationQueue alloc] init];
+		fsWatcherQueue		= [[NSOperationQueue alloc] init];
+		revMatcherQueue	= [[NSOperationQueue alloc] init];
+		fileMatcherQueue	= [[NSOperationQueue alloc] init];
 		fileDownloads	= [[NSMutableArray alloc] init];
 
-		[matcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL]; // KVO
+		[revMatcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL]; // KVO
 		[fsWatcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL]; // KVO
 		
 		[self setupHTTPServer];
@@ -110,7 +112,7 @@
 
 - (void) scheduledTasks
 {
-	DebugLog(@"scheduledTasks");
+	//DebugLog(@"scheduledTasks");
 	
 	if ([self commitAndBeginAllShareDBs] > 0)
 	{
@@ -422,7 +424,12 @@
 	
 	// Continue downloading revisions...
 	//-----------------------------------
-	[self downloadRevisionsFromPeers];
+	if ([revMatcherQueue operationCount] == 0)
+	{
+		DebugLog(@"revMatcherQueue operationCount: %lu", (unsigned long)[revMatcherQueue operationCount]);
+		[self downloadRevisionsFromPeers];
+	}
+	
 
 	// ...and files
 	//---------------
@@ -502,7 +509,7 @@
 			[r setPeer:[d peer]];
 			
 			RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithRevision:r andConfig:config];
-			[self addOperation:o withDependecyToQueue:matcherQueue];
+			[self addOperation:o withDependecyToQueue:revMatcherQueue];
 		}
 				
 		
@@ -535,7 +542,7 @@
 	[fileDownloads removeObject:d];
 	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
-	[self addOperation:o withDependecyToQueue:matcherQueue];
+	[fileMatcherQueue addOperation:o];
 }
 
 
@@ -560,14 +567,14 @@
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                          change:(NSDictionary *)change context:(void *)context
 {
-	if (object == matcherQueue && [keyPath isEqualToString:@"operationCount"])
+	if (object == revMatcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
-		DebugLog(@"matcherQueue->operationCount: %lu", (unsigned long)[matcherQueue operationCount]);
-		if ([matcherQueue operationCount] == 0)
+		DebugLog(@"revMatcherQueue->operationCount: %lu", (unsigned long)[revMatcherQueue operationCount]);
+		if ([revMatcherQueue operationCount] == 0)
 		{
 			// Do something here when your queue has completed
 			//-------------------------------------------------
-			NSLog(@"queue has completed");
+			DebugLog(@"queue has completed");
 			
 			
 			// Restart Revision-Download
