@@ -68,17 +68,17 @@
 		bonjourSearcher = [[BonjourSearcher alloc] initWithServiceType:serviceType andDomain:@"local" andMyName:[config myPeerID]];
 		[bonjourSearcher setDelegate:self];
 		
-		fswatcher			= [[FSWatcher alloc] init];
+		fswatcher		  = [[FSWatcher alloc] init];
 		
-		fsWatcherQueue		= [[NSOperationQueue alloc] init];
-		revMatcherQueue	= [[NSOperationQueue alloc] init];
-		fileMatcherQueue	= [[NSOperationQueue alloc] init];
+		fsWatcherQueue	  = [[NSOperationQueue alloc] init];
+		revMatcherQueue  = [[NSOperationQueue alloc] init];
+		fileMatcherQueue = [[NSOperationQueue alloc] init];
 
 		[fsWatcherQueue   setMaxConcurrentOperationCount:1];
 		[fileMatcherQueue setMaxConcurrentOperationCount:1];
 		[revMatcherQueue  setMaxConcurrentOperationCount:1];
 		
-		fileDownloads		= [[NSMutableArray alloc] init];
+		fileDownloads	  = [[NSMutableArray alloc] init];
 
 		// KVO
 		//-----
@@ -204,13 +204,22 @@
 	}
 }
 
-
+- (void) saveFileDownloads
+{
+	for (DownloadFile * d in fileDownloads)
+	{
+		Revision * r = [d rev];
+		[[[r peer] share] setRevision:r forPeer:[r peer]];
+	}
+}
 
 /**
  * Save 'myShares' and 'myPeerID' to 'model.plist'
  */
 - (void) saveModel
 {
+	[self saveFileDownloads];
+	
 	NSMutableDictionary * model = [[NSMutableDictionary alloc] init];
 	[model setObject:[self plistEncoded] forKey:@"myShares"];
 	[model setObject:[config myPeerID] forKey:@"myPeerID"];
