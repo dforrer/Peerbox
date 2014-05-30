@@ -383,6 +383,10 @@
 			[p setCurrentRev:[dict objectForKey:@"currentRev"]];
 		}
 	}
+	
+	// Continue downloading revisions...
+	//-----------------------------------
+	[self downloadRevisionsFromPeers];
 }
 
 
@@ -549,6 +553,13 @@
 			// Restart Revision-Download
 			//---------------------------
 			[self downloadRevisionsFromPeers];
+			
+			// Download more files
+			//---------------------
+			if ([fileDownloads count] < MAX_CONCURRENT_DOWNLOADS / 2)
+			{
+				[self matchFiles];
+			}
 		}
 	}
 	else if (object == fsWatcherQueue && [keyPath isEqualToString:@"operationCount"])
@@ -614,6 +625,8 @@
  */
 - (void) fsWatcherEvent: (NSNotification *)notification
 {
+	// Return from function if fsWatcherQueue isSuspended
+	//----------------------------------------------------
 	if ([fsWatcherQueue isSuspended])
 	{
 		return;

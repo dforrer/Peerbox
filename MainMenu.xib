@@ -731,7 +731,7 @@
                     <button verticalHuggingPriority="750" id="Spe-KR-TG3">
                         <rect key="frame" x="11" y="13" width="124" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="roundRect" title="Download Shares" bezelStyle="roundedRect" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IMl-CC-FGP">
+                        <buttonCell key="cell" type="roundRect" title="Sync" bezelStyle="roundedRect" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IMl-CC-FGP">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="cellTitle"/>
                         </buttonCell>
