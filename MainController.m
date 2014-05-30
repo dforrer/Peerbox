@@ -562,6 +562,7 @@
 {
 	if (object == matcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
+		DebugLog(@"matcherQueue->operationCount: %lu", (unsigned long)[matcherQueue operationCount]);
 		if ([matcherQueue operationCount] == 0)
 		{
 			// Do something here when your queue has completed
@@ -584,6 +585,8 @@
 	}
 	else if (object == fsWatcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
+		DebugLog(@"fsWatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
+		
 		/*
 		 * If the 'operationCount' gets bigger than 20 the application
 		 * should cancelAll ongoing operations,
