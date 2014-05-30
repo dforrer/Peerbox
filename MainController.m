@@ -69,9 +69,15 @@
 		[bonjourSearcher setDelegate:self];
 		
 		fswatcher			= [[FSWatcher alloc] init];
+		
 		fsWatcherQueue		= [[NSOperationQueue alloc] init];
 		revMatcherQueue	= [[NSOperationQueue alloc] init];
 		fileMatcherQueue	= [[NSOperationQueue alloc] init];
+
+		[fsWatcherQueue   setMaxConcurrentOperationCount:1];
+		[fileMatcherQueue setMaxConcurrentOperationCount:1];
+		[revMatcherQueue  setMaxConcurrentOperationCount:1];
+		
 		fileDownloads		= [[NSMutableArray alloc] init];
 
 		// KVO
@@ -676,8 +682,7 @@
 			continue;
 		}
 		
-		FileScanOperation * o = [[FileScanOperation alloc] initWithURL:fileURL
-												    andShare:share];
+		FileScanOperation * o = [[FileScanOperation alloc] initWithURL:fileURL andShare:share];
 		[self addOperation:o withDependecyToQueue:fsWatcherQueue];
 	}
 }
@@ -705,18 +710,18 @@
 
 - (void) addOperation:(NSOperation*)o withDependecyToQueue:(NSOperationQueue*)q
 {
-	if ([q operationCount] > 0)
-	{
-		NSOperation * lastObject = [[q operations] lastObject];
-		if (lastObject == nil)
-		{
-			DebugLog(@"lastObject == NULL");
-			return;
-		}
-		[o addDependency:lastObject];
-	}
 	if (o != nil)
 	{
+		if ([q operationCount] > 0)
+		{
+			NSOperation * lastObject = [[q operations] lastObject];
+			if (lastObject == nil)
+			{
+				DebugLog(@"lastObject == NULL");
+				return;
+			}
+			[o addDependency:lastObject];
+		}
 		[q addOperation:o];
 	}
 }
