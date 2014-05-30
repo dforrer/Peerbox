@@ -702,8 +702,6 @@
 		[fsWatcherQueue addOperation:o];
 		[self updateFSWatcher];
 		
-		[s dbBegin];
-		
 		return s;
 	}
 	return nil;

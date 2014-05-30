@@ -71,7 +71,7 @@
 		currentRevision = rows[0][0];
 	}
 	
-	[db performQuery:@"BEGIN" rows:nil error:&error];
+	[self dbBegin];
 }
 
 
@@ -589,7 +589,7 @@
 			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE files SET url='%@', revision=%lld, fileSize=%lld, contentModDate='%@', attributesModDate='%@', isSet=%i, extAttributes='%@', versions='%@' WHERE uid='%@';",[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[[[f url] absoluteString] lowercaseString] sqlString]];
 			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error) {
-				DebugLog(@"ERROR during UPDATE");
+				DebugLog(@"ERROR during UPDATE:\n%@",queryUPDATE);
 			}
 		}
 		else
