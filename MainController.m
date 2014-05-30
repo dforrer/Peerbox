@@ -553,8 +553,8 @@
 {
 	DebugLog(@"ERROR: downloadFileHasFailed");
 	[fileDownloads removeObject:d];
-	Revision * r = [d rev];
-	[[[r peer] share] setRevision:r forPeer:[r peer]];
+//	Revision * r = [d rev];
+//	[[[r peer] share] setRevision:r forPeer:[r peer]];
 }
 
 
