@@ -98,7 +98,7 @@
 		[postData setObject:[NSNumber numberWithLongLong:[[peer lastDownloadedRev] longLongValue] + 1] forKey:@"fromRev"];
 		NSError * error;
 		NSData * json = [[CJSONSerializer serializer] serializeObject:postData error:&error];
-		DebugLog(@"json: %@", [NSString stringWithUTF8String:[json bytes]]);
+		DebugLog(@"json: %@", postData);
 		if (error)
 		{
 			DebugLog(@"ERROR 10: CJSON-Serializer failed: %@", error);
