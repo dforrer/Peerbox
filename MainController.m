@@ -757,6 +757,7 @@
  */
 - (void) downloadSharesFromPeers
 {
+	DebugLog(@"downloadSharesFromPeers");
 	// For every announced NetService...
 	//-----------------------------------
 	for (id key in [bonjourSearcher resolvedServices])

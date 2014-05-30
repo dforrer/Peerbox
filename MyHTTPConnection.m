@@ -102,7 +102,7 @@
 	if ( [method isEqualToString:@"POST"]
 	    && [path isEqualToString:@"/notification"] )
 	{
-		DebugLog(@"GET-REQUEST to URI /notification");
+		DebugLog(@"POST-REQUEST to URI /notification");
 		
 		/*
 		NSString *postStr = nil;
