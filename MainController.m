@@ -586,7 +586,7 @@
 {
 	if (object == revMatcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
-		DebugLog(@"revMatcherQueue->operationCount: %lu", (unsigned long)[revMatcherQueue operationCount]);
+		//DebugLog(@"revMatcherQueue->operationCount: %lu", (unsigned long)[revMatcherQueue operationCount]);
 		if ([revMatcherQueue operationCount] == 0)
 		{
 			// Do something here when your queue has completed
@@ -608,7 +608,7 @@
 	}
 	else if (object == fsWatcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
-		DebugLog(@"fsWatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
+		//DebugLog(@"fsWatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
 		
 		/*
 		 * If the 'operationCount' gets bigger than 20 the application
@@ -632,7 +632,7 @@
 	}
 	else if (object == fileMatcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
-		DebugLog(@"fileMatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
+		//DebugLog(@"fileMatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
 		if ([fileMatcherQueue operationCount] == 0)
 		{
 			// Download more files
