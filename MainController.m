@@ -109,6 +109,8 @@
 
 - (void) scheduledTasks
 {
+	DebugLog(@"scheduledTasks");
+	
 	if ([self commitAndBeginAllShareDBs] > 0)
 	{
 		[self notifyPeers];

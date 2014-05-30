@@ -160,16 +160,19 @@
 	@autoreleasepool
 	{
 		// COMMIT Changes in "indexfile" if there are any
+
+		int changes_diff = 0;
 		int newTotalChanges = [db getTotalChanges];
-		
+
 		if (newTotalChanges > totalChanges)
 		{
 			[self dbCommit];
-			DebugLog(@"UNCOMMITED: %i", (newTotalChanges-totalChanges));
+			changes_diff = (newTotalChanges-totalChanges);
+			DebugLog(@"UNCOMMITTED: %i", changes_diff);
 			totalChanges = newTotalChanges;
 			[self dbBegin];
 		}
-		return (newTotalChanges - totalChanges);
+		return changes_diff;
 	}
 }
 
