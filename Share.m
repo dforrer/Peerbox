@@ -23,7 +23,6 @@
 	// instance variables declared in implementation context
 	//-------------------------------------------------------
 	SQLiteDatabase * db;
-	DownloadRevisions * downloadRevs;
 	NSMutableDictionary * peers; // key = peerId
 	NSNumber * currentRevision;
 	int totalChanges;

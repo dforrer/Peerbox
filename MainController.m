@@ -426,7 +426,6 @@
 	//-----------------------------------
 	if ([revMatcherQueue operationCount] == 0)
 	{
-		DebugLog(@"revMatcherQueue operationCount: %lu", (unsigned long)[revMatcherQueue operationCount]);
 		[self downloadRevisionsFromPeers];
 	}
 	

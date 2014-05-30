@@ -5,7 +5,6 @@
 
 @class File;
 @class Peer;
-@class DownloadRevisions;
 @class Configuration;
 @class Revision;
 
