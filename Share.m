@@ -370,14 +370,14 @@
 	if (error)
 	{
 		DebugLog(@"A JSON-Error was encountered!");
-		exit(-1);
+		return nil;
 	}
 	error = nil;
 	[rv setVersions:[NSDictionary dictionaryWithJSONString:rows[0][4] error:&error]];
 	if (error)
 	{
 		DebugLog(@"A JSON-Error was encountered!");
-		exit(-1);
+		return nil;
 	}
 	[rv setIsDir:rows[0][5]];
 	[rv setLastMatchAttempt:[NSDate dateWithString:rows[0][6]]];
@@ -645,14 +645,14 @@
 	if (error)
 	{
 		DebugLog(@"A JSON-Error was encountered!");
-		exit(-1);
+		return nil;
 	}
 	error = nil;
 	[rv setVersions:[NSDictionary dictionaryWithJSONString:rows[0][7] error:&error]];
 	if (error)
 	{
 		DebugLog(@"A JSON-Error was encountered!");
-		exit(-1);
+		return nil;
 	}
 	
 	return rv;
