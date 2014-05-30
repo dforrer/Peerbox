@@ -65,6 +65,7 @@
 		//--------------------------------
 		NSString * serviceType = [NSString stringWithFormat:@"_%@._tcp.", APP_NAME];
 		bonjourSearcher = [[BonjourSearcher alloc] initWithServiceType:serviceType andDomain:@"local" andMyName:[config myPeerID]];
+		[bonjourSearcher setDelegate:self];
 		
 		fswatcher		= [[FSWatcher alloc] init];
 		fsWatcherQueue	= [[NSOperationQueue alloc] init];
