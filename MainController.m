@@ -387,6 +387,13 @@
 	// Continue downloading revisions...
 	//-----------------------------------
 	[self downloadRevisionsFromPeers];
+
+	// ...and files
+	//---------------
+	if ([fileDownloads count] < MAX_CONCURRENT_DOWNLOADS / 2)
+	{
+		[self matchFiles];
+	}
 }
 
 
