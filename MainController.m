@@ -627,9 +627,18 @@
 												    andShare:share];
 		if ([fsWatcherQueue operationCount] > 0)
 		{
-			[o addDependency:[[fsWatcherQueue operations] lastObject]];
+			NSOperation * lastObject = [[fsWatcherQueue operations] lastObject];
+			if (lastObject == nil)
+			{
+				DebugLog(@"lastObject == NULL");
+				return;
+			}
+			[o addDependency:lastObject];
 		}
-		[fsWatcherQueue addOperation: o];
+		if (o != nil)
+		{
+			[fsWatcherQueue addOperation:o];
+		}
 	}
 }
 
