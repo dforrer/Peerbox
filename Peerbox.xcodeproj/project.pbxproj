@@ -84,6 +84,7 @@
 		65ADCAEC180B1B6C00CB05B5 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65ADCAEB180B1B6C00CB05B5 /* CoreFoundation.framework */; };
 		65ADCAEE180B1C1E00CB05B5 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 65ADCAED180B1C1E00CB05B5 /* libz.dylib */; };
 		65CDF14D188C4B9700F31C13 /* DownloadRevisions.m in Sources */ = {isa = PBXBuildFile; fileRef = 65CDF14C188C4B9700F31C13 /* DownloadRevisions.m */; };
+		65D830DE1938A88100DF3F8B /* PostNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D830DD1938A88100DF3F8B /* PostNotification.m */; };
 		65E5CBC0180AFF98001065AE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E5CBBF180AFF98001065AE /* Cocoa.framework */; };
 		65E5CC1D180B0043001065AE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E5CBF6180B0043001065AE /* AppDelegate.m */; };
 		65E5CC22180B0043001065AE /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E5CC00180B0043001065AE /* File.m */; };
@@ -243,6 +244,8 @@
 		65ADCAED180B1C1E00CB05B5 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		65CDF14B188C4B8800F31C13 /* DownloadRevisions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadRevisions.h; sourceTree = "<group>"; };
 		65CDF14C188C4B9700F31C13 /* DownloadRevisions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadRevisions.m; sourceTree = "<group>"; };
+		65D830DC1938A88100DF3F8B /* PostNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostNotification.h; sourceTree = "<group>"; };
+		65D830DD1938A88100DF3F8B /* PostNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostNotification.m; sourceTree = "<group>"; };
 		65E5CBBC180AFF98001065AE /* Peerbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Peerbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65E5CBBF180AFF98001065AE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		65E5CBC2180AFF98001065AE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -560,6 +563,8 @@
 				65CDF14C188C4B9700F31C13 /* DownloadRevisions.m */,
 				6547B5A4188D91A5005F3BD4 /* DownloadFile.h */,
 				6547B5A5188D91B1005F3BD4 /* DownloadFile.m */,
+				65D830DC1938A88100DF3F8B /* PostNotification.h */,
+				65D830DD1938A88100DF3F8B /* PostNotification.m */,
 				652F704B184F71D3004E13C5 /* MyHTTPConnection.h */,
 				652F704C184F71D3004E13C5 /* MyHTTPConnection.m */,
 				657657D718D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.h */,
@@ -769,6 +774,7 @@
 				658946B319269B4C00A58A83 /* DDTTYLogger.m in Sources */,
 				658945CD19269B4C00A58A83 /* HTTPServer.m in Sources */,
 				658945B919269B4C00A58A83 /* SQLiteDatabase.m in Sources */,
+				65D830DE1938A88100DF3F8B /* PostNotification.m in Sources */,
 				658945D519269B4C00A58A83 /* HTTPAsyncFileResponse.m in Sources */,
 				658945C119269B4C00A58A83 /* DDData.m in Sources */,
 				65AD01E6186E0DBB00DC6A1B /* FileScanOperation.m in Sources */,

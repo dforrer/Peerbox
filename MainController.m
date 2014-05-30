@@ -23,6 +23,8 @@
 #import "RevisionMatchOperation.h"
 #import "FileMatchOperation.h"
 #import "Revision.h"
+#import "PostNotification.h"
+
 
 /**
  * Contains all the Domain-logic
@@ -98,12 +100,20 @@
 		
 		// Schedule timer for commit and begin on databases
 		//--------------------------------------------------
-		[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(commitAndBeginAllShareDBs) userInfo:nil repeats:YES];
+		[NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(scheduledTasks) userInfo:nil repeats:YES];
 		
 	}
 	return self;
 }
 
+
+- (void) scheduledTasks
+{
+	if ([self commitAndBeginAllShareDBs] > 0)
+	{
+		[self notifyPeers];
+	}
+}
 
 
 /**
@@ -295,12 +305,17 @@
 	[config setMyPeerID:[FileHelper sha1OfNSData:random]];
 }
 
-- (void) commitAndBeginAllShareDBs
+/**
+ * Returns the number of all new changes on all the shares
+ */
+- (int) commitAndBeginAllShareDBs
 {
+	int total_uncommitted = 0;
 	for (Share * s in [myShares allValues])
 	{
-		[s commitAndBegin];
+		total_uncommitted += [s commitAndBegin];
 	}
+	return total_uncommitted;
 }
 
 - (void) commitAllShareDBs
@@ -529,11 +544,14 @@
 		if ([matcherQueue operationCount] == 0)
 		{
 			// Do something here when your queue has completed
+			//-------------------------------------------------
 			NSLog(@"queue has completed");
+			
 			
 			// Restart Revision-Download
 			//---------------------------
 			[self downloadRevisionsFromPeers];
+			
 			
 			// Download more files
 			//---------------------
@@ -771,6 +789,22 @@
 	}
 }
 
+
+
+- (void) notifyPeers
+{
+	DebugLog(@"notifyPeers");
+	// For every announced NetService...
+	//-----------------------------------
+	for (id key in [bonjourSearcher resolvedServices])
+	{
+		NSNetService *aNetService = [[bonjourSearcher resolvedServices] objectForKey:key];
+		// ...and for every Share
+		//------------------------
+		PostNotification * n = [[PostNotification alloc] initWithNetService:aNetService];
+		[n start];
+	}
+}
 
 
 /**

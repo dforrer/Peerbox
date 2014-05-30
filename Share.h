@@ -38,7 +38,7 @@
 - (NSNumber*) currentRevision;
 - (void) dbBegin;
 - (void) dbCommit;
-- (void) commitAndBegin;
+- (int) commitAndBegin;
 
 // Peer-Management
 //-----------------

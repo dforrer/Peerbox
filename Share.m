@@ -152,8 +152,10 @@
 	
 }
 
-
-- (void) commitAndBegin
+/**
+ * Returns total number of uncommited changes
+ */
+- (int) commitAndBegin
 {
 	@autoreleasepool
 	{
@@ -167,6 +169,7 @@
 			totalChanges = newTotalChanges;
 			[self dbBegin];
 		}
+		return (newTotalChanges - totalChanges);
 	}
 }
 
