@@ -11,14 +11,14 @@
 #import "DownloadShares.h"
 #import "DownloadFile.h"
 #import "DownloadRevisions.h"
+#import "BonjourSearcher.h"
 
 @class Share;
 @class Configuration;
 @class FSWatcher;
 @class HTTPServer;
-@class BonjourSearcher;
 
-@interface MainController : NSObject <DownloadSharesDelegate, DownloadRevisionsDelegate, DownloadFileDelegate>
+@interface MainController : NSObject <DownloadSharesDelegate, DownloadRevisionsDelegate, DownloadFileDelegate, BonjourSearcherDelegate>
 
 - (id) init;
 - (Share*) getShareForID:(NSString*)shareID;

@@ -363,6 +363,24 @@
 #pragma mark -----------------------
 #pragma mark Implemented Interfaces (Protocols)
 
+/**
+ * OVERRIDE: BonjourSearcherDelegate
+ */
+- (void) bonjourSearcherServiceResolved:(NSNetService*)n
+{
+	// Notify peers
+	[self notifyPeers];
+}
+
+
+
+/**
+ * OVERRIDE: BonjourSearcherDelegate
+ */
+- (void) bonjourSearcherServiceRemoved:(NSNetService*)n
+{
+	// do nothing
+}
 
 
 /**
@@ -801,8 +819,7 @@
 	for (id key in [bonjourSearcher resolvedServices])
 	{
 		NSNetService *aNetService = [[bonjourSearcher resolvedServices] objectForKey:key];
-		// ...and for every Share
-		//------------------------
+
 		PostNotification * n = [[PostNotification alloc] initWithNetService:aNetService];
 		[n start];
 	}
