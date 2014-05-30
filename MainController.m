@@ -68,14 +68,17 @@
 		bonjourSearcher = [[BonjourSearcher alloc] initWithServiceType:serviceType andDomain:@"local" andMyName:[config myPeerID]];
 		[bonjourSearcher setDelegate:self];
 		
-		fswatcher		= [[FSWatcher alloc] init];
+		fswatcher			= [[FSWatcher alloc] init];
 		fsWatcherQueue		= [[NSOperationQueue alloc] init];
 		revMatcherQueue	= [[NSOperationQueue alloc] init];
 		fileMatcherQueue	= [[NSOperationQueue alloc] init];
-		fileDownloads	= [[NSMutableArray alloc] init];
+		fileDownloads		= [[NSMutableArray alloc] init];
 
-		[revMatcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL]; // KVO
-		[fsWatcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL]; // KVO
+		// KVO
+		//-----
+		[revMatcherQueue  addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
+		[fsWatcherQueue   addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
+		[fileMatcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
 		
 		[self setupHTTPServer];
 		[self createWorkingDirectories];
@@ -541,7 +544,7 @@
 	[fileDownloads removeObject:d];
 	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
-	[fileMatcherQueue addOperation:o];
+	[self addOperation:o withDependecyToQueue:fileMatcherQueue];
 }
 
 
@@ -579,14 +582,6 @@
 			// Restart Revision-Download
 			//---------------------------
 			[self downloadRevisionsFromPeers];
-			
-			
-			// Download more files
-			//---------------------
-			if ([fileDownloads count] < MAX_CONCURRENT_DOWNLOADS / 2)
-			{
-				[self matchFiles];
-			}
 		}
 	}
 	else if (object == fsWatcherQueue && [keyPath isEqualToString:@"operationCount"])
@@ -611,6 +606,16 @@
 						 afterDelay: 5.0];
 			}
 			return;
+		}
+	}
+	else if (object == fileMatcherQueue && [keyPath isEqualToString:@"operationCount"])
+	{
+		DebugLog(@"fileMatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
+		if ([fileMatcherQueue operationCount] == 0)
+		{
+			// Download more files
+			//---------------------
+			[self matchFiles];
 		}
 	}
 	else
