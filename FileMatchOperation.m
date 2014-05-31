@@ -34,9 +34,9 @@
 - (void) main
 {
 	Share    * share    = [[[d rev] peer] share];
-	Revision * revision = [d rev];
+	Revision * rev		= [d rev];
 	
-	NSURL * fullURL = [NSURL URLWithString:[revision relURL] relativeToURL:[share root]];
+	NSURL * fullURL = [NSURL URLWithString:[rev relURL] relativeToURL:[share root]];
 	
 	// Continue matching the file
 	//----------------------------
@@ -70,11 +70,12 @@
 		}
 	}
 	
-	[File matchExtAttributes:[revision extAttributes] onURL:fullURL];
+	[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
 
-	
+	// Save the File with the updated versions
+	//-----------------------------------------
 	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
-	[newState setVersions:[NSMutableDictionary dictionaryWithDictionary:[revision versions]]];
+	[newState setVersions:[NSMutableDictionary dictionaryWithDictionary:[rev versions]]];
 	[share setFile:newState];
 }
 
