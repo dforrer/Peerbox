@@ -343,6 +343,7 @@
 		//-------
 		fh = [FileHelper fileForWritingAtPath:[fullURL path]];
 	}
+	[fh writeData:[NSData data]];
 	[fh closeFile];
 	
 	[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
