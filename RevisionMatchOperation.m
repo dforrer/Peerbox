@@ -156,13 +156,7 @@
 	{
 		//DebugLog(@"A");
 		
-		// (No checking for conflicts)
-		
-
-		// Delete localState
-		//-------------------
-		[[[rev peer] share] removeFile:localState];
-
+		// We intentionally don't check for conflicts
 		
 		// Match remoteState
 		//-------------------
@@ -197,11 +191,6 @@
 			NSURL* conflictedCopyURL = [self createConflictedCopy];
 			
 			[[[rev peer] share] scanURL:conflictedCopyURL recursive:NO];
-			
-			
-			// Delete localState
-			//-------------------
-			[[[rev peer] share] removeFile:localState];
 			
 			return;
 		}
@@ -260,11 +249,6 @@
 				
 				[[[rev peer] share] scanURL:conflictedCopyURL recursive:NO];
 				
-				
-				// Delete localState
-				//-------------------
-				[[[rev peer] share] removeFile:localState];
-				
 				// Match remoteState
 				//-------------------
 				return [self executeMatch];
@@ -288,12 +272,6 @@
 			{
 				// localState->versions->biggestKey < remoteState->versions->biggestKey
 				//----------------------------------------------------------------------
-				
-				
-				// Delete localState
-				//-------------------
-				[[[rev peer] share] removeFile:localState];
-				
 				
 				// Match remoteState
 				//-------------------
