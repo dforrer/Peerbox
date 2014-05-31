@@ -56,7 +56,7 @@
 	
 	if ([localState isCoreEqualToFile:remoteState])
 	{
-		//DebugLog(@"match: isCoreEqualToFile -> YES");
+		DebugLog(@"match: isCoreEqualToFile -> YES");
 		return;
 	}
 	
@@ -108,7 +108,7 @@
 	{
 		// Revision = ADD-Directory
 		//--------------------------
-		//DebugLog(@"ADD-Directory");
+		DebugLog(@"ADD-Directory");
 		NSError * error = nil;
 		[[NSFileManager defaultManager] createDirectoryAtURL:fullURL withIntermediateDirectories:YES attributes:nil error:&error];
 		if (error != nil)

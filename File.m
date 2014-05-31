@@ -200,6 +200,8 @@
  */
 + (void) matchExtAttributes:(NSDictionary*)dict onURL:(NSURL*)url
 {
+	[FileHelper removeAllValuesOnFile:[url path]];
+	
 	for (id key in dict)
 	{
 		NSData * extAttrBinary = [[NSData alloc] initWithBase64EncodedString:[dict objectForKey:key] options:0];
