@@ -61,8 +61,8 @@
 	}
 	
 	
-	// match directory
-	//-----------------
+	// match directory / match file
+	//------------------------------
 	if ([[rev isDir] boolValue])
 	{
 		[self matchDir];
@@ -88,6 +88,7 @@
 	 * Why? Because otherwise a file/folder is created
 	 * without the program knowing about.
 	 */
+	
 	[[[rev peer] share] scanURL:fullURL
 				   recursive:NO];
 }
@@ -144,27 +145,28 @@
 
 
 /**
- *
+ * Handles File-conflicts
  */
 - (void) matchFile
 {
 	// localState is NOT set, remotestate is set (ADD new file)
 	//----------------------------------------------------------
-	if ( ([[localState isSet] intValue] == 0 || localState == nil) && [[rev isSet] intValue] == 1)
+	if (	([[localState isSet] intValue] == 0 || localState == nil)
+	    && [[rev isSet] intValue] == 1)
 	{
 		//DebugLog(@"A");
 		
 		// (No checking for conflicts)
 		
-		/*
-		 // Delete localState
-		 //-------------------
-		 [[[rev peer] share] removeFile:localState];
-		 */
+
+		// Delete localState
+		//-------------------
+		[[[rev peer] share] removeFile:localState];
+
 		
 		// Match remoteState
 		//-------------------
-		[self matchRemoteState];
+		[self executeMatch];
 		
 		return;
 	}
@@ -196,11 +198,10 @@
 			
 			[[[rev peer] share] scanURL:conflictedCopyURL recursive:NO];
 			
-			/*
-			 // Delete localState
-			 //-------------------
-			 [[[rev peer] share] removeFile:localState];
-			 */
+			
+			// Delete localState
+			//-------------------
+			[[[rev peer] share] removeFile:localState];
 			
 			return;
 		}
@@ -259,15 +260,14 @@
 				
 				[[[rev peer] share] scanURL:conflictedCopyURL recursive:NO];
 				
-				/*
-				 // Delete localState
-				 //-------------------
-				 [[[rev peer] share] removeFile:localState];
-				 */
+				
+				// Delete localState
+				//-------------------
+				[[[rev peer] share] removeFile:localState];
 				
 				// Match remoteState
 				//-------------------
-				return [self matchRemoteState];
+				return [self executeMatch];
 			}
 			else
 			{
@@ -289,15 +289,15 @@
 				// localState->versions->biggestKey < remoteState->versions->biggestKey
 				//----------------------------------------------------------------------
 				
-				/*
-				 // Delete localState
-				 //-------------------
-				 [[[rev peer] share] removeFile:localState];
-				 */
+				
+				// Delete localState
+				//-------------------
+				[[[rev peer] share] removeFile:localState];
+				
 				
 				// Match remoteState
 				//-------------------
-				return [self matchRemoteState];
+				return [self executeMatch];
 			}
 			else
 			{
@@ -314,7 +314,34 @@
 }
 
 
-- (void) matchZeroLengthFile
+
+/*
+ * No conflict resolution is done here
+ */
+- (void) executeMatch
+{
+	//DebugLog(@"matchRemoteState");
+	
+	// Store Revision in Share->db, if the file requires a download
+	//--------------------------------------------------------------
+	if (![rev canBeMatchedInstantly])
+	{
+		//DebugLog(@"Revision CAN'T be matched instantly");
+		[[[rev peer] share] setRevision:rev forPeer:[rev peer]];
+		return;
+	}
+	
+	// match zero-length files
+	//-------------------------
+	if ([rev isZeroLengthFile])
+	{
+		[self createZeroLengthFile];
+	}
+}
+
+
+
+- (void) createZeroLengthFile
 {
 	DebugLog(@"matchZeroLengthFile");
 	
@@ -357,31 +384,6 @@
 	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
 	[newState setVersions:[remoteState versions]];
 	[[[rev peer] share] setFile:newState];
-}
-
-
-/*
- * No conflict resolution is done here
- */
-- (void) matchRemoteState
-{
-	//DebugLog(@"matchRemoteState");
-	
-	// Store Revision in Share->db, if the file requires a download
-	//--------------------------------------------------------------
-	if (![rev canBeMatchedInstantly])
-	{
-		//DebugLog(@"Revision CAN'T be matched instantly");
-		[[[rev peer] share] setRevision:rev forPeer:[rev peer]];
-		return;
-	}
-	
-	// match zero-length files
-	//-------------------------
-	if ([rev isZeroLengthFile])
-	{
-		[self matchZeroLengthFile];
-	}
 }
 
 
