@@ -54,6 +54,12 @@
 - (BOOL) applicationShouldTerminateAfterLastWindowClosed: (NSApplication *)theApplication
 {
 	DebugLog(@"applicationShouldTerminateAfterLastWindowClosed");
+	return NO;
+}
+
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
+{
+	[window makeKeyAndOrderFront:self];
 	return YES;
 }
 
