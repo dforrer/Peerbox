@@ -18,14 +18,16 @@
 	Revision		* rev;
 	NSURL		* fullURL;
 	Configuration	* config;
+	File			* localState;
+	File			* remoteState;
 }
 
 - (id) initWithRevision:(Revision*)r andConfig:(Configuration*)c
 {
 	if ((self = [super init]))
 	{
-		rev = r;
-		config = c;
+		rev	   = r;
+		config  = c;
 		fullURL = [NSURL URLWithString:[rev relURL] relativeToURL:[[[rev peer] share] root]];
 	}
 	return self;
@@ -44,8 +46,14 @@
 - (void) match
 {
 	//DebugLog(@"match: %@", fullURL);
-	File * localState = [[[rev peer] share] getFileForURL:fullURL];
-	File * remoteState= [[File alloc] initWithShare:[[rev peer] share] relUrl:[rev relURL] isSet:[rev isSet] extAttributesAsBase64:[rev extAttributes] versions:[NSMutableDictionary dictionaryWithDictionary:[rev versions]]];
+	
+	localState  = [[[rev peer] share] getFileForURL:fullURL];
+	remoteState = [[File alloc] initWithShare:[[rev peer] share]
+								relUrl:[rev relURL]
+								 isSet:[rev isSet]
+					extAttributesAsBase64:[rev extAttributes]
+							   versions:[NSMutableDictionary dictionaryWithDictionary:[rev versions]]];
+	
 	if ([localState isCoreEqualToFile:remoteState])
 	{
 		//DebugLog(@"match: isCoreEqualToFile -> YES");
@@ -57,7 +65,7 @@
 	//-----------------
 	if ([[rev isDir] boolValue])
 	{
-		[self matchDir:localState];
+		[self matchDir];
 	}
 	else
 	{
@@ -66,12 +74,13 @@
 		 * in case a file was added, not yet downloaded
 		 * and deleted again.
 		 */
-		[[[rev peer] share] removeRevision:rev forPeer:[rev peer]];
 		
+		[[[rev peer] share] removeRevision:rev
+							  forPeer:[rev peer]];
 		
 		// match 'normal' files
 		//----------------------
-		[self matchFile:localState];
+		[self matchFile];
 	}
 	
 	/*
@@ -79,7 +88,8 @@
 	 * Why? Because otherwise a file/folder is created
 	 * without the program knowing about.
 	 */
-	[[[rev peer] share] scanURL:fullURL recursive:NO];
+	[[[rev peer] share] scanURL:fullURL
+				   recursive:NO];
 }
 
 
@@ -91,7 +101,7 @@
 /*
  * Revision = Directory
  */
-- (void) matchDir:(File*)localState
+- (void) matchDir
 {
 	if ([[rev isSet] intValue] == 1)
 	{
@@ -136,7 +146,7 @@
 /**
  *
  */
-- (void) matchFile:(File*)localState
+- (void) matchFile
 {
 	// localState is NOT set, remotestate is set (ADD new file)
 	//----------------------------------------------------------
@@ -238,11 +248,12 @@
 		if ([File versions:[rev versions] hasConflictsWithVersions:[localState versions]])
 		{
 			//DebugLog(@"D1");
-			// (WITH CONFLICT)
-			
+			// WITH CONFLICT
+			//---------------
 			if ([[config myPeerID] isLessThan:[[rev peer] peerID]])
 			{
-				// (myPeerId < otherPeerId)
+				// myPeerId < otherPeerId
+				//------------------------
 				
 				NSURL* conflictedCopyURL = [self createConflictedCopy];
 				
@@ -260,7 +271,8 @@
 			}
 			else
 			{
-				// (myPeerId >= otherPeerId)
+				// myPeerId >= otherPeerId
+				//-------------------------
 				//DebugLog(@"DO NOTHING because myPeerId >= otherPeerId");
 				
 				// DO NOTHING
@@ -270,11 +282,12 @@
 		{
 			//DebugLog(@"D2");
 			
-			// (WITHOUT CONFLICT)
-			
+			// WITHOUT CONFLICT
+			//------------------
 			if ([[localState getLastVersionKey] intValue] < [[rev getLastVersionKey] intValue])
 			{
-				// (localState:versions:biggestKey < remoteState:versions:biggestKey)
+				// localState->versions->biggestKey < remoteState->versions->biggestKey
+				//----------------------------------------------------------------------
 				
 				/*
 				 // Delete localState
@@ -290,7 +303,8 @@
 			{
 				[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
 
-				// (localState:versions:biggestKey >= remoteState:versions:biggestKey)
+				// localState->versions->biggestKey >= remoteState->versions->biggestKey
+				//-----------------------------------------------------------------------
 				
 				// DO NOTHING
 				//DebugLog(@"DO NOTHING");
@@ -335,11 +349,9 @@
 	
 	// Set remoteState in Share s
 	//----------------------------
-	/*
-	 File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
-	 [newState setVersions:[remoteState versions]];
-	 [[peer share] setFile:newState];
-	 */
+	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
+	[newState setVersions:[remoteState versions]];
+	[[[rev peer] share] setFile:newState];
 }
 
 
@@ -370,9 +382,7 @@
 
 
 - (NSURL*) createConflictedCopy
-{
-	File * localState = [[[rev peer] share] getFileForURL:fullURL];
-	
+{	
 	// Create CONFLICTEDCOPY
 	//-----------------------
 	NSError * error;
