@@ -41,10 +41,10 @@
 + (NSString*) getIPv4FromNetService:(NSNetService*)netService;
 + (NSFileHandle*) fileForWritingAtPath: (NSString*) path;
 + (BOOL) removeAllFilesInDir:(NSString*)path;
-// Get and Set extended attrbutes of files
+// Get and Set extended attributes of files
 + (BOOL)setValue:(NSObject *)value forName:(NSString *)name onFile:(NSString *)filePath;
 + (NSData *)getDataValueForName:(NSString *)name onFile:(NSString *)filePath;
 + (NSDictionary *)getAllValuesOnFile:(NSString *)filePath;
-
++ (void) removeAllValuesOnFile:(NSString *)filePath;
 
 @end

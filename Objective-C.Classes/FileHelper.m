@@ -628,4 +628,37 @@
 	return attributes;
 }
 
+/**
+ * Remove all file attributes
+ */
++ (void) removeAllValuesOnFile:(NSString *)filePath
+{
+	ssize_t size;
+	char buffer[4096], *bufferPtr;
+	
+	if (0 > (size = listxattr([filePath UTF8String], buffer, sizeof(buffer), 00))
+	    || size > sizeof(buffer))
+	{
+		DebugLog(@"%s.. failed to listxattr(%@), %s", __PRETTY_FUNCTION__, filePath, strerror(errno));
+		return;
+	}
+	
+	bufferPtr = buffer;
+	
+	for (ssize_t bufferNdx = 0; bufferNdx < size; )
+	{
+		NSString *name = [NSString stringWithCString:bufferPtr encoding:NSUTF8StringEncoding];
+		unsigned long namelen = strlen(bufferPtr);
+		
+		if (name)
+		{
+			removexattr([filePath UTF8String], [name UTF8String], 0);
+		}
+
+		bufferPtr += namelen + 1;
+		bufferNdx += namelen + 1;
+	}
+}
+
+
 @end
