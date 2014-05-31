@@ -316,7 +316,11 @@
 
 - (void) matchZeroLengthFile
 {
-	//DebugLog(@"matchZeroLengthFile");
+	DebugLog(@"matchZeroLengthFile");
+	
+	// Delete FILE (because writeData:[NSData data] doesn't work)
+	//------------------------------------------------------------
+	remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
 	
 	// Create empty file
 	//-------------------
@@ -343,7 +347,7 @@
 		//-------
 		fh = [FileHelper fileForWritingAtPath:[fullURL path]];
 	}
-	[fh writeData:[NSData data]];
+	//[fh writeData:[NSData data]];
 	[fh closeFile];
 	
 	[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
