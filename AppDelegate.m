@@ -25,12 +25,8 @@
 @synthesize sharesTableView;
 @synthesize statusItem;
 
-/**
- * OVERRIDE from NSMenuDelegate
- */
-- (void)menu:(NSMenu *)menu willHighlightItem:(NSMenuItem *)item
-{
-}
+
+
 #pragma mark -----------------------
 #pragma mark NSApplicationDelegate
 
@@ -47,8 +43,8 @@
 		mm = [[Singleton data] mainModel];
 		[sharesTableView reloadData];
 		
-		NSImage *menuImage = [[NSImage alloc] initWithContentsOfFile:
-						  [[NSBundle mainBundle] pathForResource:@"menubar_icon" ofType:@"png"]];
+		NSImage * menuImage = [[NSImage alloc] initWithContentsOfFile:[[NSBundle mainBundle]
+						   pathForResource:@"menubar_icon" ofType:@"png"]];
 		statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
 		//[statusItem setTitle:@"dd"];
 		[statusItem setHighlightMode:YES];
@@ -56,10 +52,75 @@
 		NSMenu * mymenu = [[NSMenu alloc] init];
 		[mymenu setDelegate:self];
 		[statusItem setMenu:mymenu];
+		[self update_menu];
 	}
 }
 
 
+- (void) update_menu
+{
+	// Get NSMenu-Pointer
+	NSMenu * mymenu = [statusItem menu];
+	[mymenu removeAllItems];
+	
+	// Allocate Default NSMenuItems
+	NSMenuItem  * default_edit = [[NSMenuItem alloc ] init];
+	NSMenuItem  * default_quit = [[NSMenuItem alloc ] init];
+	
+	// Set Titles of Default-Items
+	[default_edit setTitle:@"Edit Shares..."];
+	[default_quit setTitle:@"Quit"];
+	
+	// Set Actions of Default-Items
+	[default_edit setAction:@selector(openEditDialog)];
+	[default_quit setAction:@selector(terminate:)];
+	
+	// Add NSMenuItems to myself (NSMenu)
+	[mymenu addItem: [NSMenuItem separatorItem]];
+	[mymenu addItem: default_edit];
+	[mymenu addItem: default_quit];
+	
+	// loop through myShares
+	for (id key  in [mm getAllShares])
+	{
+		Share * s = [[mm getAllShares] objectForKey:key];
+		NSMenuItem  * share_item = [[NSMenuItem alloc] initWithTitle:[s shareId]
+												    action:@selector(openItem:)
+											  keyEquivalent:@""];
+		[share_item setRepresentedObject:key];
+		
+		// Get and prepare icon for item
+		NSImage * iconOfFile = [[NSWorkspace sharedWorkspace] iconForFile: [[s root] path]];
+		NSSize smallIconSize;
+		smallIconSize.height = 16;
+		smallIconSize.width  = 16;
+		[iconOfFile setSize:smallIconSize];
+		
+		[share_item setImage: iconOfFile];
+		
+		
+		[mymenu insertItem:share_item atIndex:0];
+				
+	}
+
+	NSMenuItem  * shares_title = [[NSMenuItem alloc ] init];
+	[shares_title setTitle:@"Folders being synced:"];
+	[mymenu insertItem:shares_title atIndex:0];
+}
+
+- (IBAction) openItem:(id)sender;
+{
+	NSString        *key            = [sender representedObject];
+	
+	Share * s = [[mm getAllShares] objectForKey:key];
+	
+	[[NSWorkspace sharedWorkspace] openFile:[[s root] path]];
+}
+
+- (void) openEditDialog
+{
+	[window makeKeyAndOrderFront:self];
+}
 
 /**
  * Terminates the App when the window is
@@ -74,7 +135,6 @@
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
 {
-	[window makeKeyAndOrderFront:self];
 	return YES;
 }
 
@@ -102,6 +162,8 @@
 	[mm addShareWithID:shareId andRootURL:root andPasswordHash:passwordHash];
 	
 	[sharesTableView reloadData];
+	
+	[self update_menu];
 }
 
 
@@ -116,6 +178,8 @@
 	[mm removeShareForID:[shareAtIndex shareId]];
 
 	[sharesTableView reloadData];
+
+	[self update_menu];
 }
 
 - (IBAction) downloadShares:(id)sender

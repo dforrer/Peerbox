@@ -3,7 +3,7 @@
 //  Copyright (c) 2014 Forrer. All rights reserved.
 //
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSMenuDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource>
 
 
 - (IBAction) addShare: (id)sender;
@@ -13,6 +13,7 @@
 - (IBAction) matchFiles:(id)sender;
 - (IBAction) printShares: (id)sender;
 - (IBAction) printResolvedServices: (id)sender;
+- (IBAction) openItem:(id)sender;
 
 @property (assign) IBOutlet NSTableView *sharesTableView;
 @property (weak) IBOutlet NSWindow *window;
