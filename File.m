@@ -50,6 +50,10 @@
 			// if it's a symbolic link
 			if ([FileHelper isSymbolicLink:p])
 			{
+				if (IGNORE_SYMBOLIC_LINKS)
+				{
+					return nil;
+				}
 				DebugLog(@"isSymbolicLink: %@", p);
 				if (![FileHelper replaceSymlinkAtPath:p])
 				{

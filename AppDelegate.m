@@ -50,7 +50,6 @@
 		[statusItem setHighlightMode:YES];
 		[statusItem setImage:menuImage];
 		NSMenu * mymenu = [[NSMenu alloc] init];
-		[mymenu setDelegate:self];
 		[statusItem setMenu:mymenu];
 		[self update_menu];
 	}
