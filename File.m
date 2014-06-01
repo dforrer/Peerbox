@@ -56,12 +56,12 @@
 					DebugLog(@"Symlink replacement failed");
 					return nil;
 				}
-				/*
+				
 				if ([FileHelper isDirectory:p])
 				{
 					[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:[NSURL fileURLWithPath:p]];
 				}
-				*/
+				
 			}
 			url		= [NSURL fileURLWithPath:p];
 			revision	= [NSNumber numberWithLongLong:0];
