@@ -160,6 +160,7 @@
 	NSString	* passwordHash	= [FileHelper sha1OfNSString:[passwordTextfield stringValue]];
 
 	[mm addShareWithID:shareId andRootURL:root andPasswordHash:passwordHash];
+	[mm downloadSharesFromPeers];
 	
 	[sharesTableView reloadData];
 	
