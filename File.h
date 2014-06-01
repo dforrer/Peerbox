@@ -24,15 +24,7 @@
 
 // Setter
 //--------
-- (void) setUrl:(NSURL *)u;
-- (void) setRevision:(NSNumber *)rev;
-- (void) setFileSize:(NSNumber *)size;
-- (void) setContentModDate:(NSDate *)modDate;
-- (void) setAttributesModDate:(NSDate *)modDate;
 - (void) setIsSetBOOL:(BOOL)b;
-- (void) setIsSet:(NSNumber *)s;
-- (void) setExtAttributes:(NSMutableDictionary *)extAttr;
-- (void) setVersions:(NSMutableDictionary *)v ;
 
 // Updater
 //---------
@@ -44,14 +36,16 @@
 - (BOOL) updateVersions;
 
 
-@property (nonatomic,readonly,strong) NSURL		* url;
-@property (nonatomic,readonly,strong) NSNumber	* revision;
-@property (nonatomic,readonly,strong) NSNumber	* fileSize;
-@property (nonatomic,readonly,strong) NSDate		* contentModDate;
-@property (nonatomic,readonly,strong) NSDate		* attributesModDate;
-@property (nonatomic,readonly,strong) NSNumber	* isSet;
-@property (nonatomic,readonly,strong) NSMutableDictionary * extAttributes; // BASE64-encoded
-@property (nonatomic,readonly,strong) NSMutableDictionary * versions;
+@property (nonatomic,readwrite,strong) NSURL		* url;
+@property (nonatomic,readwrite,strong) NSNumber	* revision;
+@property (nonatomic,readwrite,strong) NSNumber	* fileSize;
+@property (nonatomic,readwrite,strong) NSDate	* contentModDate;
+@property (nonatomic,readwrite,strong) NSDate	* attributesModDate;
+@property (nonatomic,readwrite,strong) NSNumber	* isSet;
+@property (nonatomic,readwrite,strong) NSMutableDictionary * extAttributes; // BASE64-encoded
+@property (nonatomic,readwrite,strong) NSMutableDictionary * versions;
+@property (nonatomic,readwrite,strong) NSNumber	* isSymlink;
+@property (nonatomic,readwrite,strong) NSURL		* targetURL;
 
 
 @end
