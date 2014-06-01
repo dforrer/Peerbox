@@ -660,7 +660,7 @@
                     <textField verticalHuggingPriority="750" id="MOs-rg-1mZ">
                         <rect key="frame" x="10" y="158" width="435" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="Peerbox" placeholderString="FHNW" bezelStyle="round" id="FAS-gJ-xBw">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="Public" placeholderString="FHNW" bezelStyle="round" id="FAS-gJ-xBw">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -669,7 +669,7 @@
                     <textField verticalHuggingPriority="750" id="1E4-Em-ft9">
                         <rect key="frame" x="10" y="126" width="435" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="/Users/Daniel/Peerbox" bezelStyle="round" id="r56-i1-wob">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="/Users/&lt;User Name>/&lt;Folder name>" bezelStyle="round" id="r56-i1-wob">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
