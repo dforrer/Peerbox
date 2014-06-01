@@ -85,6 +85,8 @@
 		65ADCAEE180B1C1E00CB05B5 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 65ADCAED180B1C1E00CB05B5 /* libz.dylib */; };
 		65CDF14D188C4B9700F31C13 /* DownloadRevisions.m in Sources */ = {isa = PBXBuildFile; fileRef = 65CDF14C188C4B9700F31C13 /* DownloadRevisions.m */; };
 		65D830DE1938A88100DF3F8B /* PostNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D830DD1938A88100DF3F8B /* PostNotification.m */; };
+		65D830E8193B197100DF3F8B /* menubar_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65D830E7193B197100DF3F8B /* menubar_icon.png */; };
+		65D830EA193B608600DF3F8B /* menubar_icon_stopped.png in Resources */ = {isa = PBXBuildFile; fileRef = 65D830E9193B608600DF3F8B /* menubar_icon_stopped.png */; };
 		65E5CBC0180AFF98001065AE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E5CBBF180AFF98001065AE /* Cocoa.framework */; };
 		65E5CC1D180B0043001065AE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E5CBF6180B0043001065AE /* AppDelegate.m */; };
 		65E5CC22180B0043001065AE /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E5CC00180B0043001065AE /* File.m */; };
@@ -246,6 +248,8 @@
 		65CDF14C188C4B9700F31C13 /* DownloadRevisions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadRevisions.m; sourceTree = "<group>"; };
 		65D830DC1938A88100DF3F8B /* PostNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostNotification.h; sourceTree = "<group>"; };
 		65D830DD1938A88100DF3F8B /* PostNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostNotification.m; sourceTree = "<group>"; };
+		65D830E7193B197100DF3F8B /* menubar_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menubar_icon.png; sourceTree = SOURCE_ROOT; };
+		65D830E9193B608600DF3F8B /* menubar_icon_stopped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menubar_icon_stopped.png; sourceTree = SOURCE_ROOT; };
 		65E5CBBC180AFF98001065AE /* Peerbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Peerbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65E5CBBF180AFF98001065AE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		65E5CBC2180AFF98001065AE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -618,6 +622,8 @@
 		65E5CBC5180AFF98001065AE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				65D830E7193B197100DF3F8B /* menubar_icon.png */,
+				65D830E9193B608600DF3F8B /* menubar_icon_stopped.png */,
 				6595E54318D4ED7300E13880 /* main.m */,
 				6595E54518D4EDC300E13880 /* MainMenu.xib */,
 				65A1212E190446DB0082C251 /* Peerbox-Info.plist */,
@@ -730,8 +736,10 @@
 				658946CD19269B4C00A58A83 /* LICENSE in Resources */,
 				658945EB19269B4C00A58A83 /* LICENSE.txt in Resources */,
 				658946A919269B4C00A58A83 /* About.txt in Resources */,
+				65D830EA193B608600DF3F8B /* menubar_icon_stopped.png in Resources */,
 				658946C919269B4C00A58A83 /* .travis.yml in Resources */,
 				658946A519269B4C00A58A83 /* About.txt in Resources */,
+				65D830E8193B197100DF3F8B /* menubar_icon.png in Resources */,
 				658946CF19269B4C00A58A83 /* README.markdown in Resources */,
 				6510B91B19267B5700808055 /* COPYING in Resources */,
 				658946B919269B4C00A58A83 /* README.txt in Resources */,

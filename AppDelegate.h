@@ -3,7 +3,7 @@
 //  Copyright (c) 2014 Forrer. All rights reserved.
 //
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource>
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSMenuDelegate>
 
 
 - (IBAction) addShare: (id)sender;
@@ -20,6 +20,7 @@
 @property (weak) IBOutlet NSTextField *rootTextfield;
 @property (weak) IBOutlet NSTextField *passwordTextfield;
 
+@property (nonatomic, readwrite, copy) NSStatusItem *statusItem;
 
 @end
 

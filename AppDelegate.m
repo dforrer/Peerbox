@@ -23,9 +23,14 @@
 @synthesize rootTextfield;
 @synthesize passwordTextfield;
 @synthesize sharesTableView;
+@synthesize statusItem;
 
-
-
+/**
+ * OVERRIDE from NSMenuDelegate
+ */
+- (void)menu:(NSMenu *)menu willHighlightItem:(NSMenuItem *)item
+{
+}
 #pragma mark -----------------------
 #pragma mark NSApplicationDelegate
 
@@ -41,6 +46,16 @@
 		DebugLog(@"applicationDidFinishLaunching");
 		mm = [[Singleton data] mainModel];
 		[sharesTableView reloadData];
+		
+		NSImage *menuImage = [[NSImage alloc] initWithContentsOfFile:
+						  [[NSBundle mainBundle] pathForResource:@"menubar_icon" ofType:@"png"]];
+		statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+		//[statusItem setTitle:@"dd"];
+		[statusItem setHighlightMode:YES];
+		[statusItem setImage:menuImage];
+		NSMenu * mymenu = [[NSMenu alloc] init];
+		[mymenu setDelegate:self];
+		[statusItem setMenu:mymenu];
 	}
 }
 
