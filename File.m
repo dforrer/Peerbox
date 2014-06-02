@@ -26,7 +26,8 @@
 @synthesize isSet;
 @synthesize extAttributes;
 @synthesize versions;
-
+@synthesize isSymlink;
+@synthesize targetURL;
 
 #pragma mark -----------------------
 #pragma mark Initializer
@@ -47,26 +48,18 @@
 		// Check if superclass could create its object
 		if (self = [super init])
 		{
-			// if it's a symbolic link
 			if ([FileHelper isSymbolicLink:p])
 			{
-				if (IGNORE_SYMBOLIC_LINKS)
-				{
-					return nil;
-				}
-				DebugLog(@"isSymbolicLink: %@", p);
-				if (![FileHelper replaceSymlinkAtPath:p])
-				{
-					DebugLog(@"Symlink replacement failed");
-					return nil;
-				}
-				
-				if ([FileHelper isDirectory:p])
-				{
-					[[NSNotificationCenter defaultCenter] postNotificationName:@"fsWatcherEventIsDir" object:[NSURL fileURLWithPath:p]];
-				}
-				
+				isSymlink = [NSNumber numberWithBool:TRUE];
+				NSString * pointsTo = [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath:p error:nil];
+				targetURL = [NSURL fileURLWithPath:pointsTo];
 			}
+			else
+			{
+				isSymlink = [NSNumber numberWithBool:FALSE];
+				targetURL = [NSURL URLWithString:@""];
+			}
+
 			url		= [NSURL fileURLWithPath:p];
 			revision	= [NSNumber numberWithLongLong:0];
 			isSet 	= [NSNumber numberWithBool:TRUE];
@@ -82,7 +75,13 @@
 	}
 }
 
-- (id) initWithShare:(Share*)s relUrl:(NSString*)u isSet:(NSNumber*)i extAttributesAsBase64:(NSDictionary*)e versions:(NSMutableDictionary*)v
+- (id) initWithShare:(Share*)s
+		    relUrl:(NSString*)u
+			isSet:(NSNumber*)i
+	  extAttributes:(NSDictionary*)e
+		  versions:(NSMutableDictionary*)v
+		 isSymlink:(NSNumber*)sym
+		 targetURL:(NSURL*)t
 {
 	if (self == [super init])
 	{
@@ -97,101 +96,13 @@
 
 
 #pragma mark -----------------------
-#pragma mark Setter
-
-- (void) setUrl:(NSURL *)u
-	{
-	url = u;
-}
-
-- (void) setRevision:(NSNumber *)rev
-{
-	if (rev == nil || ![rev isKindOfClass:[NSNumber class]])
-	{
-		revision = [NSNumber numberWithInt:0];
-	}
-	else
-	{
-		revision = rev;
-	}
-}
-
-- (void) setFileSize:(NSNumber *)size
-{
-	if (size == nil || ![size isKindOfClass:[NSNumber class]])
-	{
-		fileSize = [NSNumber numberWithInt:0];
-	}
-	else
-	{
-		fileSize = size;
-	}
-}
-
-- (void) setContentModDate:(NSDate *)modDate
-{
-	if (modDate == nil || ![modDate isKindOfClass:[NSDate class]])
-	{
-		contentModDate = [NSDate date];
-	}
-	else
-	{
-		contentModDate = modDate;
-	}
-}
-
-- (void) setAttributesModDate:(NSDate *)modDate
-{
-	if (modDate == nil || ![modDate isKindOfClass:[NSDate class]])
-	{
-		attributesModDate = [NSDate date];
-	}
-	else
-	{
-		attributesModDate = modDate;
-	}
-}
-
-- (void) setIsSet:(NSNumber *)s
-{
-	if (s == nil || ![s isKindOfClass:[NSNumber class]])
-	{
-		isSet = [NSNumber numberWithBool:FALSE];
-	}
-	else
-	{
-		isSet = s;
-	}
-}
+#pragma mark Custom Setter
 
 - (void) setIsSetBOOL:(BOOL)b
 {
 	isSet = [NSNumber numberWithBool:b];
 }
 
-- (void) setExtAttributes:(NSMutableDictionary *)extAttr
-{
-	if (extAttr == nil || ![extAttr isKindOfClass:[NSMutableDictionary class]])
-	{
-		extAttributes = [NSMutableDictionary dictionary];
-	}
-	else
-	{
-		extAttributes = extAttr;
-	}
-}
-
-- (void) setVersions:(NSMutableDictionary *)v
-{
-	if (v == nil || ![v isKindOfClass:[NSMutableDictionary class]])
-	{
-		versions = [NSMutableDictionary dictionary];
-	}
-	else
-	{
-		versions = v;
-	}
-}
 
 
 #pragma mark -----------------------
@@ -304,6 +215,10 @@
 
 - (BOOL) isDir
 {
+	if ([isSymlink boolValue] == TRUE)
+	{
+		return FALSE;
+	}
 	return [[url absoluteString] hasSuffix:@"/"];
 }
 
@@ -322,6 +237,14 @@
 		return FALSE;
 	}
 	if (![[self versions] isEqualToDictionary:[f versions]])
+	{
+		return FALSE;
+	}
+	if (![[self isSymlink] isEqualToNumber:[f isSymlink]])
+	{
+		return FALSE;
+	}
+	if (![[[self targetURL] absoluteString] isEqualToString:[[f targetURL] absoluteString]])
 	{
 		return FALSE;
 	}
@@ -369,6 +292,14 @@
 		//	DebugLog(@"isEqualToFile: versions");
 		return FALSE;
 	}
+	if (![[self isSymlink] isEqualToNumber:[f isSymlink]])
+	{
+		return FALSE;
+	}
+	if (![[[self targetURL] absoluteString] isEqualToString:[[f targetURL] absoluteString]])
+	{
+		return FALSE;
+	}
 	return TRUE;
 }
 
@@ -412,18 +343,13 @@
 #pragma mark -----------------------
 #pragma mark Updater
 
-- (void) updateIsSet
-{
-	if ( ![FileHelper fileFolderExists:[url path]] )
-	{
-		[self setIsSetBOOL:FALSE];
-		return;
-	}
-	[self setIsSetBOOL:TRUE];
-}
-
 - (void) updateFileSize
 {
+	if ([isSymlink boolValue])
+	{
+		fileSize = [NSNumber numberWithInt:0];
+		return;
+	}
 	if ([isSet boolValue])
 	{
 		NSNumber * sizeOfFile;
@@ -436,6 +362,11 @@
 
 - (void) updateContentModDate
 {
+	if ([isSymlink boolValue])
+	{
+		contentModDate = [NSDate dateWithTimeIntervalSince1970:0];
+		return;
+	}
 	if ([isSet boolValue])
 	{
 		NSDate * fileChangeDate;
@@ -448,6 +379,11 @@
 
 - (void) updateAttributesModDate
 {
+	if ([isSymlink boolValue])
+	{
+		attributesModDate = [NSDate dateWithTimeIntervalSince1970:0];
+		return;
+	}
 	if ([isSet boolValue])
 	{
 		NSDate * attrChangeDate;
@@ -461,6 +397,11 @@
 
 - (void) updateExtAttributes
 {
+	if ([isSymlink boolValue])
+	{
+		extAttributes = [NSMutableDictionary dictionary];
+		return;
+	}
 	if ( [isSet boolValue] )
 	{
 		// Convert "extAttributes"-Dictionary-Values to BASE64-Strings:
@@ -485,7 +426,7 @@
 
 - (BOOL) updateVersions
 {
-	if ( [self isDir] )
+	if ( [self isDir] || [isSymlink boolValue] == TRUE)
 	{
 		[self setVersions:[NSMutableDictionary dictionaryWithObject:@"0" forKey:@"1"]];
 		return TRUE;
@@ -505,6 +446,7 @@
 	}
 	return TRUE;
 }
+
 
 
 @end

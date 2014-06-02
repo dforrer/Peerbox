@@ -511,10 +511,11 @@
 			NSDictionary * rev	= [[dict objectForKey:@"revisions"] objectForKey:key];
 			NSNumber * revision = [rev objectForKey:@"revision"];
 			NSNumber * fileSize = [rev objectForKey:@"fileSize"];
-			NSNumber * isSet	= [rev objectForKey:@"isSet"];
-			NSMutableDictionary * extendedAttributes	= [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"extendedAttributes"]];
-			NSMutableDictionary * versions			= [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"versions"]];
-			
+			NSNumber * isSet = [rev objectForKey:@"isSet"];
+			NSMutableDictionary * extendedAttributes = [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"extendedAttributes"]];
+			NSMutableDictionary * versions = [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"versions"]];
+			NSNumber * isSymlink = [rev objectForKey:@"isSymlink"];
+			NSString * targetURL = [rev objectForKey:@"targetURL"];
 			Revision * r = [[Revision alloc] init];
 			[r setRelURL:key];
 			[r setRevision:revision];
@@ -523,6 +524,8 @@
 			[r setIsDir:[NSNumber numberWithBool:[key hasSuffix:@"/"]]];
 			[r setExtAttributes:extendedAttributes];
 			[r setVersions:versions];
+			[r setIsSymlink:isSymlink];
+			[r setTargetURL:[NSURL URLWithString:targetURL]];
 			[r setPeer:[d peer]];
 			
 			RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithRevision:r andConfig:config];

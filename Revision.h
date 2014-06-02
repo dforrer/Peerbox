@@ -59,6 +59,7 @@
 @property (nonatomic, readwrite, strong) NSNumber * isDir;
 @property (nonatomic, readwrite, strong) NSDate * lastMatchAttempt;
 @property (nonatomic, readwrite, strong) Peer * peer;
-
+@property (nonatomic, readwrite, strong) NSNumber	* isSymlink;
+@property (nonatomic, readwrite, strong) NSURL * targetURL;
  
 @end

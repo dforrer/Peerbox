@@ -51,8 +51,10 @@
 	remoteState = [[File alloc] initWithShare:[[rev peer] share]
 								relUrl:[rev relURL]
 								 isSet:[rev isSet]
-					extAttributesAsBase64:[rev extAttributes]
-							   versions:[NSMutableDictionary dictionaryWithDictionary:[rev versions]]];
+						   extAttributes:[rev extAttributes]
+							   versions:[NSMutableDictionary dictionaryWithDictionary:[rev versions]]
+							  isSymlink:[rev isSymlink]
+							  targetURL:[rev targetURL]];
 	
 	if ([localState isCoreEqualToFile:remoteState])
 	{
@@ -66,6 +68,10 @@
 	if ([[rev isDir] boolValue])
 	{
 		[self matchDir];
+	}
+	else if ([[rev isSymlink] boolValue])
+	{
+		[self matchSymlink];
 	}
 	else
 	{
@@ -96,7 +102,41 @@
 
 
 
-
+- (void) matchSymlink
+{
+	if ([[rev isSet] intValue] == 1)
+	{
+		// Revision = ADD-Symlink
+		//--------------------------
+		DebugLog(@"ADD-Symlink");
+		NSError * error = nil;
+		[[NSFileManager defaultManager] createSymbolicLinkAtURL:[remoteState url] withDestinationURL:[remoteState targetURL] error:&error];
+		if (error != nil)
+		{
+			DebugLog(@"ERROR creating symlink: %@", error);
+			return;
+		}
+	}
+	else
+	{
+		// Revision = DELETE-Symlink (C implementation)
+		//----------------------------------------------
+		int rv = remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
+		
+		if (rv != 0)
+		{
+			DebugLog(@"ERROR: during deleting of symlink an error occurred!");
+			
+			/*
+			 * Because DELETE failed, we set isSet
+			 * to FALSE, so that it will be added
+			 * again after a rescan.
+			 */
+			[localState setIsSetBOOL:FALSE];
+			[[[rev peer] share] setFile:localState];
+		}
+	}
+}
 
 
 /*

@@ -449,8 +449,12 @@
 	}
 }
 
-
-+ (BOOL) fileFolderExists: (NSString *)path {
+/**
+ * If path points to a symlink, the result represents 
+ * the existence of the linked file and not the symlink itself
+ */
++ (BOOL) fileFolderExists: (NSString *)path
+{
 	// Works with both Folders and Files
 	struct stat   buf;
 	return (stat([path cStringUsingEncoding:NSUTF8StringEncoding], &buf) == 0);

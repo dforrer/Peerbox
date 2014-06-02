@@ -26,7 +26,8 @@
 @synthesize lastMatchAttempt;
 @synthesize isDir;
 @synthesize fileSize;
-
+@synthesize isSymlink;
+@synthesize targetURL;
 
 - (BOOL) isZeroLengthFile
 {
@@ -70,6 +71,10 @@
 		return TRUE;
 	}
 	else if ([isDir boolValue] == FALSE && [self isZeroLengthFile] == TRUE)
+	{
+		return TRUE;
+	}
+	else if ([isSymlink boolValue] == TRUE)
 	{
 		return TRUE;
 	}

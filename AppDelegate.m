@@ -38,13 +38,12 @@
 - (void) applicationDidFinishLaunching: (NSNotification *)aNotification
 {
 	@autoreleasepool
-	{
+	{		
 		DebugLog(@"applicationDidFinishLaunching");
 		mm = [[Singleton data] mainModel];
 		[sharesTableView reloadData];
 		
-		NSImage * menuImage = [[NSImage alloc] initWithContentsOfFile:[[NSBundle mainBundle]
-						   pathForResource:@"menubar_icon" ofType:@"png"]];
+		NSImage * menuImage = [[NSImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"menubar_icon" ofType:@"png"]];
 		statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
 		//[statusItem setTitle:@"dd"];
 		[statusItem setHighlightMode:YES];

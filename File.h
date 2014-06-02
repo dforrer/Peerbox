@@ -10,7 +10,13 @@
 
 - (NSString*) description;
 - (id) initAsNewFileWithPath:(NSString*) p;
-- (id) initWithShare:(Share*)s relUrl:(NSString*)u isSet:(NSNumber*)i extAttributesAsBase64:(NSDictionary*)e versions:(NSMutableDictionary*)v;
+- (id) initWithShare:(Share*)s
+		    relUrl:(NSString*)u
+			isSet:(NSNumber*)i
+	  extAttributes:(NSDictionary*)e
+		  versions:(NSMutableDictionary*)v
+		 isSymlink:(NSNumber*)sym
+		 targetURL:(NSURL*)t;
 - (void) print;
 - (void) addVersion:(NSString *) hash;
 - (NSString*) getLastVersionHash;
@@ -28,7 +34,6 @@
 
 // Updater
 //---------
-- (void) updateIsSet;
 - (void) updateFileSize;
 - (void) updateContentModDate;
 - (void) updateAttributesModDate;

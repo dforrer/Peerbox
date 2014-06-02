@@ -139,13 +139,13 @@
 	
 	// Create Table "files" + index
 	//------------------------------
-	[db performQuery:@"CREATE TABLE IF NOT EXISTS files (uid TEXT PRIMARY KEY, url TEXT, revision SQLITE3_INT64 UNIQUE, fileSize SQLITE3_INT64, contentModDate TEXT, attributesModDate TEXT, isSet INTEGER, extAttributes TEXT, versions TEXT)" rows:nil error:&error];
+	[db performQuery:@"CREATE TABLE IF NOT EXISTS files (uid TEXT PRIMARY KEY, url TEXT, revision SQLITE3_INT64 UNIQUE, fileSize SQLITE3_INT64, contentModDate TEXT, attributesModDate TEXT, isSet INTEGER, extAttributes TEXT, versions TEXT, isSymlink INTEGER, targetURL TEXT)" rows:nil error:&error];
 	[db performQuery:@"CREATE INDEX IF NOT EXISTS index_files_revision ON files (revision);" rows:nil error:&error];
 	
 	
 	// Create Table "Revisions" + index
 	//----------------------------------
-	[db performQuery:@"CREATE TABLE IF NOT EXISTS revisions (peerID TEXT, relURL TEXT, revision SQLITE3_INT64, fileSize SQLITE3_INT64, isSet INTEGER, extAttributes TEXT, versions TEXT, isDir INTEGER, lastMatchAttemptDate TEXT)" rows:nil error:&error];
+	[db performQuery:@"CREATE TABLE IF NOT EXISTS revisions (peerID TEXT, relURL TEXT, revision SQLITE3_INT64, fileSize SQLITE3_INT64, isSet INTEGER, extAttributes TEXT, versions TEXT, isDir INTEGER, lastMatchAttemptDate TEXT, isSymlink INTEGER, targetURL TEXT)" rows:nil error:&error];
 	[db performQuery:@"CREATE INDEX IF NOT EXISTS index_revisions_peerID_relURL ON revisions (peerID, relURL);" rows:nil error:&error];
 	[db performQuery:@"CREATE INDEX IF NOT EXISTS index_revisions_fileSize ON revisions (peerID, fileSize);" rows:nil error:&error];
 	
@@ -275,6 +275,8 @@
 		 versions TEXT,
 		 isDir INTEGER,
 		 lastMatchAttemptDate TEXT
+		 isSymlink INTEGER,
+		 targetURL TEXT
 		 */
 		
 		
@@ -411,7 +413,7 @@
 
 - (void) scanURL:(NSURL*)fileURL recursive:(BOOL)recursive
 {
-	//	DebugLog(@"scanURL: %@", [fileURL absoluteString]);
+	DebugLog(@"scanURL: %@", [fileURL absoluteString]);
 	
 	if (![FileHelper URL:fileURL hasAsRootURL:[self root]])
 	{
@@ -425,7 +427,26 @@
 		return;
 	}
 	
-	if ([FileHelper fileFolderExists:[fileURL path]])
+	// Handle symlinks
+	//-----------------
+	BOOL isSymlink = [FileHelper isSymbolicLink:[fileURL path]];
+
+	if (isSymlink)
+	{
+		File * f = [[File alloc] initAsNewFileWithPath:[fileURL path]];
+		if (f == nil)
+		{
+			return;
+		}
+		[self setFile:f];
+		return;
+	}
+	
+	// Handle files, folders
+	//-----------------------
+	BOOL exists = [FileHelper fileFolderExists:[fileURL path]];
+
+	if (exists)
 	{
 		// File exists on HD (ADDED/CHANGED)
 		//-----------------------------------
@@ -469,7 +490,7 @@
 			[f updateExtAttributes];
 			if (![f updateVersions])
 			{
-				return;	// Update Versions
+				return;	// Update Versions failed
 			}
 			[self setFile:f];
 
@@ -551,7 +572,8 @@
 		
 		if (currentState)
 		{
-			if (![f isCoreEqualToFile:currentState] || [[f revision] longLongValue] == 0)
+			if (![f isCoreEqualToFile:currentState]
+			 || [[f revision] longLongValue] == 0)
 			{
 				[f setRevision:[self nextRevision]];
 			}
@@ -591,7 +613,7 @@
 		{
 			// UPDATE
 			//--------
-			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE files SET url='%@', revision=%lld, fileSize=%lld, contentModDate='%@', attributesModDate='%@', isSet=%i, extAttributes='%@', versions='%@' WHERE uid='%@';",[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[[[f url] absoluteString] lowercaseString] sqlString]];
+			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE files SET url='%@', revision=%lld, fileSize=%lld, contentModDate='%@', attributesModDate='%@', isSet=%i, extAttributes='%@', versions='%@', isSymlink=%i, targetURL='%@' WHERE uid='%@';",[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[f isSymlink] intValue], [[[f targetURL] absoluteString] sqlString], [[[[f url] absoluteString] lowercaseString] sqlString]];
 			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error) {
 				DebugLog(@"ERROR during UPDATE:\n%@",queryUPDATE);
@@ -601,7 +623,7 @@
 		{
 			// INSERT
 			//--------
-			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO files (uid, url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions) VALUES ('%@', '%@',%lld, %lld, '%@','%@',%i,'%@','%@');", [[[[f url] absoluteString] lowercaseString] sqlString],[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString]];
+			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO files (uid, url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions, isSymlink, targetURL) VALUES ('%@', '%@',%lld, %lld, '%@','%@',%i,'%@','%@',%i,'%@');", [[[[f url] absoluteString] lowercaseString] sqlString],[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString] ,[[f isSymlink] intValue], [[[f targetURL] absoluteString] sqlString]];
 			rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
 			if (error) {
 				DebugLog(@"ERROR during INSERT");
@@ -653,7 +675,8 @@
 		DebugLog(@"A JSON-Error was encountered!");
 		return nil;
 	}
-	
+	[rv setIsSymlink:rows[0][8]];
+	[rv setTargetURL:[NSURL URLWithString:rows[0][9]]];
 	return rv;
 }
 
@@ -662,7 +685,7 @@
 {
 	@autoreleasepool
 	{
-		NSString * query = [[NSString alloc] initWithFormat:@"SELECT url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions FROM files WHERE uid='%@';", [[[u absoluteString] lowercaseString] sqlString]];
+		NSString * query = [[NSString alloc] initWithFormat:@"SELECT url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions, isSymlink, targetURL FROM files WHERE uid='%@';", [[[u absoluteString] lowercaseString] sqlString]];
 		return [self getFileForQuery:query];
 	}
 }
@@ -672,7 +695,7 @@
 {
 	@autoreleasepool
 	{
-		NSString * query = [[NSString alloc] initWithFormat:@"SELECT url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions FROM files WHERE revision=%lld;", [rev longLongValue]];
+		NSString * query = [[NSString alloc] initWithFormat:@"SELECT url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions, isSymlink, targetURL FROM files WHERE revision=%lld;", [rev longLongValue]];
 		return [self getFileForQuery:query];
 	}
 }
@@ -701,7 +724,7 @@
 {
 	NSArray * rows;
 	NSError * error;
-	NSString * query = [[NSString alloc] initWithFormat:@"SELECT url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions FROM files WHERE revision >= %lld ORDER BY revision ASC LIMIT %lld;", [rev longLongValue], [limit longLongValue]];
+	NSString * query = [[NSString alloc] initWithFormat:@"SELECT url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions, isSymlink, targetURL FROM files WHERE revision >= %lld ORDER BY revision ASC LIMIT %lld;", [rev longLongValue], [limit longLongValue]];
 	//DebugLog(@"%@", query);
 	
 	uint64_t rowCount = [db performQuery:query rows:&rows error:&error];
@@ -752,6 +775,14 @@
 		NSMutableDictionary * versions = [NSMutableDictionary dictionaryWithJSONString:rows[i][7] error:&theError];
 		[f setObject:versions forKey:@"versions"];
 		
+		// isSymlink
+		//-----------
+		[f setObject:rows[i][8] forKey:@"isSymlink"];
+		
+		// targetURL
+		//-----------
+		[f setObject:rows[i][9] forKey:@"targetURL"];
+		
 		// Finally add the new file to the Array that we return.
 		//-------------------------------------------------------
 		[rv addObject:f];
@@ -773,7 +804,7 @@
 {
 	NSArray * rows;
 	NSError * error;
-	NSString * query = [[NSString alloc] initWithFormat:@"SELECT url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions FROM files WHERE revision >= %lld ORDER BY revision ASC LIMIT %lld;", [rev longLongValue], [limit longLongValue]];
+	NSString * query = [[NSString alloc] initWithFormat:@"SELECT url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions, isSymlink, targetURL FROM files WHERE revision >= %lld ORDER BY revision ASC LIMIT %lld;", [rev longLongValue], [limit longLongValue]];
 	//DebugLog(@"%@", query);
 	
 	uint64_t rowCount = [db performQuery:query rows:&rows error:&error];
@@ -823,6 +854,14 @@
 		NSMutableDictionary * versions = [NSMutableDictionary dictionaryWithJSONString:rows[i][7] error:&error2];
 		[f setObject:versions forKey:@"versions"];
 		
+		// isSymlink
+		//-----------
+		[f setObject:rows[i][8] forKey:@"isSymlink"];
+		
+		// targetURL
+		//-----------
+		[f setObject:rows[i][9] forKey:@"targetURL"];
+
 		// Finally add the new file to the NSDictionary that we return.
 		//--------------------------------------------------------------
 		NSString * relUrl = [rows[i][0] substringFromIndex:[[[self root] absoluteString] length]];
