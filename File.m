@@ -89,6 +89,8 @@
 		isSet = i;
 		versions = v;
 		extAttributes = [NSMutableDictionary dictionaryWithDictionary:e];
+		isSymlink = sym;
+		targetURL = t;
 	}
 	return self;
 }
