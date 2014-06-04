@@ -65,13 +65,13 @@
 	
 	// match directory / match file
 	//------------------------------
-	if ([[rev isDir] boolValue])
-	{
-		[self matchDir];
-	}
-	else if ([[rev isSymlink] boolValue])
+	if ([[rev isSymlink] boolValue])
 	{
 		[self matchSymlink];
+	}
+	else if ([[rev isDir] boolValue])
+	{
+		[self matchDir];
 	}
 	else
 	{
