@@ -860,7 +860,14 @@
 		
 		// targetURL
 		//-----------
-		[f setObject:rows[i][9] forKey:@"targetURL"];
+		if ([rows[i][8] intValue] == 0)
+		{
+			[f setObject:@"" forKey:@"targetURL"];
+		}
+		else
+		{
+			[f setObject:rows[i][9] forKey:@"targetURL"];
+		}
 
 		// Finally add the new file to the NSDictionary that we return.
 		//--------------------------------------------------------------
