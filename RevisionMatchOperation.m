@@ -113,6 +113,7 @@
 		if (rv != 0)
 		{
 			DebugLog(@"Error creating symlink\ntargetPath:%@\nurl:%@",[remoteState targetPath],[remoteState url]);
+			DebugLog(@"%s",strerror(errno));
 		}
 		/*
 		NSError * error = nil;
