@@ -398,11 +398,13 @@
 
 - (void) updateExtAttributes
 {
+	/*
 	if ([isSymlink boolValue])
 	{
 		extAttributes = [NSMutableDictionary dictionary];
 		return;
 	}
+	 */
 	if ( [isSet boolValue] )
 	{
 		// Convert "extAttributes"-Dictionary-Values to BASE64-Strings:
