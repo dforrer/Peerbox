@@ -58,7 +58,7 @@
 	
 	if ([localState isCoreEqualToFile:remoteState])
 	{
-		DebugLog(@"match: isCoreEqualToFile -> YES");
+		//DebugLog(@"match: isCoreEqualToFile -> YES");
 		return;
 	}
 	
@@ -112,7 +112,7 @@
 		int rv = symlink([[remoteState targetPath] cStringUsingEncoding:NSUTF8StringEncoding], [[[remoteState url] absoluteString] cStringUsingEncoding:NSUTF8StringEncoding]);
 		if (rv != 0)
 		{
-			DebugLog(@"Error creating symlink");
+			DebugLog(@"Error creating symlink\ntargetPath:%@\nurl:%@",[remoteState targetPath],[remoteState url]);
 		}
 		/*
 		NSError * error = nil;

@@ -566,7 +566,7 @@
  */
 - (int) setFile:(File*)f
 {
-	DebugLog(@"setFile");
+	//DebugLog(@"setFile");
 	@autoreleasepool
 	{
 		// 1. Determine if anything changed: SELECT current state
