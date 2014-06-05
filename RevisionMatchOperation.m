@@ -109,7 +109,7 @@
 		// Revision = ADD-Symlink
 		//--------------------------
 		DebugLog(@"ADD-Symlink");
-		int rv = symlink([[remoteState targetPath] cStringUsingEncoding:NSUTF8StringEncoding], [[[remoteState url] absoluteString] cStringUsingEncoding:NSUTF8StringEncoding]);
+		int rv = symlink([[remoteState targetPath] cStringUsingEncoding:NSUTF8StringEncoding], [[[remoteState url] path] cStringUsingEncoding:NSUTF8StringEncoding]);
 		if (rv != 0)
 		{
 			DebugLog(@"Error creating symlink\ntargetPath:%@\nurl:%@",[remoteState targetPath],[remoteState url]);
