@@ -114,7 +114,10 @@
 		{
 			DebugLog(@"Error creating symlink\ntargetPath:%@\nurl:%@",[remoteState targetPath],[[remoteState url] path]);
 			DebugLog(@"%s",strerror(errno));
+			return;
 		}
+		[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
+		
 		/*
 		NSError * error = nil;
 		[[NSFileManager defaultManager] createSymbolicLinkAtURL:[remoteState url] withDestinationURL:[remoteState targetPath] error:&error];
