@@ -46,5 +46,6 @@
 + (NSData *)getDataValueForName:(NSString *)name onFile:(NSString *)filePath;
 + (NSDictionary *)getAllValuesOnFile:(NSString *)filePath;
 + (void) removeAllValuesOnFile:(NSString *)filePath;
++ (NSString*) getSymlinkDestination:(NSString*) path;
 
 @end

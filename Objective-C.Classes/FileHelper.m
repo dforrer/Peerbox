@@ -664,5 +664,15 @@
 	}
 }
 
-
++ (NSString*) getSymlinkDestination:(NSString*) path
+{
+	char buf[MAXPATHLEN];
+	ssize_t len;
+	if ((len = readlink([path cStringUsingEncoding:NSUTF8StringEncoding], buf, sizeof(buf)-1)) != -1)
+	{
+		buf[len] = '\0';
+		return [NSString stringWithCString:buf encoding:NSUTF8StringEncoding];
+	}
+	return nil;
+}
 @end

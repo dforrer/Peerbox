@@ -54,7 +54,7 @@
 						   extAttributes:[rev extAttributes]
 							   versions:[NSMutableDictionary dictionaryWithDictionary:[rev versions]]
 							  isSymlink:[rev isSymlink]
-							  targetURL:[rev targetURL]];
+							  targetPath:[rev targetPath]];
 	
 	if ([localState isCoreEqualToFile:remoteState])
 	{
@@ -109,13 +109,20 @@
 		// Revision = ADD-Symlink
 		//--------------------------
 		DebugLog(@"ADD-Symlink");
+		int rv = symlink([[remoteState targetPath] cStringUsingEncoding:NSUTF8StringEncoding], [[[remoteState url] absoluteString] cStringUsingEncoding:NSUTF8StringEncoding]);
+		if (rv != 0)
+		{
+			DebugLog(@"Error creating symlink");
+		}
+		/*
 		NSError * error = nil;
-		[[NSFileManager defaultManager] createSymbolicLinkAtURL:[remoteState url] withDestinationURL:[remoteState targetURL] error:&error];
+		[[NSFileManager defaultManager] createSymbolicLinkAtURL:[remoteState url] withDestinationURL:[remoteState targetPath] error:&error];
 		if (error != nil)
 		{
 			DebugLog(@"ERROR creating symlink: %@", error);
 			return;
 		}
+		 */
 	}
 	else
 	{

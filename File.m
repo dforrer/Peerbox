@@ -27,7 +27,7 @@
 @synthesize extAttributes;
 @synthesize versions;
 @synthesize isSymlink;
-@synthesize targetURL;
+@synthesize targetPath;
 
 #pragma mark -----------------------
 #pragma mark Initializer
@@ -51,13 +51,12 @@
 			if ([FileHelper isSymbolicLink:p])
 			{
 				isSymlink = [NSNumber numberWithBool:TRUE];
-				NSString * pointsTo = [[NSFileManager defaultManager] destinationOfSymbolicLinkAtPath:p error:nil];
-				targetURL = [NSURL fileURLWithPath:pointsTo];
+				targetPath = [FileHelper getSymlinkDestination:p];
 			}
 			else
 			{
 				isSymlink = [NSNumber numberWithBool:FALSE];
-				targetURL = [NSURL URLWithString:@""];
+				targetPath = @"";
 			}
 
 			url		= [NSURL fileURLWithPath:p];
@@ -81,7 +80,7 @@
 	  extAttributes:(NSDictionary*)e
 		  versions:(NSMutableDictionary*)v
 		 isSymlink:(NSNumber*)sym
-		 targetURL:(NSURL*)t
+		 targetPath:(NSString *)t
 {
 	if (self == [super init])
 	{
@@ -90,7 +89,7 @@
 		versions = v;
 		extAttributes = [NSMutableDictionary dictionaryWithDictionary:e];
 		isSymlink = sym;
-		targetURL = t;
+		targetPath = t;
 	}
 	return self;
 }
@@ -246,7 +245,7 @@
 	{
 		return FALSE;
 	}
-	if (![[[self targetURL] absoluteString] isEqualToString:[[f targetURL] absoluteString]])
+	if (![[self targetPath] isEqualToString:[f targetPath]])
 	{
 		return FALSE;
 	}
@@ -298,7 +297,7 @@
 	{
 		return FALSE;
 	}
-	if (![[[self targetURL] absoluteString] isEqualToString:[[f targetURL] absoluteString]])
+	if (![[self targetPath] isEqualToString:[f targetPath]])
 	{
 		return FALSE;
 	}

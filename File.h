@@ -16,7 +16,7 @@
 	  extAttributes:(NSDictionary*)e
 		  versions:(NSMutableDictionary*)v
 		 isSymlink:(NSNumber*)sym
-		 targetURL:(NSURL*)t;
+		 targetPath:(NSString*)t;
 - (void) print;
 - (void) addVersion:(NSString *) hash;
 - (NSString*) getLastVersionHash;
@@ -50,7 +50,7 @@
 @property (nonatomic,readwrite,strong) NSMutableDictionary * extAttributes; // BASE64-encoded
 @property (nonatomic,readwrite,strong) NSMutableDictionary * versions;
 @property (nonatomic,readwrite,strong) NSNumber	* isSymlink;
-@property (nonatomic,readwrite,strong) NSURL		* targetURL;
+@property (nonatomic,readwrite,strong) NSString	* targetPath;
 
 
 @end

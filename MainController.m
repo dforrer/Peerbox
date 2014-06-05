@@ -516,7 +516,7 @@
 			NSMutableDictionary * extendedAttributes = [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"extendedAttributes"]];
 			NSMutableDictionary * versions = [NSMutableDictionary dictionaryWithDictionary:[rev objectForKey:@"versions"]];
 			NSNumber * isSymlink = [rev objectForKey:@"isSymlink"];
-			NSString * targetURL = [rev objectForKey:@"targetURL"];
+			NSString * targetPath = [rev objectForKey:@"targetPath"];
 			Revision * r = [[Revision alloc] init];
 			[r setRelURL:key];
 			[r setRevision:revision];
@@ -526,7 +526,7 @@
 			[r setExtAttributes:extendedAttributes];
 			[r setVersions:versions];
 			[r setIsSymlink:isSymlink];
-			[r setTargetURL:[NSURL URLWithString:targetURL]];
+			[r setTargetPath:targetPath];
 			[r setPeer:[d peer]];
 			
 			RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithRevision:r andConfig:config];

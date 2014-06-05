@@ -27,7 +27,7 @@
 @synthesize isDir;
 @synthesize fileSize;
 @synthesize isSymlink;
-@synthesize targetURL;
+@synthesize targetPath;
 
 - (BOOL) isZeroLengthFile
 {
