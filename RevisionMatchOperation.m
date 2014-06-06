@@ -116,16 +116,6 @@
 			DebugLog(@"errno: %s",strerror(errno));
 			return;
 		}
-		
-		/*
-		NSError * error = nil;
-		[[NSFileManager defaultManager] createSymbolicLinkAtURL:[remoteState url] withDestinationURL:[remoteState targetPath] error:&error];
-		if (error != nil)
-		{
-			DebugLog(@"ERROR creating symlink: %@", error);
-			return;
-		}
-		 */
 	}
 	else
 	{
