@@ -483,7 +483,7 @@
 		DebugLog(@"response-count:%li", [[dict objectForKey:@"revisions"] count]);
 		return;
 	}
-	DebugLog(@"REVISIONS:\n%@", dict);
+	//	DebugLog(@"REVISIONS:\n%@", dict);
 	
 	
 	// Store revisions in share->peers->downloadedRevs

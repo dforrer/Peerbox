@@ -113,10 +113,9 @@
 		if (rv != 0)
 		{
 			DebugLog(@"Error creating symlink\ntargetPath:%@\nurl:%@",[remoteState targetPath],[[remoteState url] path]);
-			DebugLog(@"%s",strerror(errno));
+			DebugLog(@"errno: %s",strerror(errno));
 			return;
 		}
-		[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
 		
 		/*
 		NSError * error = nil;

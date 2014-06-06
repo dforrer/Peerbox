@@ -436,7 +436,6 @@
 	if (isSymlink)
 	{
 		File * f = [[File alloc] initAsNewFileWithPath:[fileURL path]];
-		[f updateExtAttributes];
 		if (f == nil)
 		{
 			return;
