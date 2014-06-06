@@ -415,7 +415,7 @@
 
 - (void) scanURL:(NSURL*)fileURL recursive:(BOOL)recursive
 {
-	DebugLog(@"scanURL: %@", [fileURL absoluteString]);
+	//DebugLog(@"scanURL: %@", [fileURL absoluteString]);
 	
 	if (![FileHelper URL:fileURL hasAsRootURL:[self root]])
 	{
