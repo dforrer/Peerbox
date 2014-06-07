@@ -29,6 +29,7 @@
 /**
  * Contains all the Domain-logic
  */
+
 @implementation MainController
 {
 	NSMutableDictionary * myShares;	// shareId = key of NSDictionary
@@ -54,6 +55,7 @@
 /**
  * Initializer
  */
+
 - (id) init
 {
 	if ((self = [super init]))
@@ -119,6 +121,7 @@
 }
 
 
+
 - (void) scheduledTasks
 {
 	//DebugLog(@"scheduledTasks");
@@ -130,9 +133,11 @@
 }
 
 
+
 /**
  * Sets up the config-object with the different paths
  */
+
 - (void) setupConfig
 {
 	config = [[Configuration alloc] init];
@@ -146,6 +151,7 @@
 /**
  * Load 'myShares' and 'myPeerID' from 'model.plist'
  */
+
 - (void) openModel
 {
 	@autoreleasepool
@@ -204,6 +210,8 @@
 	}
 }
 
+
+
 - (void) saveFileDownloads
 {
 	for (DownloadFile * d in fileDownloads)
@@ -213,9 +221,12 @@
 	}
 }
 
+
+
 /**
  * Save 'myShares' and 'myPeerID' to 'model.plist'
  */
+
 - (void) saveModel
 {
 	[self saveFileDownloads];
@@ -238,6 +249,7 @@
 /**
  * Helper function for encoding the model in a readable format
  */
+
 - (NSDictionary*) plistEncoded
 {
 	//DebugLog(@"plistEncoded: MainModel");
@@ -255,6 +267,7 @@
 /**
  * Setup and start httpserver
  */
+
 - (void) setupHTTPServer
 {
 	/*
@@ -301,6 +314,7 @@
  *	/APP_NAME/web
  *	/APP_NAME/downloads
  */
+
 - (void) createWorkingDirectories
 {
 	// Create directory "downloads"
@@ -322,15 +336,19 @@
 /**
  * Generates a new random PeerID
  */
+
 - (void) generatePeerId
 {
 	NSData * random = [FileHelper createRandomNSDataOfSize:20];
 	[config setMyPeerID:[FileHelper sha1OfNSData:random]];
 }
 
+
+
 /**
  * Returns the number of all new changes on all the shares
  */
+
 - (int) commitAndBeginAllShareDBs
 {
 	int total_uncommitted = 0;
@@ -341,6 +359,8 @@
 	return total_uncommitted;
 }
 
+
+
 - (void) commitAllShareDBs
 {
 	for (Share * s in [myShares allValues])
@@ -350,8 +370,10 @@
 }
 
 
+
 #pragma mark -----------------------
 #pragma mark Info
+
 
 
 - (void) printResolvedServices
@@ -384,9 +406,12 @@
 #pragma mark -----------------------
 #pragma mark Implemented Interfaces (Protocols)
 
+
+
 /**
  * OVERRIDE: BonjourSearcherDelegate
  */
+
 - (void) bonjourSearcherServiceResolved:(NSNetService*)n
 {
 	// Notify peers
@@ -398,15 +423,18 @@
 /**
  * OVERRIDE: BonjourSearcherDelegate
  */
+
 - (void) bonjourSearcherServiceRemoved:(NSNetService*)n
 {
 	// do nothing
 }
 
 
+
 /**
  * OVERRIDE: DownloadSharesDelegate
  */
+
 - (void) downloadSharesHasFinishedWithResponseDict:(NSDictionary*)d
 {
 	// Store response in model
@@ -461,6 +489,7 @@
 /**
  * OVERRIDE: DownloadSharesDelegate
  */
+
 - (void) downloadSharesHasFailed
 {
 	DebugLog(@"downloadSharesHasFailed: Whatever...!");
@@ -471,6 +500,7 @@
 /**
  * OVERRIDE: DownloadRevisionsDelegate
  */
+
 - (void) downloadRevisionsHasFinished:(DownloadRevisions*)d
 {
 	NSError * error;
@@ -555,7 +585,7 @@
 
 
 
-/*
+/**
  * OVERRIDE: Delegate function called by "download" inherited from <DownloadFileDelegate>
  */
 - (void) downloadFileHasFinished:(DownloadFile*)d
@@ -568,7 +598,7 @@
 
 
 
-/*
+/**
  * OVERRIDE: Delegate function called by "download" inherited from <DownloadFileDelegate>
  */
 - (void) downloadFileHasFailed:(DownloadFile*)d
