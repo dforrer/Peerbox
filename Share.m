@@ -429,24 +429,10 @@
 		return;
 	}
 	
-	// Handle symlinks
-	//-----------------
-	BOOL isSymlink = [FileHelper isSymbolicLink:[fileURL path]];
-
-	if (isSymlink)
-	{
-		File * f = [[File alloc] initAsNewFileWithPath:[fileURL path]];
-		if (f == nil)
-		{
-			return;
-		}
-		[self setFile:f];
-		return;
-	}
 	
-	// Handle files, folders
-	//-----------------------
-	BOOL exists = [FileHelper fileFolderExists:[fileURL path]];
+	// Handle files, folders, symlinks
+	//---------------------------------
+	BOOL exists = [FileHelper fileFolderSymlinkExists:[fileURL path]];
 
 	if (exists)
 	{
@@ -480,8 +466,14 @@
 			// File exists in Share
 			//----------------------
 			//DebugLog(@"File exists in Share");
+
+			// Handle symlinks
+			//-----------------
+		
+			
 			[f setUrl:fileURL];
 			[f setIsSetBOOL:TRUE];
+			[f updateSymlink];
 			[f updateFileSize];
 			[f updateContentModDate];
 			[f updateAttributesModDate];

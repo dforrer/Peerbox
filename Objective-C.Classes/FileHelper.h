@@ -25,6 +25,7 @@
 + (void) removeSymlinksRecursiveAtPath:(NSString*) path; // UNTESTED
 + (BOOL) hasExtendedAttributes:(NSString *) path;
 + (BOOL) fileFolderExists: (NSString *) path;
++ (BOOL) fileFolderSymlinkExists: (NSString *)path;
 + (BOOL) isDirectory: (NSString *) path;
 + (NSArray *) scanDirectory: (NSURL *) u;
 + (NSArray *) scanDirectoryRecursive: (NSURL *) u;

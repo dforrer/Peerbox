@@ -11,11 +11,15 @@
 #import "Share.h"
 #import "Constants.h"
 
+
+
 @implementation File;
+
 
 
 #pragma mark -----------------------
 #pragma mark Syntheziser
+
 
 
 @synthesize url;
@@ -29,12 +33,10 @@
 @synthesize isSymlink;
 @synthesize targetPath;
 
+
+
 #pragma mark -----------------------
 #pragma mark Initializer
-
-
-// Objects returned from methods are autoreleased. Meaning they release themselves when its safe.
-
 
 
 
@@ -48,20 +50,10 @@
 		// Check if superclass could create its object
 		if (self = [super init])
 		{
-			if ([FileHelper isSymbolicLink:p])
-			{
-				isSymlink = [NSNumber numberWithBool:TRUE];
-				targetPath = [FileHelper getSymlinkDestination:p];
-			}
-			else
-			{
-				isSymlink = [NSNumber numberWithBool:FALSE];
-				targetPath = @"";
-			}
-
 			url		= [NSURL fileURLWithPath:p];
 			revision	= [NSNumber numberWithLongLong:0];
 			isSet 	= [NSNumber numberWithBool:TRUE];
+			[self updateSymlink];
 			[self updateFileSize];
 			[self updateContentModDate];
 			[self updateAttributesModDate];
@@ -73,6 +65,8 @@
 		return self;
 	}
 }
+
+
 
 - (id) initWithShare:(Share*)s
 		    relUrl:(NSString*)u
@@ -99,6 +93,8 @@
 #pragma mark -----------------------
 #pragma mark Custom Setter
 
+
+
 - (void) setIsSetBOOL:(BOOL)b
 {
 	isSet = [NSNumber numberWithBool:b];
@@ -106,8 +102,17 @@
 
 
 
+- (void) setIsSymlinkBOOL:(BOOL)b
+{
+	isSymlink = [NSNumber numberWithBool:b];
+}
+
+
+
 #pragma mark -----------------------
 #pragma mark Other
+
+
 
 /**
  * Set extended attributes
@@ -126,6 +131,8 @@
 	}
 }
 
+
+
 /**
  * Unit Tested in: "File Unit Tests.m"
  */
@@ -138,6 +145,7 @@
 	
 	return [File versions:[self versions] hasConflictsWithVersions:[f versions]];
 }
+
 
 
 /**
@@ -194,6 +202,7 @@
 }
 
 
+
 - (void) addVersion:(NSString *) hash
 {
 	NSString * lastVersion = [self getLastVersionKey];
@@ -214,6 +223,8 @@
 	//	[versions setObject:hash forKey:[nextVersion stringValue]];
 }
 
+
+
 - (BOOL) isDir
 {
 	if ([isSymlink boolValue] == TRUE)
@@ -222,6 +233,8 @@
 	}
 	return [[url absoluteString] hasSuffix:@"/"];
 }
+
+
 
 - (BOOL) isCoreEqualToFile:(File*)f
 {
@@ -251,6 +264,8 @@
 	}
 	return TRUE;
 }
+
+
 
 - (BOOL) isEqualToFile:(File*)f
 {
@@ -304,18 +319,24 @@
 	return TRUE;
 }
 
-- (NSString *) getLastVersionHash
+
+
+- (NSString*) getLastVersionHash
 {
 	return [versions objectForKey:[self getLastVersionKey]];
 }
 
-- (NSString *) getLastVersionKey
+
+
+- (NSString*) getLastVersionKey
 {
 	NSArray * local = [[[self versions] allKeys] sortedArrayUsingComparator:^(NSString *str1, NSString *str2) {
 		return [str1 compare:str2 options:NSNumericSearch];
 	}];;
 	return [local lastObject];
 }
+
+
 
 - (void) print
 {
@@ -332,17 +353,38 @@
 }
 
 
-/*
+
+/**
  Allows for an object to be printed with DebugLog()
  */
-- (NSString *)description
+
+- (NSString*) description
 {
 	return [NSString stringWithFormat: @"url: %@\n revision: %@", url, revision];
 }
 
 
+
 #pragma mark -----------------------
 #pragma mark Updater
+
+
+
+- (void) updateSymlink
+{
+	if ([FileHelper isSymbolicLink:[url path]])
+	{
+		isSymlink = [NSNumber numberWithBool:TRUE];
+		targetPath = [FileHelper getSymlinkDestination:[url path]];
+	}
+	else
+	{
+		isSymlink = [NSNumber numberWithBool:FALSE];
+		targetPath = @"";
+	}
+}
+
+
 
 - (void) updateFileSize
 {
@@ -361,6 +403,8 @@
 	}
 }
 
+
+
 - (void) updateContentModDate
 {
 	if ([isSymlink boolValue])
@@ -377,6 +421,8 @@
 		[self setContentModDate:fileChangeDate];
 	}
 }
+
+
 
 - (void) updateAttributesModDate
 {
@@ -396,15 +442,14 @@
 }
 
 
+
 - (void) updateExtAttributes
 {
-	/*
 	if ([isSymlink boolValue])
 	{
 		extAttributes = [NSMutableDictionary dictionary];
 		return;
 	}
-	 */
 	if ( [isSet boolValue] )
 	{
 		// Convert "extAttributes"-Dictionary-Values to BASE64-Strings:
@@ -425,6 +470,7 @@
 		[self setExtAttributes:extAttrBase64Encoded];
 	}
 }
+
 
 
 - (BOOL) updateVersions
