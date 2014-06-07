@@ -116,6 +116,7 @@
 			DebugLog(@"errno: %s",strerror(errno));
 			return;
 		}
+		[FileHelper setFilePermissionsTo755:[fullURL path]];
 	}
 	else
 	{
@@ -158,6 +159,7 @@
 		}
 		
 		[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
+		[FileHelper setFilePermissionsTo755:[fullURL path]];
 	}
 	else
 	{
@@ -402,6 +404,8 @@
 	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
 	[newState setVersions:[remoteState versions]];
 	[[[rev peer] share] setFile:newState];
+	
+	[FileHelper setFilePermissionsTo755:[fullURL path]];
 }
 
 
@@ -428,6 +432,7 @@
 			DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
 			return nil;
 		}
+		[FileHelper setFilePermissionsTo755:[conflictedCopyURL path]];
 		return conflictedCopyURL;
 	}
 	return nil;

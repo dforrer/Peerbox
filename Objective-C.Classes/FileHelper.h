@@ -17,7 +17,8 @@
 
 @interface FileHelper : NSObject
 
-+ (void) setFilePermissionsTo777: (NSString*) filepath;
++ (void) setFilePermissionsTo755:(NSString*) path;
++ (void) setFilePermissionsTo777: (NSString*) path;
 + (BOOL) hashA:(NSString*) hashA isSmallerThanHashB: (NSString *) hashB;
 + (NSString *) getDocumentsDirectory;
 + (BOOL) isSymbolicLink: (NSString*) path;

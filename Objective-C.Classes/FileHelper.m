@@ -16,14 +16,18 @@
 
 @implementation FileHelper
 
++ (void) setFilePermissionsTo755:(NSString*) path
+{
+	mode_t dirMask = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+	chmod([path cStringUsingEncoding:NSUTF8StringEncoding], dirMask);
+}
 
-
-+ (void) setFilePermissionsTo777: (NSString*) filepath
++ (void) setFilePermissionsTo777: (NSString*) path
 {
 	NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 	[dict setObject:[NSNumber numberWithInt:511]  forKey:NSFilePosixPermissions]; /*511 is Decimal for the 777 octal*/
 	NSError *error1;
-	[[NSFileManager defaultManager] setAttributes:dict ofItemAtPath:filepath error:&error1];
+	[[NSFileManager defaultManager] setAttributes:dict ofItemAtPath:path error:&error1];
 	if (error1) {
 		DebugLog(@"setFilePermissionsTo777: %@", error1);
 	}

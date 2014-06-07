@@ -72,11 +72,15 @@
 	
 	[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
 
+	[FileHelper setFilePermissionsTo755:[fullURL path]];
+	
 	// Save the File with the updated versions
 	//-----------------------------------------
 	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
 	[newState setVersions:[NSMutableDictionary dictionaryWithDictionary:[rev versions]]];
 	[share setFile:newState];
+	
+	
 }
 
 @end
