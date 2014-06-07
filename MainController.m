@@ -768,7 +768,7 @@
 			NSOperation * lastObject = [[q operations] lastObject];
 			if (lastObject == nil)
 			{
-				DebugLog(@"lastObject == NULL");
+				//DebugLog(@"lastObject == NULL");
 				return;
 			}
 			[o addDependency:lastObject];
