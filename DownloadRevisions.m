@@ -56,7 +56,6 @@
 #import "Configuration.h"
 
 
-//#import "Constants.h"
 
 @implementation DownloadRevisions
 {
@@ -64,11 +63,14 @@
 }
 
 
+
 @synthesize request;
 @synthesize response;
 @synthesize isFinished;
 @synthesize peer;
 @synthesize delegate;
+
+
 
 - (id) initWithNetService:(NSNetService*)netService andPeer:(Peer*)p
 {
@@ -150,7 +152,7 @@
 
 
 // OVERRIDE
-- (void) connectionDidFinishLoading: (NSURLConnection*)connection
+- (void) connectionDidFinishLoading:(NSURLConnection*)connection
 {
 	isFinished = TRUE;
 	
@@ -171,13 +173,13 @@
 	*/
 	
 
-	DebugLog(@"Size before inflation: %lu",(unsigned long)[response length]);
+//	DebugLog(@"Size before inflation: %lu",(unsigned long)[response length]);
 	
 	// Decompress response
 	//---------------------
 	response = [NSMutableData dataWithData:[response gzipInflate]];
 
-	DebugLog(@"Size after inflation: %lu",(unsigned long)[response length]);
+//	DebugLog(@"Size after inflation: %lu",(unsigned long)[response length]);
 	
 	[delegate downloadRevisionsHasFinished:self];
  
