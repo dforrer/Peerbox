@@ -54,7 +54,7 @@
 						   extAttributes:[rev extAttributes]
 							   versions:[NSMutableDictionary dictionaryWithDictionary:[rev versions]]
 							  isSymlink:[rev isSymlink]
-							  targetPath:[rev targetPath]];
+							 targetPath:[rev targetPath]];
 	
 	if ([localState isCoreEqualToFile:remoteState])
 	{
@@ -191,9 +191,11 @@
  */
 - (void) matchFile
 {
-	// localState is NOT set, remotestate is set (ADD new file)
-	//----------------------------------------------------------
-	if (	([[localState isSet] intValue] == 0 || localState == nil)
+	/*
+	 * localState is NOT set, remotestate is set (ADD new file)
+	 */
+	
+	if (([[localState isSet] intValue] == 0 || localState == nil)
 	    && [[rev isSet] intValue] == 1)
 	{
 		//DebugLog(@"A");
@@ -208,17 +210,23 @@
 	}
 	
 	
-	// localState is NOT set, remotestate is NOT set (DELETE non-existing file)
-	//-----------------------------------------------------------------------------
-	if ( ([[localState isSet] intValue] == 0 || localState == nil) && [[rev isSet] intValue] == 0)
+	/*
+	 * localState is NOT set, remotestate is NOT set (DELETE non-existing file)
+	 */
+	
+	if (([[localState isSet] intValue] == 0 || localState == nil)
+	    && [[rev isSet] intValue] == 0)
 	{
 		//DebugLog(@"B  (doing nothing)");
 	}
 	
 	
-	// localState is set, remotestate is NOT set (DELETE file)
-	//---------------------------------------------------------
-	if ( [[localState isSet] intValue] == 1 && [[rev isSet] intValue] == 0)
+	/*
+	 * localState is set, remotestate is NOT set (DELETE file)
+	 */
+
+	if ( [[localState isSet] intValue] == 1
+	    && [[rev isSet] intValue] == 0)
 	{
 		//DebugLog(@"C");
 		
@@ -270,9 +278,14 @@
 	}
 	
 	
-	// localState is set, remotestate is set (ADD file, but there may be a conflicts)
-	//--------------------------------------------------------------------------------
-	if ( [[localState isSet] intValue] == 1 && [[rev isSet] intValue] == 1)
+	
+	/*
+	 * localState is set, remotestate is set 
+	 * (ADD file, but there may be a conflicts)
+	 */
+	
+	if ([[localState isSet] intValue] == 1
+	    && [[rev isSet] intValue] == 1)
 	{
 		//DebugLog(@"D");
 		// check for conflicts
@@ -312,9 +325,6 @@
 			//------------------
 			if ([[localState getLastVersionKey] intValue] < [[rev getLastVersionKey] intValue])
 			{
-				// localState->versions->biggestKey < remoteState->versions->biggestKey
-				//----------------------------------------------------------------------
-				
 				// Match remoteState
 				//-------------------
 				return [self executeMatch];
@@ -323,11 +333,7 @@
 			{
 				[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
 
-				// localState->versions->biggestKey >= remoteState->versions->biggestKey
-				//-----------------------------------------------------------------------
-				
 				// DO NOTHING
-				//DebugLog(@"DO NOTHING");
 			}
 		}
 	}
@@ -336,8 +342,10 @@
 
 
 /*
- * No conflict resolution is done here
+ * At this point, the conflict resolution has
+ * already happened in "matchFile"
  */
+
 - (void) executeMatch
 {
 	//DebugLog(@"matchRemoteState");
@@ -398,14 +406,13 @@
 	[fh closeFile];
 	
 	[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
+	[FileHelper setFilePermissionsTo755:[fullURL path]];
 	
 	// Set remoteState in Share s
 	//----------------------------
 	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
 	[newState setVersions:[remoteState versions]];
 	[[[rev peer] share] setFile:newState];
-	
-	[FileHelper setFilePermissionsTo755:[fullURL path]];
 }
 
 
