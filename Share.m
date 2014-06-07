@@ -611,7 +611,7 @@
 			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE files SET url='%@', revision=%lld, fileSize=%lld, contentModDate='%@', attributesModDate='%@', isSet=%i, extAttributes='%@', versions='%@', isSymlink=%i, targetPath='%@' WHERE uid='%@';",[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[f isSymlink] intValue], [[f targetPath] sqlString], [[[[f url] absoluteString] lowercaseString] sqlString]];
 			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error) {
-				DebugLog(@"ERROR during UPDATE:\n%@",queryUPDATE);
+				DebugLog(@"ERROR during UPDATE:\n%@", queryUPDATE);
 			}
 		}
 		else
@@ -621,7 +621,7 @@
 			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO files (uid, url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions, isSymlink, targetPath) VALUES ('%@', '%@',%lld, %lld, '%@','%@',%i,'%@','%@',%i,'%@');", [[[[f url] absoluteString] lowercaseString] sqlString],[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString] ,[[f isSymlink] intValue], [[f targetPath] sqlString]];
 			rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
 			if (error) {
-				DebugLog(@"ERROR during INSERT");
+				DebugLog(@"ERROR during INSERT:\n%@", queryINSERT);
 			}
 		}
 		return rv;

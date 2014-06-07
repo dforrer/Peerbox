@@ -590,6 +590,7 @@
  */
 - (void) downloadFileHasFinished:(DownloadFile*)d
 {
+	DebugLog(@"DL finished: %@", [d downloadPath]);
 	[fileDownloads removeObject:d];
 	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
@@ -603,7 +604,7 @@
  */
 - (void) downloadFileHasFailed:(DownloadFile*)d
 {
-	DebugLog(@"ERROR: downloadFileHasFailed");
+	DebugLog(@"ERROR: downloadFileHasFailed: %@", [d downloadPath]);
 	[fileDownloads removeObject:d];
 //	Revision * r = [d rev];
 //	[[[r peer] share] setRevision:r forPeer:[r peer]];
