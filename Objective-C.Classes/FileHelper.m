@@ -16,16 +16,28 @@
 
 @implementation FileHelper
 
+/**
+ * Unused
+ */
+
 + (void) setFilePermissionsTo755:(NSString*) path
 {
 	mode_t dirMask = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
 	chmod([path cStringUsingEncoding:NSUTF8StringEncoding], dirMask);
 }
 
-+ (void) setFilePermissionsTo777: (NSString*) path
+
+
++ (void) setFilePermissionsAtPath:(NSString*)path toOctal:(int)oct
 {
+	// Convert octal to decimal
+	//--------------------------
+	int dec = octal_decimal(oct);
+	
 	NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-	[dict setObject:[NSNumber numberWithInt:511]  forKey:NSFilePosixPermissions]; /*511 is Decimal for the 777 octal*/
+	[dict setObject:[NSNumber numberWithInt:dec]  forKey:NSFilePosixPermissions];
+	/* 493 is Decimal for the 755 octal */
+	/* 511 is Decimal for the 777 octal */
 	NSError *error1;
 	[[NSFileManager defaultManager] setAttributes:dict ofItemAtPath:path error:&error1];
 	if (error1) {
@@ -34,6 +46,42 @@
 }
 
 
+
+/**
+ * Function to convert decimal to octal
+ */
+
+int decimal_octal(int n)
+{
+	int rem, i=1, octal=0;
+	while (n!=0)
+	{
+		rem=n%8;
+		n/=8;
+		octal+=rem*i;
+		i*=10;
+	}
+	return octal;
+}
+
+
+
+/**
+ * Function to convert octal to decimal
+ */
+
+int octal_decimal(int n)
+{
+	int decimal=0, i=0, rem;
+	while (n!=0)
+	{
+		rem = n%10;
+		n/=10;
+		decimal += rem*pow(8,i);
+		++i;
+	}
+	return decimal;
+}
 
 + (BOOL) hashA:(NSString*) hashA isSmallerThanHashB: (NSString *) hashB
 {

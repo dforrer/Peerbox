@@ -116,7 +116,7 @@
 			DebugLog(@"errno: %s",strerror(errno));
 			return;
 		}
-		[FileHelper setFilePermissionsTo755:[fullURL path]];
+		[FileHelper setFilePermissionsAtPath:[fullURL path] toOctal:755];
 	}
 	else
 	{
@@ -159,7 +159,7 @@
 		}
 		
 		[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
-		[FileHelper setFilePermissionsTo755:[fullURL path]];
+		[FileHelper setFilePermissionsAtPath:[fullURL path] toOctal:755];
 	}
 	else
 	{
@@ -406,7 +406,7 @@
 	[fh closeFile];
 	
 	[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
-	[FileHelper setFilePermissionsTo755:[fullURL path]];
+	[FileHelper setFilePermissionsAtPath:[fullURL path] toOctal:755];
 	
 	// Set remoteState in Share s
 	//----------------------------
@@ -439,7 +439,7 @@
 			DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
 			return nil;
 		}
-		[FileHelper setFilePermissionsTo755:[conflictedCopyURL path]];
+		[FileHelper setFilePermissionsAtPath:[conflictedCopyURL path] toOctal:755];
 		return conflictedCopyURL;
 	}
 	return nil;

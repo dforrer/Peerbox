@@ -72,7 +72,7 @@
 	
 	[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
 
-	[FileHelper setFilePermissionsTo755:[fullURL path]];
+	[FileHelper setFilePermissionsAtPath:[fullURL path] toOctal:755];
 	
 	// Save the File with the updated versions
 	//-----------------------------------------
