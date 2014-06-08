@@ -612,6 +612,7 @@
 			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error) {
 				DebugLog(@"ERROR during UPDATE:\n%@", queryUPDATE);
+				DebugLog(@"%@", error);
 			}
 		}
 		else
@@ -622,6 +623,7 @@
 			rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
 			if (error) {
 				DebugLog(@"ERROR during INSERT:\n%@", queryINSERT);
+				DebugLog(@"%@", error);
 			}
 		}
 		return rv;
