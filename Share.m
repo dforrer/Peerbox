@@ -167,7 +167,7 @@
 		{
 			[self dbCommit];
 			changes_diff = (newTotalChanges-totalChanges);
-			DebugLog(@"UNCOMMITTED: %i", changes_diff);
+			DebugLog(@"UNCOMMITTED: %i\t currentRev:%@", changes_diff, currentRevision);
 			totalChanges = newTotalChanges;
 			[self dbBegin];
 		}
