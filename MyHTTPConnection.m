@@ -185,7 +185,7 @@
 		//-------------
 		if (requestForShare == nil)
 		{
-			DebugLog(@"ERROR 4: 404")
+			DebugLog(@"ERROR 4: 404");
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
 		}
 		
@@ -203,7 +203,7 @@
 		NSDictionary * postDict = [NSDictionary dictionaryWithJSONData:postData error:&error];
 		if (error)
 		{
-			return [[HTTPErrorResponse alloc] initWithErrorCode:403];
+			return [[HTTPErrorResponse alloc] initWithErrorCode:400];
 		}
 		NSNumber * fromRev = [postDict objectForKey:@"fromRev"];
 		
@@ -225,8 +225,8 @@
 		NSData * response = [[CJSONSerializer serializer] serializeObject:responseDict error:&error];
 		if (error)
 		{
-			DebugLog(@"ERROR 5: 403")
-			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
+			DebugLog(@"ERROR 5: 500")
+			return [[HTTPErrorResponse alloc] initWithErrorCode:500];
 		}
 		
 		// Compress the response with GZIP
@@ -236,7 +236,7 @@
 	/*
 		// Encrypt response with share-secret
 		//------------------------------------
-		response = [RNEncryptor encryptData: response withSettings: kRNCryptorAES256Settings password: [requestForShare secret] error:&error];
+		response = [RNEncryptor encryptData:response withSettings:kRNCryptorAES256Settings password:[requestForShare secret] error:&error];
 	*/
 		return [[HTTPDataResponse alloc] initWithData:response];
 	 
@@ -260,6 +260,7 @@
 		//------------------------------------
 		if (requestForShare == nil)
 		{
+			DebugLog(@"ERROR 4: 404");
 			DebugLog(@"requestForShare == nil");
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
 		}
@@ -288,7 +289,7 @@
 		if (error)
 		{
 			DebugLog(@"ERROR 9: %@", error);
-			return [[HTTPErrorResponse alloc] initWithErrorCode:403];
+			return [[HTTPErrorResponse alloc] initWithErrorCode:400];
 		}
 		NSNumber * fromRev = [postDict objectForKey:@"fromRev"];
 		
@@ -306,7 +307,7 @@
 		//DebugLog(@"dictFromRev:\%@", dictFromRev);
 		if ([dictFromRev count] == 0 || dictFromRev == nil)
 		{
-			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
+			return [[HTTPErrorResponse alloc] initWithErrorCode:500];
 		}
 		[responseDict setObject:dictFromRev forKey:@"revisions"];
 		[responseDict setObject:biggestRev forKey:@"biggestRev"];
@@ -318,7 +319,7 @@
 		if (error)
 		{
 			DebugLog(@"A CJSON error occurred!");
-			return [[HTTPErrorResponse alloc] initWithErrorCode:204]; // "No Content"
+			return [[HTTPErrorResponse alloc] initWithErrorCode:500]; // "Server error"
 		}
 	
 		// Compress the response with GZIP
@@ -370,11 +371,11 @@
 		if (error)
 		{
 			DebugLog(@"ERROR: 403 - Postdata is invalid");
-			return [[HTTPErrorResponse alloc] initWithErrorCode:403];
+			return [[HTTPErrorResponse alloc] initWithErrorCode:400];
 		}
 		NSString * relUrl = [postDict objectForKey:@"relUrl"];
-		NSURL* rv = [NSURL fileURLWithPathComponents:[NSArray arrayWithObjects:[[requestForShare root] path], relUrl, nil]];
-		if (![FileHelper fileFolderExists:[rv path]])
+		NSURL * localURL = [NSURL fileURLWithPathComponents:[NSArray arrayWithObjects:[[requestForShare root] path], relUrl, nil]];
+		if (![FileHelper fileFolderExists:[localURL path]])
 		{
 			DebugLog(@"ERROR: 404 - File does not exist")
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
@@ -385,7 +386,7 @@
 												  andPassword:[requestForShare secret]
 												forConnection:self];
 	 */
-		return [[HTTPAsyncFileResponse alloc] initWithFilePath:[rv path] forConnection:self];
+		return [[HTTPAsyncFileResponse alloc] initWithFilePath:[localURL path] forConnection:self];
 	}
 		
 	return [[HTTPErrorResponse alloc] initWithErrorCode:400];

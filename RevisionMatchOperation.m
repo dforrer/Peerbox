@@ -120,23 +120,27 @@
 	}
 	else
 	{
-		// Revision = DELETE-Symlink (C implementation)
-		//----------------------------------------------
-		int rv = remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
-		
-		if (rv != 0)
+		if ([FileHelper fileFolderSymlinkExists:[fullURL path]])
 		{
-			DebugLog(@"ERROR: during deleting of symlink an error occurred!");
+			// Revision = DELETE-Symlink (C implementation)
+			//----------------------------------------------
+			int rv = remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
 			
-			/*
-			 * Because DELETE failed, we set isSet
-			 * to FALSE, so that it will be added
-			 * again after a rescan.
-			 */
-			[localState setIsSetBOOL:FALSE];
-			[[[rev peer] share] setFile:localState];
+			if (rv != 0)
+			{
+				DebugLog(@"ERROR: during deleting of symlink an error occurred!");
+				
+				/*
+				 * Because DELETE failed, we set isSet
+				 * to FALSE, so that it will be added
+				 * again after a rescan.
+				 */
+				[localState setIsSetBOOL:FALSE];
+				[[[rev peer] share] setFile:localState];
+			}
 		}
 	}
+	
 }
 
 
@@ -163,23 +167,26 @@
 	}
 	else
 	{
-		// Revision = DELETE-Directory (C implementation)
-		//------------------------------------------------
-		chdir([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
-		remove(".DS_Store");
-		int rv = rmdir([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
-		if (rv != 0)
+		if ([FileHelper fileFolderSymlinkExists:[fullURL path]])
 		{
-			DebugLog(@"DEL of Dir failed, there must be other files in this directory");
-			
-			/*
-			 * Because DELETE failed, we set isSet
-			 * to FALSE, so that it will be added
-			 * again after a rescan.
-			 */
-			
-			[localState setIsSetBOOL:FALSE];
-			[[[rev peer] share] setFile:localState];
+			// Revision = DELETE-Directory (C implementation)
+			//------------------------------------------------
+			chdir([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
+			remove(".DS_Store");
+			int rv = rmdir([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
+			if (rv != 0)
+			{
+				DebugLog(@"DEL of Dir failed, there must be other files in this directory");
+				
+				/*
+				 * Because DELETE failed, we set isSet
+				 * to FALSE, so that it will be added
+				 * again after a rescan.
+				 */
+				
+				[localState setIsSetBOOL:FALSE];
+				[[[rev peer] share] setFile:localState];
+			}
 		}
 	}
 }
@@ -224,7 +231,7 @@
 	/*
 	 * localState is set, remotestate is NOT set (DELETE file)
 	 */
-
+	
 	if ( [[localState isSet] intValue] == 1
 	    && [[rev isSet] intValue] == 0)
 	{
@@ -262,7 +269,7 @@
 				if (rv != 0)
 				{
 					DebugLog(@"ERROR: during moving of file an error occurred!");
-						
+					
 					/*
 					 * Because DELETE failed, we set isSet
 					 * to FALSE, so that it will be added
@@ -280,7 +287,7 @@
 	
 	
 	/*
-	 * localState is set, remotestate is set 
+	 * localState is set, remotestate is set
 	 * (ADD file, but there may be a conflicts)
 	 */
 	
@@ -332,7 +339,7 @@
 			else
 			{
 				[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
-
+				
 				// DO NOTHING
 			}
 		}
@@ -418,7 +425,7 @@
 
 
 - (NSURL*) createConflictedCopy
-{	
+{
 	// Create CONFLICTEDCOPY
 	//-----------------------
 	NSError * error;

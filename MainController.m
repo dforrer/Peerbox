@@ -606,8 +606,12 @@
 {
 	DebugLog(@"ERROR: downloadFileHasFailed: %@", [d downloadPath]);
 	[fileDownloads removeObject:d];
-//	Revision * r = [d rev];
-//	[[[r peer] share] setRevision:r forPeer:[r peer]];
+	
+	if ([d statusCode] != 404)
+	{
+		Revision * r = [d rev];
+		[[[r peer] share] setRevision:r forPeer:[r peer]];
+	}
 }
 
 
