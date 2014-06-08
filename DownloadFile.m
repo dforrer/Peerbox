@@ -26,6 +26,7 @@
 #include <CommonCrypto/CommonDigest.h>
 
 
+
 @implementation DownloadFile
 {
 	//RNDecryptor * decryptor;
@@ -45,6 +46,8 @@
 @synthesize delegate;
 @synthesize sha1OfDownload;
 @synthesize config;
+@synthesize statusCode;
+
 
 
 - (id) initWithNetService:(NSNetService*)netService
@@ -188,13 +191,16 @@
 {
 	if ([response respondsToSelector:@selector(statusCode)])
 	{
-		long statusCode = [((NSHTTPURLResponse *)response) statusCode];
+		statusCode = (int)[((NSHTTPURLResponse *)response) statusCode];
 		if (statusCode != 200)
 		{
-			DebugLog(@"HTTP-ERROR: didReceiveResponse statusCode: %li", statusCode);
+			DebugLog(@"HTTP-ERROR: didReceiveResponse statusCode: %i", statusCode);
 			[self->connection cancel];  // stop connecting; no more delegate messages
 			hasFailed = TRUE;
 			[download closeFile];
+			
+			// Notify Revision-Instance that the download has failed
+			//-------------------------------------------------------
 			return [delegate downloadFileHasFailed:self];
 		}
 	}
@@ -222,6 +228,7 @@
 	// Handle the error properly
 	//---------------------------
 	DebugLog(@"Error: %@",error);
+	DebugLog(@"StatusCode: %li", [error code]);
 	hasFailed = TRUE;
 	
 	// Notify Revision-Instance that the download has failed

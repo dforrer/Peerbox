@@ -33,5 +33,5 @@
 @property (nonatomic,assign) id<DownloadFileDelegate> delegate;
 @property (nonatomic, readonly, strong) NSString * sha1OfDownload;
 @property (nonatomic, readonly, strong) Configuration * config;
-
+@property (nonatomic, readonly) int statusCode;
 @end
