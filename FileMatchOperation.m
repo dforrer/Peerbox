@@ -68,6 +68,14 @@
 				return;
 			}
 		}
+		else
+		{
+			DebugLog(@"downloadPath = %@, [fullURL path] = %@", [d downloadPath], [fullURL path]);
+		}
+	}
+	else
+	{
+		DebugLog(@"Can't read file at %@", [d downloadPath]);
 	}
 	
 	[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
@@ -79,7 +87,6 @@
 	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
 	[newState setVersions:[NSMutableDictionary dictionaryWithDictionary:[rev versions]]];
 	[share setFile:newState];
-	
 	
 }
 

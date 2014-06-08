@@ -214,6 +214,7 @@
 
 - (void) saveFileDownloads
 {
+	// TODO: change to not use fast-enumeration
 	for (DownloadFile * d in fileDownloads)
 	{
 		Revision * r = [d rev];
@@ -569,8 +570,6 @@
 		NSNumber * biggestRev = [dict objectForKey:@"biggestRev"];
 		DebugLog(@"biggestRev: %@", biggestRev);
 		[[d peer] setLastDownloadedRev:biggestRev];
-		
-		[self saveModel];
 	}
 }
 
