@@ -116,7 +116,10 @@
 			DebugLog(@"errno: %s",strerror(errno));
 			return;
 		}
+		/*
+		// Symlinks can have permissions, but they are applied to the destination
 		[FileHelper setFilePermissionsAtPath:[fullURL path] toOctal:755];
+		 */
 	}
 	else
 	{

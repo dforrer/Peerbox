@@ -41,7 +41,7 @@
 	NSError *error1;
 	[[NSFileManager defaultManager] setAttributes:dict ofItemAtPath:path error:&error1];
 	if (error1) {
-		DebugLog(@"setFilePermissionsTo777: %@", error1);
+		DebugLog(@"setFilePermissionsAtPath: %@", error1);
 	}
 }
 
