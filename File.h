@@ -16,7 +16,7 @@
 	  extAttributes:(NSDictionary*)e
 		  versions:(NSMutableDictionary*)v
 		 isSymlink:(NSNumber*)sym
-		 targetPath:(NSString*)t;
+		targetPath:(NSString*)t;
 - (void) print;
 - (void) addVersion:(NSString *) hash;
 - (NSString*) getLastVersionHash;
