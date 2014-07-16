@@ -14,12 +14,12 @@
  */
 
 @interface Singleton : NSObject
-{
-	MainController * mainModel;
-}
+/*{
+	MainController * mainController;
+}*/
 
 
-@property (nonatomic, retain) MainController * mainModel;	// only used by 'MyHTTPConnection'
+@property (nonatomic, retain) MainController * mainController;	// only used by 'MyHTTPConnection'
 
 
 + (id) data;

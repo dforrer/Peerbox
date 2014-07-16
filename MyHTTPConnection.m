@@ -83,8 +83,8 @@
 {
 	// Singleton-Usage
 	//-----------------
-	NSDictionary * allShares = [[[Singleton data] mainModel] getAllShares];
-	NSString	   * myPeerID	= [[[[Singleton data] mainModel] config] myPeerID];
+	NSDictionary * allShares = [[[Singleton data] mainController] getAllShares];
+	NSString	   * myPeerID	= [[[[Singleton data] mainController] config] myPeerID];
 	
 	// Remove queries from the URI
 	//-----------------------------
@@ -113,7 +113,7 @@
 		}
 		 */
 		
-		[[[Singleton data] mainModel] downloadSharesFromPeers];
+		[[[Singleton data] mainController] downloadSharesFromPeers];
 		return [[HTTPErrorResponse alloc] initWithErrorCode:200];
 	}
 	

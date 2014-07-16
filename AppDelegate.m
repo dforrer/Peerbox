@@ -14,7 +14,7 @@
 
 @implementation AppDelegate
 {
-	MainController * mm;
+	MainController * mc;
 }
 
 
@@ -40,20 +40,24 @@
 	@autoreleasepool
 	{		
 		DebugLog(@"applicationDidFinishLaunching");
-		mm = [[Singleton data] mainModel];
-		[sharesTableView reloadData];
+
+		mc = [[Singleton data] mainController];
 		
-		NSImage * menuImage = [[NSImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"menubar_icon" ofType:@"png"]];
-		statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-		//[statusItem setTitle:@"dd"];
-		[statusItem setHighlightMode:YES];
-		[statusItem setImage:menuImage];
-		NSMenu * mymenu = [[NSMenu alloc] init];
-		[statusItem setMenu:mymenu];
-		[self update_menu];
+		[self initStatusBarGUI];
 	}
 }
 
+- (void) initStatusBarGUI
+{
+	NSImage * menuImage = [[NSImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"menubar_icon" ofType:@"png"]];
+	statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+	//[statusItem setTitle:@"dd"];
+	[statusItem setHighlightMode:YES];
+	[statusItem setImage:menuImage];
+	NSMenu * mymenu = [[NSMenu alloc] init];
+	[statusItem setMenu:mymenu];
+	[self update_menu];
+}
 
 - (void) update_menu
 {
@@ -79,9 +83,9 @@
 	[mymenu addItem: default_quit];
 	
 	// loop through myShares
-	for (id key  in [mm getAllShares])
+	for (id key  in [mc getAllShares])
 	{
-		Share * s = [[mm getAllShares] objectForKey:key];
+		Share * s = [[mc getAllShares] objectForKey:key];
 		NSMenuItem  * share_item = [[NSMenuItem alloc] initWithTitle:[s shareId]
 												    action:@selector(openItem:)
 											  keyEquivalent:@""];
@@ -110,7 +114,7 @@
 {
 	NSString        *key            = [sender representedObject];
 	
-	Share * s = [[mm getAllShares] objectForKey:key];
+	Share * s = [[mc getAllShares] objectForKey:key];
 	
 	[[NSWorkspace sharedWorkspace] openFile:[[s root] path]];
 }
@@ -142,8 +146,8 @@
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
 	DebugLog(@"applicationWillTerminate");
-	[mm commitAllShareDBs];
-	[mm saveModel];
+	[mc commitAllShareDBs];
+	[mc saveModel];
 }
 
 
@@ -157,8 +161,8 @@
 	NSURL	* root		= [NSURL fileURLWithPath:[rootTextfield stringValue]];
 	NSString	* passwordHash	= [FileHelper sha1OfNSString:[passwordTextfield stringValue]];
 
-	[mm addShareWithID:shareId andRootURL:root andPasswordHash:passwordHash];
-	[mm downloadSharesFromPeers];
+	[mc addShareWithID:shareId andRootURL:root andPasswordHash:passwordHash];
+	[mc downloadSharesFromPeers];
 	
 	[sharesTableView reloadData];
 	
@@ -172,9 +176,9 @@
 	NSIndexSet * i = [sharesTableView selectedRowIndexes];
 	long index = [i firstIndex];
 	
-	NSArray * mySharesArray = [[mm getAllShares] allValues];
+	NSArray * mySharesArray = [[mc getAllShares] allValues];
 	Share * shareAtIndex = [mySharesArray objectAtIndex:index];
-	[mm removeShareForID:[shareAtIndex shareId]];
+	[mc removeShareForID:[shareAtIndex shareId]];
 
 	[sharesTableView reloadData];
 
@@ -183,29 +187,29 @@
 
 - (IBAction) downloadShares:(id)sender
 {
-	[mm downloadSharesFromPeers];
+	[mc downloadSharesFromPeers];
 }
 
 - (IBAction) downloadRevisions:(id)sender
 {
-	[mm downloadRevisionsFromPeers];
+	[mc downloadRevisionsFromPeers];
 }
 
 - (IBAction) matchFiles:(id)sender
 {
-	[mm matchFiles];
+	[mc matchFiles];
 }
 
 - (IBAction) printResolvedServices: (id)sender
 {
-	[mm printResolvedServices];
+	[mc printResolvedServices];
 }
 
 
 
 - (IBAction) printShares:(id)sender
 {
-	[mm printMyShares];
+	[mc printMyShares];
 }
 
 
@@ -220,7 +224,7 @@
  */
 - (NSInteger) numberOfRowsInTableView:(NSTableView *)aTableView
 {
-	long rv = (long)[[mm getAllShares] count];
+	long rv = (long)[[mc getAllShares] count];
 	return rv;
 }
 
@@ -234,7 +238,7 @@
 	@autoreleasepool
 	{
 		//DebugLog(@"tableView objectValueForTableColumn");
-		NSArray * mySharesArray = [[mm getAllShares] allValues];
+		NSArray * mySharesArray = [[mc getAllShares] allValues];
 		Share * shareAtIndex = [mySharesArray objectAtIndex:rowIndex];
 		if (!shareAtIndex)
 		{

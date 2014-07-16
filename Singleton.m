@@ -10,14 +10,14 @@
 @implementation Singleton
 
 
-@synthesize mainModel;
+@synthesize mainController;
 
 
 - (id) init
 {
 	if (self = [super init])
 	{
-		mainModel = [[MainController alloc] init];
+		mainController = [[MainController alloc] init];
 	}
 	return self;
 }
