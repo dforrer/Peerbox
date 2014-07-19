@@ -48,6 +48,7 @@
 + (NSData *)getDataValueForName:(NSString *)name onFile:(NSString *)filePath;
 + (NSDictionary *)getAllValuesOnFile:(NSString *)filePath;
 + (void) removeAllValuesOnFile:(NSString *)filePath;
++ (void) matchExtAttributes:(NSDictionary*)dict onURL:(NSURL*)url;
 + (NSString*) getSymlinkDestination:(NSString*) path;
 
 @end

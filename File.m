@@ -115,25 +115,6 @@
 
 
 /**
- * Set extended attributes
- * This works, but does not dispaly correctly in the Finder
- * @params Expects a Base64-encoded string for the values
- * of the extended attributes.
- */
-+ (void) matchExtAttributes:(NSDictionary*)dict onURL:(NSURL*)url
-{
-	[FileHelper removeAllValuesOnFile:[url path]];
-	
-	for (id key in dict)
-	{
-		NSData * extAttrBinary = [[NSData alloc] initWithBase64EncodedString:[dict objectForKey:key] options:0];
-		[FileHelper setValue:extAttrBinary forName:key onFile:[url path]];
-	}
-}
-
-
-
-/**
  * Unit Tested in: "File Unit Tests.m"
  */
 - (BOOL) hasConflictingVersionsWithFile:(File*)f

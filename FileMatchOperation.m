@@ -78,7 +78,7 @@
 		DebugLog(@"Can't read file at %@", [d downloadPath]);
 	}
 	
-	[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
+	[FileHelper matchExtAttributes:[rev extAttributes] onURL:fullURL];
 
 	[FileHelper setFilePermissionsAtPath:[fullURL path] toOctal:755];
 	

@@ -165,7 +165,7 @@
 			return;
 		}
 		
-		[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
+		[FileHelper matchExtAttributes:[rev extAttributes] onURL:fullURL];
 		[FileHelper setFilePermissionsAtPath:[fullURL path] toOctal:755];
 	}
 	else
@@ -341,7 +341,7 @@
 			}
 			else
 			{
-				[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
+				[FileHelper matchExtAttributes:[rev extAttributes] onURL:fullURL];
 				
 				// DO NOTHING
 			}
@@ -415,7 +415,7 @@
 	//[fh writeData:[NSData data]];
 	[fh closeFile];
 	
-	[File matchExtAttributes:[rev extAttributes] onURL:fullURL];
+	[FileHelper matchExtAttributes:[rev extAttributes] onURL:fullURL];
 	[FileHelper setFilePermissionsAtPath:[fullURL path] toOctal:755];
 	
 	// Set remoteState in Share s
