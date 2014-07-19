@@ -15,11 +15,11 @@
 - (IBAction) printResolvedServices: (id)sender;
 - (IBAction) openItem:(id)sender;
 
-@property (assign) IBOutlet NSTableView *sharesTableView;
-@property (weak) IBOutlet NSWindow *window;
-@property (weak) IBOutlet NSTextField *shareIdTextfield;
-@property (weak) IBOutlet NSTextField *rootTextfield;
-@property (weak) IBOutlet NSTextField *passwordTextfield;
+@property (assign) IBOutlet NSTableView * sharesTableView;
+@property (weak) IBOutlet NSWindow * editWindow;
+@property (weak) IBOutlet NSTextField * shareIdTextfield;
+@property (weak) IBOutlet NSTextField * rootTextfield;
+@property (weak) IBOutlet NSTextField * passwordTextfield;
 
 @property (nonatomic, readwrite, copy) NSStatusItem *statusItem;
 

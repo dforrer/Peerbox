@@ -18,7 +18,7 @@
 }
 
 
-@synthesize window;
+@synthesize editWindow;
 @synthesize shareIdTextfield;
 @synthesize rootTextfield;
 @synthesize passwordTextfield;
@@ -43,11 +43,11 @@
 
 		mc = [[Singleton data] mainController];
 		
-		[self initStatusBarGUI];
+		[self createStatusBarGUI];
 	}
 }
 
-- (void) initStatusBarGUI
+- (void) createStatusBarGUI
 {
 	NSImage * menuImage = [[NSImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"menubar_icon" ofType:@"png"]];
 	statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
@@ -56,10 +56,10 @@
 	[statusItem setImage:menuImage];
 	NSMenu * mymenu = [[NSMenu alloc] init];
 	[statusItem setMenu:mymenu];
-	[self update_menu];
+	[self updateStatusBarMenu];
 }
 
-- (void) update_menu
+- (void) updateStatusBarMenu
 {
 	// Get NSMenu-Pointer
 	NSMenu * mymenu = [statusItem menu];
@@ -97,12 +97,9 @@
 		smallIconSize.height = 16;
 		smallIconSize.width  = 16;
 		[iconOfFile setSize:smallIconSize];
-		
 		[share_item setImage: iconOfFile];
 		
-		
 		[mymenu insertItem:share_item atIndex:0];
-				
 	}
 
 	NSMenuItem  * shares_title = [[NSMenuItem alloc ] init];
@@ -112,7 +109,7 @@
 
 - (IBAction) openItem:(id)sender;
 {
-	NSString        *key            = [sender representedObject];
+	NSString * key = [sender representedObject];
 	
 	Share * s = [[mc getAllShares] objectForKey:key];
 	
@@ -121,7 +118,8 @@
 
 - (void) openEditDialog
 {
-	[window makeKeyAndOrderFront:self];
+	[editWindow makeKeyAndOrderFront:self];
+	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
 }
 
 /**
@@ -166,7 +164,7 @@
 	
 	[sharesTableView reloadData];
 	
-	[self update_menu];
+	[self updateStatusBarMenu];
 }
 
 
@@ -182,29 +180,32 @@
 
 	[sharesTableView reloadData];
 
-	[self update_menu];
+	[self updateStatusBarMenu];
 }
+
 
 - (IBAction) downloadShares:(id)sender
 {
 	[mc downloadSharesFromPeers];
 }
 
+
 - (IBAction) downloadRevisions:(id)sender
 {
 	[mc downloadRevisionsFromPeers];
 }
+
 
 - (IBAction) matchFiles:(id)sender
 {
 	[mc matchFiles];
 }
 
+
 - (IBAction) printResolvedServices: (id)sender
 {
 	[mc printResolvedServices];
 }
-
 
 
 - (IBAction) printShares:(id)sender
