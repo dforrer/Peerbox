@@ -32,8 +32,6 @@
 
 @implementation MainController
 {
-	NSMutableDictionary * myShares;	// shareId = key of NSDictionary
-	
 	NSOperationQueue * fsWatcherQueue;
 	NSOperationQueue * revMatcherQueue;
 	NSOperationQueue * fileMatcherQueue;
@@ -46,7 +44,7 @@
 @synthesize httpServer;
 @synthesize fswatcher;
 @synthesize fileDownloads;
-
+@synthesize myShares;
 
 #pragma mark -----------------------
 #pragma mark Initializer & Setup & Shutdown
@@ -184,10 +182,10 @@
 		
 		// Set myShares
 		//--------------
-		NSDictionary * shares = [model objectForKey:@"myShares"];
-		for (id key1 in shares)
+		NSDictionary * sharesSetup = [model objectForKey:@"myShares"];
+		for (id key1 in sharesSetup)
 		{
-			NSDictionary * shareDict = [shares objectForKey:key1];
+			NSDictionary * shareDict = [sharesSetup objectForKey:key1];
 			Share * s = [[Share alloc] initShareWithID:[shareDict objectForKey:@"shareId"]
 									  andRootURL:[NSURL URLWithString:[shareDict objectForKey:@"root"]]
 									  withSecret:[shareDict objectForKey:@"secret"]
@@ -793,13 +791,6 @@
 
 
 
-- (NSMutableDictionary*) getAllShares
-{
-	return myShares;
-}
-
-
-
 /**
  * Creates and adds a Share to 'myShares',
  * but only if there is no Share with the same name already
@@ -823,7 +814,9 @@
 								   andConfig:config];
 		[myShares setObject:s forKey:shareId];
 		[self saveModel];
-		
+
+		// Perform initial scan
+		//----------------------
 		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
 		[self addOperation:o withDependecyToQueue:fsWatcherQueue];
 		[self updateFSWatcher];

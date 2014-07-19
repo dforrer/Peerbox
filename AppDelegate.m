@@ -83,9 +83,9 @@
 	[mymenu addItem: default_quit];
 	
 	// loop through myShares
-	for (id key  in [mc getAllShares])
+	for (id key  in [mc myShares])
 	{
-		Share * s = [[mc getAllShares] objectForKey:key];
+		Share * s = [[mc myShares] objectForKey:key];
 		NSMenuItem  * share_item = [[NSMenuItem alloc] initWithTitle:[s shareId]
 												    action:@selector(openItem:)
 											  keyEquivalent:@""];
@@ -110,9 +110,7 @@
 - (IBAction) openItem:(id)sender;
 {
 	NSString * key = [sender representedObject];
-	
-	Share * s = [[mc getAllShares] objectForKey:key];
-	
+	Share * s = [[mc myShares] objectForKey:key];
 	[[NSWorkspace sharedWorkspace] openFile:[[s root] path]];
 }
 
@@ -174,7 +172,7 @@
 	NSIndexSet * i = [sharesTableView selectedRowIndexes];
 	long index = [i firstIndex];
 	
-	NSArray * mySharesArray = [[mc getAllShares] allValues];
+	NSArray * mySharesArray = [[mc myShares] allValues];
 	Share * shareAtIndex = [mySharesArray objectAtIndex:index];
 	[mc removeShareForID:[shareAtIndex shareId]];
 
@@ -225,7 +223,7 @@
  */
 - (NSInteger) numberOfRowsInTableView:(NSTableView *)aTableView
 {
-	long rv = (long)[[mc getAllShares] count];
+	long rv = (long)[[mc myShares] count];
 	return rv;
 }
 
@@ -239,7 +237,7 @@
 	@autoreleasepool
 	{
 		//DebugLog(@"tableView objectValueForTableColumn");
-		NSArray * mySharesArray = [[mc getAllShares] allValues];
+		NSArray * mySharesArray = [[mc myShares] allValues];
 		Share * shareAtIndex = [mySharesArray objectAtIndex:rowIndex];
 		if (!shareAtIndex)
 		{

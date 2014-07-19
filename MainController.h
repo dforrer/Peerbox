@@ -23,7 +23,6 @@
 - (id) init;
 - (Share*) getShareForID:(NSString*)shareID;
 - (Share*) addShareWithID:(NSString*)shareId andRootURL:(NSURL*)root andPasswordHash:(NSString*)passwordHash;
-- (NSMutableDictionary*) getAllShares;
 - (void) removeShareForID:(NSString*) shareId;
 - (void) commitAllShareDBs;
 - (void) saveModel;
@@ -39,5 +38,6 @@
 @property (nonatomic, readonly, strong)	FSWatcher  * fswatcher;
 
 @property (nonatomic, readonly, strong) NSMutableArray * fileDownloads;
+@property (nonatomic, readonly, strong) NSMutableDictionary * myShares; // shareId = key of NSDictionary
 
 @end

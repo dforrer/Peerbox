@@ -83,7 +83,7 @@
 {
 	// Singleton-Usage
 	//-----------------
-	NSDictionary * allShares = [[[Singleton data] mainController] getAllShares];
+	NSDictionary * allShares = [[[Singleton data] mainController] myShares];
 	NSString	   * myPeerID	= [[[[Singleton data] mainController] config] myPeerID];
 	
 	// Remove queries from the URI
