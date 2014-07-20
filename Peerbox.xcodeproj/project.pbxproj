@@ -114,7 +114,7 @@
 		6510B90C1924DE1F00808055 /* Unit Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Unit Tests-Info.plist"; sourceTree = "<group>"; };
 		6510B90E1924DE1F00808055 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6510B9121924DE1F00808055 /* Unit Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Unit Tests-Prefix.pch"; sourceTree = "<group>"; };
-		6510B91A19267B5700808055 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		6510B91A19267B5700808055 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = COPYING; path = Resources/COPYING; sourceTree = "<group>"; };
 		65197B9E18E2A18200440C6C /* Peer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peer.h; sourceTree = "<group>"; };
 		65197B9F18E2A18200440C6C /* Peer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Peer.m; sourceTree = "<group>"; };
 		6526C1CB18F5C9DF00B72389 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -232,10 +232,10 @@
 		6589454819269B4C00A58A83 /* JSONRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONRepresentation.h; sourceTree = "<group>"; };
 		6589454919269B4C00A58A83 /* NSDictionary_JSONExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDictionary_JSONExtensions.h; sourceTree = "<group>"; };
 		6589454A19269B4C00A58A83 /* NSDictionary_JSONExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDictionary_JSONExtensions.m; sourceTree = "<group>"; };
-		6595E54318D4ED7300E13880 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = SOURCE_ROOT; };
-		6595E54518D4EDC300E13880 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = SOURCE_ROOT; };
-		65A1212E190446DB0082C251 /* Peerbox-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Peerbox-Info.plist"; sourceTree = SOURCE_ROOT; };
-		65A1212F190446DB0082C251 /* Peerbox-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Peerbox-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		6595E54318D4ED7300E13880 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Resources/main.m; sourceTree = SOURCE_ROOT; };
+		6595E54518D4EDC300E13880 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainMenu.xib; path = Resources/MainMenu.xib; sourceTree = SOURCE_ROOT; };
+		65A1212E190446DB0082C251 /* Peerbox-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Peerbox-Info.plist"; path = "Resources/Peerbox-Info.plist"; sourceTree = SOURCE_ROOT; };
+		65A1212F190446DB0082C251 /* Peerbox-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Peerbox-Prefix.pch"; path = "Resources/Peerbox-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		65A1213219046F830082C251 /* Revision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Revision.h; sourceTree = "<group>"; };
 		65A1213319046F830082C251 /* Revision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Revision.m; sourceTree = "<group>"; };
 		65A7923E18FBF2B000E8C878 /* File Unit Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "File Unit Tests.m"; sourceTree = "<group>"; };
@@ -248,8 +248,8 @@
 		65CDF14C188C4B9700F31C13 /* DownloadRevisions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadRevisions.m; sourceTree = "<group>"; };
 		65D830DC1938A88100DF3F8B /* PostNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostNotification.h; sourceTree = "<group>"; };
 		65D830DD1938A88100DF3F8B /* PostNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostNotification.m; sourceTree = "<group>"; };
-		65D830E7193B197100DF3F8B /* menubar_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menubar_icon.png; sourceTree = SOURCE_ROOT; };
-		65D830E9193B608600DF3F8B /* menubar_icon_stopped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menubar_icon_stopped.png; sourceTree = SOURCE_ROOT; };
+		65D830E7193B197100DF3F8B /* menubar_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menubar_icon.png; path = Resources/menubar_icon.png; sourceTree = SOURCE_ROOT; };
+		65D830E9193B608600DF3F8B /* menubar_icon_stopped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menubar_icon_stopped.png; path = Resources/menubar_icon_stopped.png; sourceTree = SOURCE_ROOT; };
 		65E5CBBC180AFF98001065AE /* Peerbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Peerbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65E5CBBF180AFF98001065AE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		65E5CBC2180AFF98001065AE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -979,9 +979,9 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Peerbox-Prefix.pch";
+				GCC_PREFIX_HEADER = "Resources/Peerbox-Prefix.pch";
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = "Peerbox-Info.plist";
+				INFOPLIST_FILE = "Resources/Peerbox-Info.plist";
 				PRODUCT_NAME = Peerbox;
 				WRAPPER_EXTENSION = app;
 			};
@@ -997,9 +997,9 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Peerbox-Prefix.pch";
+				GCC_PREFIX_HEADER = "Resources/Peerbox-Prefix.pch";
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = "Peerbox-Info.plist";
+				INFOPLIST_FILE = "Resources/Peerbox-Info.plist";
 				PRODUCT_NAME = Peerbox;
 				WRAPPER_EXTENSION = app;
 			};
