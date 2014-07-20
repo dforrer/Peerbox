@@ -542,7 +542,6 @@
 		65E5CBB3180AFF98001065AE = {
 			isa = PBXGroup;
 			children = (
-				6510B91A19267B5700808055 /* COPYING */,
 				6526C1CB18F5C9DF00B72389 /* Constants.h */,
 				6526C1CC18F5CF2800B72389 /* Constants.m */,
 				65E5CBF5180B0043001065AE /* AppDelegate.h */,
@@ -622,6 +621,7 @@
 		65E5CBC5180AFF98001065AE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6510B91A19267B5700808055 /* COPYING */,
 				65D830E7193B197100DF3F8B /* menubar_icon.png */,
 				65D830E9193B608600DF3F8B /* menubar_icon_stopped.png */,
 				6595E54318D4ED7300E13880 /* main.m */,
