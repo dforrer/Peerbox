@@ -22,6 +22,6 @@
 @property (nonatomic, readonly, strong) NSMutableData * response;
 @property (nonatomic, readonly) BOOL isFinished;
 @property (nonatomic, readonly) BOOL hasFailed;
-@property (nonatomic,assign) id<DownloadSharesDelegate> delegate;
+@property (nonatomic, assign) id <DownloadSharesDelegate> delegate;
 
 @end

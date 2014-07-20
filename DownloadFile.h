@@ -30,7 +30,7 @@
 @property (nonatomic, readonly, strong) NSFileHandle * download;
 @property (nonatomic, readonly) BOOL isFinished;
 @property (nonatomic, readonly) BOOL hasFailed;
-@property (nonatomic,assign) id<DownloadFileDelegate> delegate;
+@property (nonatomic, assign) id <DownloadFileDelegate> delegate;
 @property (nonatomic, readonly, strong) NSString * sha1OfDownload;
 @property (nonatomic, readonly, strong) Configuration * config;
 @property (nonatomic, readonly) int statusCode;
