@@ -48,6 +48,16 @@
                ReferencedContainer = "container:Peerbox.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "65582BCD197C4CF400A6D87C"
+               BuildableName = "Peerbox Tests.xctest"
+               BlueprintName = "Peerbox Tests"
+               ReferencedContainer = "container:Peerbox.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

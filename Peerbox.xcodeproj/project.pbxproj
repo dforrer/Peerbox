@@ -8,20 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		650F1FDE1930942F00771814 /* RevisionMatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 650F1FDD1930942F00771814 /* RevisionMatchOperation.m */; };
-		6510B9091924DE1F00808055 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A7924718FBF32F00E8C878 /* XCTest.framework */; };
-		6510B90F1924DE1F00808055 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6510B90D1924DE1F00808055 /* InfoPlist.strings */; };
-		6510B91B19267B5700808055 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 6510B91A19267B5700808055 /* COPYING */; };
 		65197BA018E2A18200440C6C /* Peer.m in Sources */ = {isa = PBXBuildFile; fileRef = 65197B9F18E2A18200440C6C /* Peer.m */; };
 		6526C1CD18F5CF2800B72389 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6526C1CC18F5CF2800B72389 /* Constants.m */; };
 		652F704D184F71D3004E13C5 /* MyHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 652F704C184F71D3004E13C5 /* MyHTTPConnection.m */; };
 		65384C761930C0AB0070F0A9 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65384C751930C0AB0070F0A9 /* MainController.m */; };
-		65384C7719313B0A0070F0A9 /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E5CC00180B0043001065AE /* File.m */; };
-		65384C7819313B180070F0A9 /* File Unit Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A7923E18FBF2B000E8C878 /* File Unit Tests.m */; };
-		65384C7919313B540070F0A9 /* Unit Tests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6510B90C1924DE1F00808055 /* Unit Tests-Info.plist */; };
-		65384C7A19313B610070F0A9 /* FileHelper Unit Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F0EBED18FDAEAE0044A9AB /* FileHelper Unit Tests.m */; };
-		65384C7B19313E810070F0A9 /* FileHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943FA19269B4A00A58A83 /* FileHelper.m */; };
 		65384C811936F1400070F0A9 /* FileMatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 65384C801936F1400070F0A9 /* FileMatchOperation.m */; };
 		6547B5A6188D91B1005F3BD4 /* DownloadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 6547B5A5188D91B1005F3BD4 /* DownloadFile.m */; };
+		65582BCF197C4CF500A6D87C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A7924718FBF32F00E8C878 /* XCTest.framework */; };
+		65582BD5197C4CF500A6D87C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 65582BD3197C4CF500A6D87C /* InfoPlist.strings */; };
+		65582BDE197C4DF800A6D87C /* File Unit Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A7923E18FBF2B000E8C878 /* File Unit Tests.m */; };
+		65582BDF197C4DFB00A6D87C /* FileHelper Unit Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F0EBED18FDAEAE0044A9AB /* FileHelper Unit Tests.m */; };
 		6564985B18708DF800BBB3D1 /* ShareScanOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6564985A18708DF800BBB3D1 /* ShareScanOperation.m */; };
 		656AA41F188AB6BF007C6ED9 /* DownloadShares.m in Sources */ = {isa = PBXBuildFile; fileRef = 656AA41E188AB6BF007C6ED9 /* DownloadShares.m */; };
 		657657D918D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 657657D818D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m */; };
@@ -79,6 +75,7 @@
 		6595E54418D4ED7300E13880 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6595E54318D4ED7300E13880 /* main.m */; };
 		6595E54618D4EDC300E13880 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6595E54518D4EDC300E13880 /* MainMenu.xib */; };
 		65A1213419046F830082C251 /* Revision.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A1213319046F830082C251 /* Revision.m */; };
+		65AC4DDE197C486A003F08AD /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 65AC4DDD197C486A003F08AD /* COPYING */; };
 		65AD01E6186E0DBB00DC6A1B /* FileScanOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 65AD01E5186E0DBA00DC6A1B /* FileScanOperation.m */; };
 		65ADCAEA180B1B6B00CB05B5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E5CBC4180AFF98001065AE /* Foundation.framework */; };
 		65ADCAEC180B1B6C00CB05B5 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65ADCAEB180B1B6C00CB05B5 /* CoreFoundation.framework */; };
@@ -98,23 +95,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		6510B9131924DE1F00808055 /* PBXContainerItemProxy */ = {
+		65582BD9197C4CF500A6D87C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65E5CBB4180AFF98001065AE /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 65E5CBBB180AFF98001065AE;
-			remoteInfo = Peerbox_OBJC_OO_HTTP_V1;
+			remoteInfo = Peerbox;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		650F1FDC1930942F00771814 /* RevisionMatchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevisionMatchOperation.h; sourceTree = "<group>"; };
 		650F1FDD1930942F00771814 /* RevisionMatchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevisionMatchOperation.m; sourceTree = "<group>"; };
-		6510B9081924DE1F00808055 /* Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6510B90C1924DE1F00808055 /* Unit Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Unit Tests-Info.plist"; sourceTree = "<group>"; };
-		6510B90E1924DE1F00808055 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6510B9121924DE1F00808055 /* Unit Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Unit Tests-Prefix.pch"; sourceTree = "<group>"; };
-		6510B91A19267B5700808055 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = COPYING; path = Resources/COPYING; sourceTree = "<group>"; };
 		65197B9E18E2A18200440C6C /* Peer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peer.h; sourceTree = "<group>"; };
 		65197B9F18E2A18200440C6C /* Peer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Peer.m; sourceTree = "<group>"; };
 		6526C1CB18F5C9DF00B72389 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -127,6 +119,10 @@
 		65384C801936F1400070F0A9 /* FileMatchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileMatchOperation.m; sourceTree = "<group>"; };
 		6547B5A4188D91A5005F3BD4 /* DownloadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadFile.h; sourceTree = "<group>"; };
 		6547B5A5188D91B1005F3BD4 /* DownloadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadFile.m; sourceTree = "<group>"; };
+		65582BCE197C4CF400A6D87C /* Peerbox Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Peerbox Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		65582BD2197C4CF500A6D87C /* Peerbox Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Peerbox Tests-Info.plist"; sourceTree = "<group>"; };
+		65582BD4197C4CF500A6D87C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		65582BD8197C4CF500A6D87C /* Peerbox Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Peerbox Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6564985918708DF700BBB3D1 /* ShareScanOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareScanOperation.h; sourceTree = "<group>"; };
 		6564985A18708DF800BBB3D1 /* ShareScanOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareScanOperation.m; sourceTree = "<group>"; };
 		656AA41D188AB6BF007C6ED9 /* DownloadShares.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadShares.h; sourceTree = "<group>"; };
@@ -240,6 +236,7 @@
 		65A1213319046F830082C251 /* Revision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Revision.m; sourceTree = "<group>"; };
 		65A7923E18FBF2B000E8C878 /* File Unit Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "File Unit Tests.m"; sourceTree = "<group>"; };
 		65A7924718FBF32F00E8C878 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		65AC4DDD197C486A003F08AD /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = COPYING; path = Resources/COPYING; sourceTree = SOURCE_ROOT; };
 		65AD01E4186E0DBA00DC6A1B /* FileScanOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileScanOperation.h; sourceTree = "<group>"; };
 		65AD01E5186E0DBA00DC6A1B /* FileScanOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileScanOperation.m; sourceTree = "<group>"; };
 		65ADCAEB180B1B6C00CB05B5 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -267,15 +264,15 @@
 		65E61FFD18E49F83007A654B /* Share.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Share.m; sourceTree = "<group>"; };
 		65E98250184F9AA5000282C1 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };
 		65E98253184F9E75000282C1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		65F0EBED18FDAEAE0044A9AB /* FileHelper Unit Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FileHelper Unit Tests.m"; path = "Unit Tests/FileHelper Unit Tests.m"; sourceTree = SOURCE_ROOT; };
+		65F0EBED18FDAEAE0044A9AB /* FileHelper Unit Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FileHelper Unit Tests.m"; path = "Peerbox Tests/FileHelper Unit Tests.m"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		6510B9051924DE1F00808055 /* Frameworks */ = {
+		65582BCB197C4CF400A6D87C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6510B9091924DE1F00808055 /* XCTest.framework in Frameworks */,
+				65582BCF197C4CF500A6D87C /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,22 +293,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6510B90A1924DE1F00808055 /* Unit Tests */ = {
+		65582BD0197C4CF500A6D87C /* Peerbox Tests */ = {
 			isa = PBXGroup;
 			children = (
 				65A7923E18FBF2B000E8C878 /* File Unit Tests.m */,
 				65F0EBED18FDAEAE0044A9AB /* FileHelper Unit Tests.m */,
-				6510B90B1924DE1F00808055 /* Supporting Files */,
+				65582BD1197C4CF500A6D87C /* Supporting Files */,
 			);
-			path = "Unit Tests";
+			path = "Peerbox Tests";
 			sourceTree = "<group>";
 		};
-		6510B90B1924DE1F00808055 /* Supporting Files */ = {
+		65582BD1197C4CF500A6D87C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				6510B90C1924DE1F00808055 /* Unit Tests-Info.plist */,
-				6510B90D1924DE1F00808055 /* InfoPlist.strings */,
-				6510B9121924DE1F00808055 /* Unit Tests-Prefix.pch */,
+				65582BD2197C4CF500A6D87C /* Peerbox Tests-Info.plist */,
+				65582BD3197C4CF500A6D87C /* InfoPlist.strings */,
+				65582BD8197C4CF500A6D87C /* Peerbox Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -582,8 +579,8 @@
 				6564985A18708DF800BBB3D1 /* ShareScanOperation.m */,
 				658943F319269B4A00A58A83 /* Objective-C.Classes */,
 				6589441819269B4B00A58A83 /* Objective-C.Libraries */,
-				6510B90A1924DE1F00808055 /* Unit Tests */,
 				65E5CBC5180AFF98001065AE /* Resources */,
+				65582BD0197C4CF500A6D87C /* Peerbox Tests */,
 				65E5CBBE180AFF98001065AE /* Frameworks */,
 				65E5CBBD180AFF98001065AE /* Products */,
 			);
@@ -593,7 +590,7 @@
 			isa = PBXGroup;
 			children = (
 				65E5CBBC180AFF98001065AE /* Peerbox.app */,
-				6510B9081924DE1F00808055 /* Unit Tests.xctest */,
+				65582BCE197C4CF400A6D87C /* Peerbox Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -621,7 +618,7 @@
 		65E5CBC5180AFF98001065AE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				6510B91A19267B5700808055 /* COPYING */,
+				65AC4DDD197C486A003F08AD /* COPYING */,
 				65D830E7193B197100DF3F8B /* menubar_icon.png */,
 				65D830E9193B608600DF3F8B /* menubar_icon_stopped.png */,
 				6595E54318D4ED7300E13880 /* main.m */,
@@ -650,22 +647,22 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6510B9071924DE1F00808055 /* Unit Tests */ = {
+		65582BCD197C4CF400A6D87C /* Peerbox Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6510B9151924DE1F00808055 /* Build configuration list for PBXNativeTarget "Unit Tests" */;
+			buildConfigurationList = 65582BDB197C4CF500A6D87C /* Build configuration list for PBXNativeTarget "Peerbox Tests" */;
 			buildPhases = (
-				6510B9041924DE1F00808055 /* Sources */,
-				6510B9051924DE1F00808055 /* Frameworks */,
-				6510B9061924DE1F00808055 /* Resources */,
+				65582BCA197C4CF400A6D87C /* Sources */,
+				65582BCB197C4CF400A6D87C /* Frameworks */,
+				65582BCC197C4CF400A6D87C /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				6510B9141924DE1F00808055 /* PBXTargetDependency */,
+				65582BDA197C4CF500A6D87C /* PBXTargetDependency */,
 			);
-			name = "Unit Tests";
-			productName = "Unit Tests";
-			productReference = 6510B9081924DE1F00808055 /* Unit Tests.xctest */;
+			name = "Peerbox Tests";
+			productName = "Peerbox Tests";
+			productReference = 65582BCE197C4CF400A6D87C /* Peerbox Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		65E5CBBB180AFF98001065AE /* Peerbox */ = {
@@ -694,7 +691,7 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = putitinthebox.com;
 				TargetAttributes = {
-					6510B9071924DE1F00808055 = {
+					65582BCD197C4CF400A6D87C = {
 						TestTargetID = 65E5CBBB180AFF98001065AE;
 					};
 				};
@@ -714,18 +711,17 @@
 			projectRoot = "";
 			targets = (
 				65E5CBBB180AFF98001065AE /* Peerbox */,
-				6510B9071924DE1F00808055 /* Unit Tests */,
+				65582BCD197C4CF400A6D87C /* Peerbox Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		6510B9061924DE1F00808055 /* Resources */ = {
+		65582BCC197C4CF400A6D87C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6510B90F1924DE1F00808055 /* InfoPlist.strings in Resources */,
-				65384C7919313B540070F0A9 /* Unit Tests-Info.plist in Resources */,
+				65582BD5197C4CF500A6D87C /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -733,6 +729,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65AC4DDE197C486A003F08AD /* COPYING in Resources */,
 				658946CD19269B4C00A58A83 /* LICENSE in Resources */,
 				658945EB19269B4C00A58A83 /* LICENSE.txt in Resources */,
 				658946A919269B4C00A58A83 /* About.txt in Resources */,
@@ -741,7 +738,6 @@
 				658946A519269B4C00A58A83 /* About.txt in Resources */,
 				65D830E8193B197100DF3F8B /* menubar_icon.png in Resources */,
 				658946CF19269B4C00A58A83 /* README.markdown in Resources */,
-				6510B91B19267B5700808055 /* COPYING in Resources */,
 				658946B919269B4C00A58A83 /* README.txt in Resources */,
 				658945ED19269B4C00A58A83 /* README.markdown in Resources */,
 				6595E54618D4EDC300E13880 /* MainMenu.xib in Resources */,
@@ -751,14 +747,12 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		6510B9041924DE1F00808055 /* Sources */ = {
+		65582BCA197C4CF400A6D87C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65384C7B19313E810070F0A9 /* FileHelper.m in Sources */,
-				65384C7819313B180070F0A9 /* File Unit Tests.m in Sources */,
-				65384C7719313B0A0070F0A9 /* File.m in Sources */,
-				65384C7A19313B610070F0A9 /* FileHelper Unit Tests.m in Sources */,
+				65582BDE197C4DF800A6D87C /* File Unit Tests.m in Sources */,
+				65582BDF197C4DFB00A6D87C /* FileHelper Unit Tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -834,18 +828,18 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		6510B9141924DE1F00808055 /* PBXTargetDependency */ = {
+		65582BDA197C4CF500A6D87C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 65E5CBBB180AFF98001065AE /* Peerbox */;
-			targetProxy = 6510B9131924DE1F00808055 /* PBXContainerItemProxy */;
+			targetProxy = 65582BD9197C4CF500A6D87C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		6510B90D1924DE1F00808055 /* InfoPlist.strings */ = {
+		65582BD3197C4CF500A6D87C /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				6510B90E1924DE1F00808055 /* en */,
+				65582BD4197C4CF500A6D87C /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -853,48 +847,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		6510B9161924DE1F00808055 /* Debug */ = {
+		65582BDC197C4CF500A6D87C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Peerbox_OBJC_OO_HTTP_V1.app/Contents/MacOS/Peerbox_OBJC_OO_HTTP_V1";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Peerbox.app/Contents/MacOS/Peerbox";
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Unit Tests/Unit Tests-Prefix.pch";
+				GCC_PREFIX_HEADER = "Peerbox Tests/Peerbox Tests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = "Unit Tests/Unit Tests-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = "";
+				INFOPLIST_FILE = "Peerbox Tests/Peerbox Tests-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
-		6510B9171924DE1F00808055 /* Release */ = {
+		65582BDD197C4CF500A6D87C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Peerbox_OBJC_OO_HTTP_V1.app/Contents/MacOS/Peerbox_OBJC_OO_HTTP_V1";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Peerbox.app/Contents/MacOS/Peerbox";
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Unit Tests/Unit Tests-Prefix.pch";
+				GCC_PREFIX_HEADER = "Peerbox Tests/Peerbox Tests-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = "Unit Tests/Unit Tests-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = "";
+				INFOPLIST_FILE = "Peerbox Tests/Peerbox Tests-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -983,6 +975,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "Resources/Peerbox-Info.plist";
 				PRODUCT_NAME = Peerbox;
+				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1001,6 +994,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "Resources/Peerbox-Info.plist";
 				PRODUCT_NAME = Peerbox;
+				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1008,14 +1002,13 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6510B9151924DE1F00808055 /* Build configuration list for PBXNativeTarget "Unit Tests" */ = {
+		65582BDB197C4CF500A6D87C /* Build configuration list for PBXNativeTarget "Peerbox Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6510B9161924DE1F00808055 /* Debug */,
-				6510B9171924DE1F00808055 /* Release */,
+				65582BDC197C4CF500A6D87C /* Debug */,
+				65582BDD197C4CF500A6D87C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 		65E5CBB7180AFF98001065AE /* Build configuration list for PBXProject "Peerbox" */ = {
 			isa = XCConfigurationList;
