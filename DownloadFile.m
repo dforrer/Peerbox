@@ -187,7 +187,8 @@
 
 
 // OVERRIDE
-- (void) connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+- (void) connection:(NSURLConnection*)connection
+ didReceiveResponse:(NSURLResponse*)response
 {
 	if ([response respondsToSelector:@selector(statusCode)])
 	{
@@ -210,7 +211,8 @@
 
 
 // OVERRIDE
-- (void) connection:(NSURLConnection*)connection didReceiveData:(NSData*)dataIn
+- (void) connection:(NSURLConnection*)connection
+	didReceiveData:(NSData*)dataIn
 {
 	//DebugLog(@"didReceiveData");
 	//[decryptor addData:dataIn];
@@ -223,7 +225,8 @@
 
 
 // OVERRIDE
-- (void) connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+- (void) connection:(NSURLConnection*)connection
+   didFailWithError:(NSError*)error
 {
 	// Handle the error properly
 	//---------------------------

@@ -539,36 +539,19 @@
 		65E5CBB3180AFF98001065AE = {
 			isa = PBXGroup;
 			children = (
+				65FF7BFE19896A1100E2D9C3 /* Model */,
+				65FF7BFF198C278A00E2D9C3 /* Network Requests */,
+				65FF7C00198C285F00E2D9C3 /* HTTP Responses */,
 				6526C1CB18F5C9DF00B72389 /* Constants.h */,
 				6526C1CC18F5CF2800B72389 /* Constants.m */,
 				65E5CBF5180B0043001065AE /* AppDelegate.h */,
 				65E5CBF6180B0043001065AE /* AppDelegate.m */,
 				65384C741930C0AB0070F0A9 /* MainController.h */,
 				65384C751930C0AB0070F0A9 /* MainController.m */,
-				65E5CBFF180B0043001065AE /* File.h */,
-				65E5CC00180B0043001065AE /* File.m */,
-				65E61FFC18E49F83007A654B /* Share.h */,
-				65E61FFD18E49F83007A654B /* Share.m */,
-				65197B9E18E2A18200440C6C /* Peer.h */,
-				65197B9F18E2A18200440C6C /* Peer.m */,
-				65A1213219046F830082C251 /* Revision.h */,
-				65A1213319046F830082C251 /* Revision.m */,
 				65E5CC15180B0043001065AE /* Singleton.h */,
 				65E5CC16180B0043001065AE /* Singleton.m */,
 				658943EC192125EA00A58A83 /* Configuration.h */,
 				658943ED192125EA00A58A83 /* Configuration.m */,
-				656AA41D188AB6BF007C6ED9 /* DownloadShares.h */,
-				656AA41E188AB6BF007C6ED9 /* DownloadShares.m */,
-				65CDF14B188C4B8800F31C13 /* DownloadRevisions.h */,
-				65CDF14C188C4B9700F31C13 /* DownloadRevisions.m */,
-				6547B5A4188D91A5005F3BD4 /* DownloadFile.h */,
-				6547B5A5188D91B1005F3BD4 /* DownloadFile.m */,
-				65D830DC1938A88100DF3F8B /* PostNotification.h */,
-				65D830DD1938A88100DF3F8B /* PostNotification.m */,
-				652F704B184F71D3004E13C5 /* MyHTTPConnection.h */,
-				652F704C184F71D3004E13C5 /* MyHTTPConnection.m */,
-				657657D718D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.h */,
-				657657D818D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m */,
 				650F1FDC1930942F00771814 /* RevisionMatchOperation.h */,
 				650F1FDD1930942F00771814 /* RevisionMatchOperation.m */,
 				65384C7F1936F1400070F0A9 /* FileMatchOperation.h */,
@@ -642,6 +625,47 @@
 				65E5CC34180B0166001065AE /* libsqlite3.dylib */,
 			);
 			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		65FF7BFE19896A1100E2D9C3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				65E5CBFF180B0043001065AE /* File.h */,
+				65E5CC00180B0043001065AE /* File.m */,
+				65E61FFC18E49F83007A654B /* Share.h */,
+				65E61FFD18E49F83007A654B /* Share.m */,
+				65197B9E18E2A18200440C6C /* Peer.h */,
+				65197B9F18E2A18200440C6C /* Peer.m */,
+				65A1213219046F830082C251 /* Revision.h */,
+				65A1213319046F830082C251 /* Revision.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		65FF7BFF198C278A00E2D9C3 /* Network Requests */ = {
+			isa = PBXGroup;
+			children = (
+				656AA41D188AB6BF007C6ED9 /* DownloadShares.h */,
+				656AA41E188AB6BF007C6ED9 /* DownloadShares.m */,
+				65CDF14B188C4B8800F31C13 /* DownloadRevisions.h */,
+				65CDF14C188C4B9700F31C13 /* DownloadRevisions.m */,
+				6547B5A4188D91A5005F3BD4 /* DownloadFile.h */,
+				6547B5A5188D91B1005F3BD4 /* DownloadFile.m */,
+				65D830DC1938A88100DF3F8B /* PostNotification.h */,
+				65D830DD1938A88100DF3F8B /* PostNotification.m */,
+			);
+			name = "Network Requests";
+			sourceTree = "<group>";
+		};
+		65FF7C00198C285F00E2D9C3 /* HTTP Responses */ = {
+			isa = PBXGroup;
+			children = (
+				652F704B184F71D3004E13C5 /* MyHTTPConnection.h */,
+				652F704C184F71D3004E13C5 /* MyHTTPConnection.m */,
+				657657D718D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.h */,
+				657657D818D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m */,
+			);
+			name = "HTTP Responses";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1009,6 +1033,7 @@
 				65582BDD197C4CF500A6D87C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		65E5CBB7180AFF98001065AE /* Build configuration list for PBXProject "Peerbox" */ = {
 			isa = XCConfigurationList;

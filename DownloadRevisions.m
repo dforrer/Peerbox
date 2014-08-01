@@ -127,21 +127,24 @@
 
 
 // OVERRIDE
-- (void) connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+- (void) connection:(NSURLConnection*)connection
+ didReceiveResponse:(NSURLResponse*)response
 {
 	[self->response setLength:0];
 }
 
 
 // OVERRIDE
-- (void) connection: (NSURLConnection*)connection didReceiveData:(NSData*)dataIn
+- (void) connection:(NSURLConnection*)connection
+	didReceiveData:(NSData*)dataIn
 {
 	[response appendData:dataIn];
 }
 
 
 // OVERRIDE
-- (void) connection: (NSURLConnection*)connection didFailWithError:(NSError*)error
+- (void) connection:(NSURLConnection*)connection
+   didFailWithError:(NSError*)error
 {
 	// Handle the error properly
 	//---------------------------

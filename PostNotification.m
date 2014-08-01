@@ -25,7 +25,7 @@
 {
 	if ((self = [super init]))
 	{
-		request		= [[NSMutableURLRequest alloc] init];
+		request = [[NSMutableURLRequest alloc] init];
 		[request setHTTPMethod:@"POST"];
 		[request setCachePolicy:NSURLRequestUseProtocolCachePolicy];
 		[request setTimeoutInterval:30];
@@ -52,7 +52,8 @@
 
 
 // OVERRIDE
-- (void) connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+- (void) connection:(NSURLConnection*)connection
+ didReceiveResponse:(NSURLResponse*)response
 {
 	if ([response respondsToSelector:@selector(statusCode)])
 	{
@@ -67,7 +68,8 @@
 
 
 // OVERRIDE
-- (void) connection:(NSURLConnection*)connection didReceiveData:(NSData*)dataIn
+- (void) connection:(NSURLConnection*)connection
+	didReceiveData:(NSData*)dataIn
 {
 	// there should be no data returned
 	return;
@@ -75,7 +77,8 @@
 
 
 // OVERRIDE
-- (void) connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+- (void) connection:(NSURLConnection*)connection
+   didFailWithError:(NSError*)error
 {
 	// Handle the error properly
 	DebugLog(@"Error: %@", error);
