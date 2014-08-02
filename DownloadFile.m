@@ -29,7 +29,7 @@
 
 @implementation DownloadFile
 {
-	//RNDecryptor * decryptor;
+	RNDecryptor * decryptor;
 	NSURLConnection * connection;
 	CC_SHA1_CTX state;
 	
@@ -73,7 +73,7 @@
 		//	DebugLog(@"URL: %@", [request URL]);
 		
 		
-		/*	decryptor = [[RNDecryptor alloc] initWithPassword:[share secret] handler:
+		decryptor = [[RNDecryptor alloc] initWithPassword:[[[rev peer] share] secret] handler:
 		 ^(RNCryptor *cryptor, NSData *data) {
 		 [download writeData:data];
 		 if (cryptor.isFinished)
@@ -81,7 +81,6 @@
 		 [self decryptionDidFinish];
 		 }
 		 }];
-		 */
 		
 	}
 	return self;
@@ -97,8 +96,8 @@
 	NSString * relUrl = [[rev relURL] stringByRemovingPercentEncoding];
 	[postData setObject:relUrl forKey:@"relUrl"];
 	NSError * error;
-	NSData * rv = [[CJSONSerializer serializer] serializeObject: postData
-											    error: &error];
+	NSData * rv = [[CJSONSerializer serializer] serializeObject:postData
+											    error:&error];
 	if (error)
 	{
 		DebugLog(@"ERROR 1: %@", error);
@@ -133,6 +132,7 @@
 - (NSString*) prepareDownloadPath
 {
 	//return [NSString stringWithFormat:@"%@/%@-%@", [config downloadsDir], [[[rev peer] share] shareId], [FileHelper sha1OfNSString:[rev relURL]]];
+	
 	return [NSString stringWithFormat:@"%@/%@-%@", [config downloadsDir], [[[rev peer] share] shareId], [[NSUUID UUID] UUIDString]];
 }
 
@@ -169,7 +169,7 @@
 	[download closeFile];
 }
 
-/*
+
  - (void) decryptionDidFinish
  {
  if (decryptor.error)
@@ -184,7 +184,6 @@
  }
  decryptor = nil;
  }
- */
 
 
 // OVERRIDE
@@ -216,7 +215,7 @@
 	didReceiveData:(NSData*)dataIn
 {
 	//DebugLog(@"didReceiveData");
-	//[decryptor addData:dataIn];
+	[decryptor addData:dataIn];
 	
 	[download writeData:dataIn];
 	
@@ -260,7 +259,7 @@
 	}
 	sha1OfDownload = output;
 	
-	//[decryptor finish];
+	[decryptor finish];
 	
 	[download closeFile];
 	
