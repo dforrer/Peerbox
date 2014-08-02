@@ -105,12 +105,10 @@
 		{
 			DebugLog(@"ERROR 10: CJSON-Serializer failed: %@", error);
 		}
-		/*
-		jsonRequest = [RNEncryptor encryptData: jsonRequest
-							 withSettings: kRNCryptorAES256Settings
-								password: [[peer share] secret]
-								   error: &error];
-		*/
+		json = [RNEncryptor encryptData:json
+					    withSettings:kRNCryptorAES256Settings
+						   password:[[peer share] secret]
+							 error:&error];
 		[request setHTTPBody:json];
 	}
 	return self;
@@ -158,29 +156,24 @@
 - (void) connectionDidFinishLoading:(NSURLConnection*)connection
 {
 	isFinished = TRUE;
-	
-	/*
 
 	// Decrypt Data
 	//--------------
-	
-	NSData * respDecrypted = [RNDecryptor decryptData:response
-								  withPassword:[share secret]
-									    error:&error];
+	NSError * error;
+	NSData * responseData = [RNDecryptor decryptData:response
+								 withPassword:[[peer share] secret]
+									   error:&error];
 	if (error)
 	{
 		DebugLog(@"During decryption an error occurred!");
 		return;
 	}
- 
-	*/
-	
 
 //	DebugLog(@"Size before inflation: %lu",(unsigned long)[response length]);
 	
 	// Decompress response
 	//---------------------
-	response = [NSMutableData dataWithData:[response gzipInflate]];
+	response = [NSMutableData dataWithData:[responseData gzipInflate]];
 
 //	DebugLog(@"Size after inflation: %lu",(unsigned long)[response length]);
 	

@@ -167,8 +167,8 @@
 
 	NSMutableArray * pathComponents = [NSMutableArray arrayWithArray:[path pathComponents]];
 	
-	// POST-REQUEST to URI /shares/<shareId>/revisions
-	//------------------------------------------------
+	// UNUSED: POST-REQUEST to URI /shares/<shareId>/revisions
+	//---------------------------------------------------------
 	
 	if ([method isEqualToString:@"POST"]
 	    && [pathComponents count] == 4
@@ -192,15 +192,17 @@
 		// Read and decrypt post-data
 		//---------------------------
 		NSData * postData = [request body];
-	/*	
+		NSError * error;
+		
 		if (postData)
 		{
-			NSError *error;
-			postData = [RNDecryptor decryptData:postData withPassword:[requestForShare secret] error:&error];
+			postData = [RNDecryptor decryptData:postData
+							   withPassword:[requestForShare secret]
+									error:&error];
 		}
-	*/
-		NSError * error;
-		NSDictionary * postDict = [NSDictionary dictionaryWithJSONData:postData error:&error];
+
+		NSDictionary * postDict = [NSDictionary dictionaryWithJSONData:postData
+													  error:&error];
 		if (error)
 		{
 			return [[HTTPErrorResponse alloc] initWithErrorCode:400];
@@ -232,18 +234,20 @@
 		// Compress the response with GZIP
 		//--------------------------------
 		response = [response gzipDeflate];
-		
-	/*
+			
 		// Encrypt response with share-secret
 		//------------------------------------
-		response = [RNEncryptor encryptData:response withSettings:kRNCryptorAES256Settings password:[requestForShare secret] error:&error];
-	*/
+		response = [RNEncryptor encryptData:response
+						   withSettings:kRNCryptorAES256Settings
+							  password:[requestForShare secret]
+								error:&error];
+
 		return [[HTTPDataResponse alloc] initWithData:response];
 	 
 	 }
 	
 	// POST-REQUEST to URI /shares/<shareId>/revisionsDict
-	//----------------------------------------------------
+	//-----------------------------------------------------
 	
 	if ([method isEqualToString:@"POST"]
 	    && [pathComponents count] == 4
@@ -257,7 +261,7 @@
 		
 		
 		// Handle error for non-existing share
-		//------------------------------------
+		//-------------------------------------
 		if (requestForShare == nil)
 		{
 			DebugLog(@"ERROR 4: 404");
@@ -273,26 +277,27 @@
 			DebugLog(@"ERROR 8: postData is nil");
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
 		}
-/*
+
+		NSError * error;
+
 		if (postData)
 		{
-			NSError *error;
-			postData = [RNDecryptor decryptData:postData withPassword:[requestForShare secret] error:&error];
-			if (error)
-			{
-				DebugLog(@"ERROR 6");
-			}
+			postData = [RNDecryptor decryptData:postData
+							   withPassword:[requestForShare secret]
+									error:&error];
 		}
-*/
-		NSError * error;
-		NSDictionary * postDict = [NSDictionary dictionaryWithJSONData:postData error:&error];
+		NSDictionary * postDict = [NSDictionary dictionaryWithJSONData:postData
+													  error:&error];
 		if (error)
 		{
 			DebugLog(@"ERROR 9: %@", error);
 			return [[HTTPErrorResponse alloc] initWithErrorCode:400];
 		}
 		NSNumber * fromRev = [postDict objectForKey:@"fromRev"];
-		
+		if (fromRev == nil)
+		{
+			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
+		}
 		
 		// Prepare response
 		//-----------------
@@ -325,14 +330,14 @@
 		// Compress the response with GZIP
 		//---------------------------------
 		response = [response gzipDeflate];
-		//DebugLog(@"response: %@", response);
 		
-	/*
 		// Encrypt response with share-secret
 		//-----------------------------------
-		response = [RNEncryptor encryptData: response withSettings: kRNCryptorAES256Settings password: [requestForShare secret] error: &error];
+		response = [RNEncryptor encryptData:response
+						   withSettings:kRNCryptorAES256Settings
+							  password:[requestForShare secret]
+								error:&error];
 		
-	*/
 		return [[HTTPDataResponse alloc] initWithData:response];
 	}
 
