@@ -29,7 +29,7 @@
 
 @implementation DownloadFile
 {
-	RNDecryptor * decryptor;
+	//RNDecryptor * decryptor;
 	NSURLConnection * connection;
 	CC_SHA1_CTX state;
 	
@@ -70,10 +70,10 @@
 		[request setTimeoutInterval:30];
 		[request setHTTPBody: [self preparePostData]];
 		[request setURL: [self urlFromNetService: netService]];
-	//	DebugLog(@"URL: %@", [request URL]);
-
-
-		decryptor = [[RNDecryptor alloc] initWithPassword:[[[rev peer] share] secret] handler:
+		//	DebugLog(@"URL: %@", [request URL]);
+		
+		
+		/*	decryptor = [[RNDecryptor alloc] initWithPassword:[share secret] handler:
 		 ^(RNCryptor *cryptor, NSData *data) {
 		 [download writeData:data];
 		 if (cryptor.isFinished)
@@ -81,7 +81,8 @@
 		 [self decryptionDidFinish];
 		 }
 		 }];
-	
+		 */
+		
 	}
 	return self;
 }
@@ -97,20 +98,21 @@
 	[postData setObject:relUrl forKey:@"relUrl"];
 	NSError * error;
 	NSData * rv = [[CJSONSerializer serializer] serializeObject: postData
-												error: &error];
+											    error: &error];
 	if (error)
 	{
 		DebugLog(@"ERROR 1: %@", error);
 	}
 	error = nil;
 	
-
-	// V2: Encrypt POST-Data
-	//-----------------------
-	rv = [RNEncryptor encryptData: rv
-				  withSettings: kRNCryptorAES256Settings
-					 password: [[[rev peer] share] secret]
-					    error: &error];
+	
+	 // V2: Encrypt POST-Data
+	 //-----------------------
+	 
+	 rv = [RNEncryptor encryptData:rv
+				   withSettings:kRNCryptorAES256Settings
+					  password:[[[rev peer] share] secret]
+						error:&error];
 	
 	if (error)
 	{
@@ -125,7 +127,7 @@
  * --------------------------------------
  * <downloadsDir>/<shareId>-UUID
  *
- * /Users/Docs123/Peerboxes-CED596F1-53DC-4B6C-AD98-3D3E35BF9313
+ * /Users/Docs123/Peerbox-CED596F1-53DC-4B6C-AD98-3D3E35BF9313
  *
  */
 - (NSString*) prepareDownloadPath
@@ -167,22 +169,22 @@
 	[download closeFile];
 }
 
-
-- (void) decryptionDidFinish
-{
-	if (decryptor.error)
-	{
-		// An error occurred. You cannot trust download at this point
-		[download closeFile];
-	}
-	else
-	{
-		// decryption complete
-		[download closeFile];
-	}
-	decryptor = nil;
-}
-
+/*
+ - (void) decryptionDidFinish
+ {
+ if (decryptor.error)
+ {
+ // An error occurred. You cannot trust download at this point
+ [download closeFile];
+ }
+ else
+ {
+ // decryption complete
+ [download closeFile];
+ }
+ decryptor = nil;
+ }
+ */
 
 
 // OVERRIDE
@@ -257,11 +259,11 @@
 		[output appendFormat:@"%02x", digest[i]];
 	}
 	sha1OfDownload = output;
-
-	[decryptor finish];
-
+	
+	//[decryptor finish];
+	
 	[download closeFile];
-
+	
 	// Notify Revision-Instance that the download has finished
 	//---------------------------------------------------------
 	[delegate downloadFileHasFinished:self];
