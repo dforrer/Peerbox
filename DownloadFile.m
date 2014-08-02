@@ -151,6 +151,7 @@
 
 - (void) start
 {
+	DebugLog(@"DL start: %@", downloadPath);
 	// Starting the async request
 	//----------------------------
 	connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
