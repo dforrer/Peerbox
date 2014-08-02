@@ -74,14 +74,13 @@
 		
 		
 		decryptor = [[RNDecryptor alloc] initWithPassword:[[[rev peer] share] secret] handler:
-		 ^(RNCryptor *cryptor, NSData *data) {
-		 [download writeData:data];
-		 if (cryptor.isFinished)
-		 {
-		 [self decryptionDidFinish];
-		 }
-		 }];
-		
+				   ^(RNCryptor *cryptor, NSData *data) {
+					   [download writeData:data];
+					   if (cryptor.isFinished)
+					   {
+						   [self decryptionDidFinish];
+					   }
+				   }];
 	}
 	return self;
 }
@@ -105,13 +104,13 @@
 	error = nil;
 	
 	
-	 // V2: Encrypt POST-Data
-	 //-----------------------
-	 
-	 rv = [RNEncryptor encryptData:rv
-				   withSettings:kRNCryptorAES256Settings
-					  password:[[[rev peer] share] secret]
-						error:&error];
+	// V2: Encrypt POST-Data
+	//-----------------------
+	
+	rv = [RNEncryptor encryptData:rv
+				  withSettings:kRNCryptorAES256Settings
+					 password:[[[rev peer] share] secret]
+					    error:&error];
 	
 	if (error)
 	{
@@ -170,20 +169,20 @@
 }
 
 
- - (void) decryptionDidFinish
- {
- if (decryptor.error)
- {
- // An error occurred. You cannot trust download at this point
- [download closeFile];
- }
- else
- {
- // decryption complete
- [download closeFile];
- }
- decryptor = nil;
- }
+- (void) decryptionDidFinish
+{
+	if (decryptor.error)
+	{
+		// An error occurred. You cannot trust download at this point
+		[download closeFile];
+	}
+	else
+	{
+		// decryption complete
+		[download closeFile];
+	}
+	decryptor = nil;
+}
 
 
 // OVERRIDE
@@ -217,7 +216,7 @@
 	//DebugLog(@"didReceiveData");
 	[decryptor addData:dataIn];
 	
-	[download writeData:dataIn];
+	//[download writeData:dataIn];
 	
 	CC_SHA1_Update(&state, [dataIn bytes], (int)[dataIn length]);
 }
@@ -260,9 +259,7 @@
 	sha1OfDownload = output;
 	
 	[decryptor finish];
-	
-	[download closeFile];
-	
+		
 	// Notify Revision-Instance that the download has finished
 	//---------------------------------------------------------
 	[delegate downloadFileHasFinished:self];
