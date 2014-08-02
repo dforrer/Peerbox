@@ -65,7 +65,6 @@
 	[statusItem setImage:menuImage];
 	NSMenu * mymenu = [[NSMenu alloc] init];
 	[statusItem setMenu:mymenu];
-	[self updateStatusBarMenu];
 }
 
 - (void) updateStatusBarMenu
@@ -92,18 +91,21 @@
 	[mymenu addItem: default_quit];
 	
 	// NSMenu needed to group the NSMenuItems
-	NSMenu * peersSubmenu = [[NSMenu alloc] init];
 	for (id key  in [[mc bonjourSearcher] resolvedServices])
 	{
 		NSNetService * ns = [[[mc bonjourSearcher] resolvedServices] objectForKey:key];
 		NSMenuItem * peer = [[NSMenuItem alloc ] initWithTitle:[ns hostName] action:nil keyEquivalent:@""];
-		[peersSubmenu insertItem:peer atIndex:0];
+		NSMenu * subItems = [[NSMenu alloc] init];
+		NSMenuItem * peerID = [[NSMenuItem alloc] init];
+		[subItems addItem:peerID];
+		[peerID setTitle:[ns name]];
+		[peer setSubmenu:subItems];
+		
+		[mymenu insertItem:peer atIndex:0];
 	}
-	NSMenuItem * peersSubmenuItem = [[NSMenuItem alloc] init];
-	[peersSubmenuItem setTitle:@"Peers"];
-	[peersSubmenuItem setSubmenu:peersSubmenu];
-	[mymenu insertItem:peersSubmenuItem atIndex:0];
-
+	NSMenuItem * peersTitle = [[NSMenuItem alloc] init];
+	[peersTitle setTitle:@"Peers available:"];
+	[mymenu insertItem:peersTitle atIndex:0];
 	[mymenu insertItem:[NSMenuItem separatorItem] atIndex:0];
 	
 	// loop through myShares
@@ -127,7 +129,7 @@
 	}
 
 	NSMenuItem  * shares_title = [[NSMenuItem alloc ] init];
-	[shares_title setTitle:@"Folders being synced:"];
+	[shares_title setTitle:@"Shares being synced:"];
 	[mymenu insertItem:shares_title atIndex:0];
 }
 
