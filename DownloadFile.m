@@ -133,7 +133,8 @@
  */
 - (NSString*) prepareDownloadPath
 {
-	return [NSString stringWithFormat:@"%@/%@-%@", [config downloadsDir], [[[rev peer] share] shareId], [FileHelper sha1OfNSString:[rev relURL]]];
+	//return [NSString stringWithFormat:@"%@/%@-%@", [config downloadsDir], [[[rev peer] share] shareId], [FileHelper sha1OfNSString:[rev relURL]]];
+	return [NSString stringWithFormat:@"%@/%@-%@", [config downloadsDir], [[[rev peer] share] shareId], [[NSUUID UUID] UUIDString]];
 }
 
 
