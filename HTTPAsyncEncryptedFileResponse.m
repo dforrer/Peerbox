@@ -101,7 +101,8 @@
 - (void) asyncRead
 {
 	data = [[NSMutableData alloc] initWithLength:READ_CHUNKSIZE];
-	NSInteger bytesRead = [readStream read:[data mutableBytes] maxLength:READ_CHUNKSIZE];
+	NSInteger bytesRead = [readStream read:[data mutableBytes]
+						    maxLength:READ_CHUNKSIZE];
 	if (bytesRead < 0)
 	{
 		// Throw an error
@@ -161,7 +162,7 @@
 - (BOOL) isDone
 {
 	BOOL result = finishedReading;
-	DebugLog(@"isDone - %@", (result ? @"YES" : @"NO"));
+	// DebugLog(@"isDone - %@", (result ? @"YES" : @"NO"));
 	return result;
 }
 
@@ -191,7 +192,7 @@
 
 - (void) dealloc
 {
-	DebugLog(@"dealloc");
+//	DebugLog(@"dealloc");
 }
 
 
