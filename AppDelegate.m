@@ -65,6 +65,7 @@
 	[statusItem setImage:menuImage];
 	NSMenu * mymenu = [[NSMenu alloc] init];
 	[statusItem setMenu:mymenu];
+	[self updateStatusBarMenu];
 }
 
 - (void) updateStatusBarMenu

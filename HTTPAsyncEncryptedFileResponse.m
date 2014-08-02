@@ -48,7 +48,6 @@
 		 andPassword: (NSString*)pw
 	    forConnection: (HTTPConnection *)parent
 {
-
 	// Check Input Values
 	//-------------------
 	if (fpath == nil || pw == nil || parent == nil)
@@ -89,9 +88,9 @@
 				//DebugLog(@"Encryption finished");
 			}
 		};
-		encryptor	= [[RNEncryptor alloc] initWithSettings: kRNCryptorAES256Settings
-										 password: password
-										  handler: handlerBlock];
+		encryptor	= [[RNEncryptor alloc] initWithSettings:kRNCryptorAES256Settings
+										 password:password
+										  handler:handlerBlock];
 		// We don't bother opening the file here.
 	}
 	return self;
