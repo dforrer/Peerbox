@@ -71,11 +71,13 @@
 		else
 		{
 			DebugLog(@"downloadPath = %@, [fullURL path] = %@", [d downloadPath], [fullURL path]);
+			return;
 		}
 	}
 	else
 	{
 		DebugLog(@"Can't read file at %@", [d downloadPath]);
+		return;
 	}
 	
 	[FileHelper matchExtAttributes:[rev extAttributes] onURL:fullURL];
