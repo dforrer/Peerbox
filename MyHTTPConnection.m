@@ -364,18 +364,19 @@
 		// Read and decrypt post-data
 		//---------------------------
 		NSData *postData = [request body];
-	/*
+		NSError * error;
+
 		if (postData)
 		{
-			NSError *error;
-			postData = [RNDecryptor decryptData:postData withPassword:[requestForShare secret] error:&error];
+			postData = [RNDecryptor decryptData:postData
+							   withPassword:[requestForShare secret]
+									error:&error];
 		}
-	*/
-		NSError * error;
+
 		NSDictionary * postDict = [NSDictionary dictionaryWithJSONData:postData error:&error];
 		if (error)
 		{
-			DebugLog(@"ERROR: 403 - Postdata is invalid");
+			DebugLog(@"ERROR: 400 - Postdata is invalid");
 			return [[HTTPErrorResponse alloc] initWithErrorCode:400];
 		}
 		NSString * relUrl = [postDict objectForKey:@"relUrl"];
