@@ -29,7 +29,7 @@
 
 @implementation DownloadFile
 {
-	//RNDecryptor * decryptor;
+	RNDecryptor * decryptor;
 	NSURLConnection * connection;
 	CC_SHA1_CTX state;
 	
@@ -73,7 +73,7 @@
 	//	DebugLog(@"URL: %@", [request URL]);
 
 
-	/*	decryptor = [[RNDecryptor alloc] initWithPassword:[share secret] handler:
+		decryptor = [[RNDecryptor alloc] initWithPassword:[[[rev peer] share] secret] handler:
 		 ^(RNCryptor *cryptor, NSData *data) {
 		 [download writeData:data];
 		 if (cryptor.isFinished)
@@ -81,7 +81,6 @@
 		 [self decryptionDidFinish];
 		 }
 		 }];
-	*/
 	
 	}
 	return self;
@@ -105,15 +104,13 @@
 	}
 	error = nil;
 	
-	/*
+
 	// V2: Encrypt POST-Data
 	//-----------------------
-	
 	rv = [RNEncryptor encryptData: rv
 				  withSettings: kRNCryptorAES256Settings
-					 password: [share secret]
+					 password: [[[rev peer] share] secret]
 					    error: &error];
-	*/
 	
 	if (error)
 	{
@@ -126,9 +123,9 @@
 /*
  * Returns the download-path in the form:
  * --------------------------------------
- * <downloadsDir>/<shareId>-SHA1(<relUrl>)
+ * <downloadsDir>/<shareId>-UUID
  *
- * /Users/Docs123/Peerboxes-aa224814213ad299b8bd0258e77bade429ac40d0
+ * /Users/Docs123/Peerboxes-CED596F1-53DC-4B6C-AD98-3D3E35BF9313
  *
  */
 - (NSString*) prepareDownloadPath
@@ -170,7 +167,7 @@
 	[download closeFile];
 }
 
-/*
+
 - (void) decryptionDidFinish
 {
 	if (decryptor.error)
@@ -185,7 +182,7 @@
 	}
 	decryptor = nil;
 }
-*/
+
 
 
 // OVERRIDE
@@ -261,7 +258,7 @@
 	}
 	sha1OfDownload = output;
 
-	//[decryptor finish];
+	[decryptor finish];
 
 	[download closeFile];
 

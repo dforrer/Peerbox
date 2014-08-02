@@ -386,12 +386,13 @@
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
 		}
 		//DebugLog(@"url: %@", rv);
-	/*
-		return [[HTTPAsyncEncryptedFileResponse alloc] initWithFilePath:[rv path]
+	
+		return [[HTTPAsyncEncryptedFileResponse alloc] initWithFilePath:[localURL path]
 												  andPassword:[requestForShare secret]
 												forConnection:self];
-	 */
+		/*
 		return [[HTTPAsyncFileResponse alloc] initWithFilePath:[localURL path] forConnection:self];
+		 */
 	}
 		
 	return [[HTTPErrorResponse alloc] initWithErrorCode:400];
