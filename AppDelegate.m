@@ -44,7 +44,16 @@
 		mc = [[Singleton data] mainController];
 		
 		[self createStatusBarGUI];
+		
+		// Start Listening for Changes to the StatusBar
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appShouldRefreshStatusBar:) name:@"appShouldRefreshStatusBar" object:nil];
+		
 	}
+}
+
+- (void) appShouldRefreshStatusBar:(NSNotification*)aNotification
+{
+	[self updateStatusBarMenu];
 }
 
 - (void) createStatusBarGUI
@@ -81,6 +90,21 @@
 	[mymenu addItem: [NSMenuItem separatorItem]];
 	[mymenu addItem: default_edit];
 	[mymenu addItem: default_quit];
+	
+	// NSMenu needed to group the NSMenuItems
+	NSMenu * peersSubmenu = [[NSMenu alloc] init];
+	for (id key  in [[mc bonjourSearcher] resolvedServices])
+	{
+		NSNetService * ns = [[[mc bonjourSearcher] resolvedServices] objectForKey:key];
+		NSMenuItem * peer = [[NSMenuItem alloc ] initWithTitle:[ns hostName] action:nil keyEquivalent:@""];
+		[peersSubmenu insertItem:peer atIndex:0];
+	}
+	NSMenuItem * peersSubmenuItem = [[NSMenuItem alloc] init];
+	[peersSubmenuItem setTitle:@"Peers"];
+	[peersSubmenuItem setSubmenu:peersSubmenu];
+	[mymenu insertItem:peersSubmenuItem atIndex:0];
+
+	[mymenu insertItem:[NSMenuItem separatorItem] atIndex:0];
 	
 	// loop through myShares
 	for (id key  in [mc myShares])

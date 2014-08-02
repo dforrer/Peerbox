@@ -415,6 +415,9 @@
 {
 	// Notify peers
 	[self notifyPeers];
+	
+	// Update StatusBar
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"appShouldRefreshStatusBar" object:nil];
 }
 
 
@@ -425,7 +428,8 @@
 
 - (void) bonjourSearcherServiceRemoved:(NSNetService*)n
 {
-	// do nothing
+	// Update StatusBar
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"appShouldRefreshStatusBar" object:nil];
 }
 
 
