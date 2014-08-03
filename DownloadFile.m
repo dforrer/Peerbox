@@ -75,7 +75,10 @@
 		
 		decryptor = [[RNDecryptor alloc] initWithPassword:[[[rev peer] share] secret] handler:
 				   ^(RNCryptor *cryptor, NSData *data) {
+					   
 					   [download writeData:data];
+					   CC_SHA1_Update(&state, [data bytes], (int)[data length]);
+					   
 					   if (cryptor.isFinished)
 					   {
 						   [self decryptionDidFinish];
@@ -106,7 +109,6 @@
 	
 	// V2: Encrypt POST-Data
 	//-----------------------
-	
 	rv = [RNEncryptor encryptData:rv
 				  withSettings:kRNCryptorAES256Settings
 					 password:[[[rev peer] share] secret]
@@ -218,7 +220,7 @@
 	
 	//[download writeData:dataIn];
 	
-	CC_SHA1_Update(&state, [dataIn bytes], (int)[dataIn length]);
+	//CC_SHA1_Update(&state, [dataIn bytes], (int)[dataIn length]);
 }
 
 
@@ -249,9 +251,9 @@
 	
 	// Finish up the sha1
 	//--------------------
-	uint8_t digest[ 20 ];
+	uint8_t digest[20];
 	CC_SHA1_Final( digest , &state );
-	NSMutableString *output = [NSMutableString stringWithCapacity: CC_SHA1_DIGEST_LENGTH * 2];
+	NSMutableString * output = [NSMutableString stringWithCapacity: CC_SHA1_DIGEST_LENGTH * 2];
 	for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++)
 	{
 		[output appendFormat:@"%02x", digest[i]];
@@ -260,9 +262,17 @@
 	
 	[decryptor finish];
 		
-	// Notify Revision-Instance that the download has finished
-	//---------------------------------------------------------
-	[delegate downloadFileHasFinished:self];
+	if ([sha1OfDownload isEqualToString:[rev getLastVersionHash]])
+	{
+		// Notify Revision-Instance that the download has finished
+		//---------------------------------------------------------
+		[delegate downloadFileHasFinished:self];
+	}
+	else
+	{
+		exit(-1);
+		[delegate downloadFileHasFailed:self];
+	}
 	
 }
 
