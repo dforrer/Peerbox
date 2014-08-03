@@ -78,7 +78,7 @@
 		decryptor = [[RNDecryptor alloc] initWithPassword:[[[rev peer] share] secret] handler:
 				   ^(RNCryptor *cryptor, NSData *data) {
 					   
-					   DebugLog(@"DownloadFile: 5. Decryptor-Handler");
+					   //DebugLog(@"DownloadFile: 5. Decryptor-Handler");
 					   [download writeData:data];
 					   
 					   // Update the download-hash
