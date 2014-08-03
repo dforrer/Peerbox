@@ -32,7 +32,7 @@
 	RNDecryptor * decryptor;
 	NSURLConnection * connection;
 	CC_SHA1_CTX state;
-	
+	uint64_t downloadSize;
 }
 
 
@@ -65,6 +65,7 @@
 		sha1OfDownload	= nil;
 		download		= [FileHelper fileForWritingAtPath:downloadPath];
 		request		= [[NSMutableURLRequest alloc] init];
+		downloadSize   = 0;
 		[request setHTTPMethod:@"POST"];
 		[request setCachePolicy:NSURLRequestUseProtocolCachePolicy];
 		[request setTimeoutInterval:30];
@@ -77,8 +78,17 @@
 				   ^(RNCryptor *cryptor, NSData *data) {
 					   
 					   [download writeData:data];
-					   CC_SHA1_Update(&state, [data bytes], (int)[data length]);
 					   
+					   // Update the download-hash
+					   //--------------------------
+					   if([[rev fileSize] longLongValue] <= (downloadSize + [data length]))
+					   {
+						   CC_SHA1_Update(&state, [data bytes], (int)[data length]);
+					   }
+					   else
+					   {
+						   CC_SHA1_Update(&state, [data bytes], (int)([[rev fileSize] longLongValue] - downloadSize));
+					   }
 					   if (cryptor.isFinished)
 					   {
 						   [self decryptionDidFinish];
@@ -177,6 +187,7 @@
 	{
 		// An error occurred. You cannot trust download at this point
 		[download closeFile];
+		[delegate downloadFileHasFailed:self];
 	}
 	else
 	{
@@ -252,8 +263,8 @@
 	// Finish up the sha1
 	//--------------------
 	uint8_t digest[20];
-	CC_SHA1_Final( digest , &state );
-	NSMutableString * output = [NSMutableString stringWithCapacity: CC_SHA1_DIGEST_LENGTH * 2];
+	CC_SHA1_Final(digest, &state);
+	NSMutableString * output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
 	for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++)
 	{
 		[output appendFormat:@"%02x", digest[i]];
@@ -270,7 +281,6 @@
 	}
 	else
 	{
-		exit(-1);
 		[delegate downloadFileHasFailed:self];
 	}
 	
