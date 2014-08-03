@@ -92,7 +92,6 @@
 		65E61FFE18E49F83007A654B /* Share.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E61FFD18E49F83007A654B /* Share.m */; };
 		65E98251184F9AA5000282C1 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E98250184F9AA5000282C1 /* libcrypto.dylib */; };
 		65E98254184F9E75000282C1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E98253184F9E75000282C1 /* Security.framework */; };
-		65FF7C03198DF62600E2D9C3 /* HTTPAsyncFileResponseEncrypted.m in Sources */ = {isa = PBXBuildFile; fileRef = 65FF7C02198DF62600E2D9C3 /* HTTPAsyncFileResponseEncrypted.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -266,8 +265,6 @@
 		65E98250184F9AA5000282C1 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };
 		65E98253184F9E75000282C1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		65F0EBED18FDAEAE0044A9AB /* FileHelper Unit Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FileHelper Unit Tests.m"; path = "Peerbox Tests/FileHelper Unit Tests.m"; sourceTree = SOURCE_ROOT; };
-		65FF7C01198DF60800E2D9C3 /* HTTPAsyncFileResponseEncrypted.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPAsyncFileResponseEncrypted.h; sourceTree = SOURCE_ROOT; };
-		65FF7C02198DF62600E2D9C3 /* HTTPAsyncFileResponseEncrypted.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPAsyncFileResponseEncrypted.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -667,8 +664,6 @@
 				652F704C184F71D3004E13C5 /* MyHTTPConnection.m */,
 				657657D718D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.h */,
 				657657D818D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m */,
-				65FF7C01198DF60800E2D9C3 /* HTTPAsyncFileResponseEncrypted.h */,
-				65FF7C02198DF62600E2D9C3 /* HTTPAsyncFileResponseEncrypted.m */,
 			);
 			name = "HTTP Responses";
 			sourceTree = "<group>";
@@ -820,7 +815,6 @@
 				658945BB19269B4C00A58A83 /* NSString+Equality.m in Sources */,
 				658946C319269B4C00A58A83 /* RNOpenSSLCryptor.m in Sources */,
 				658945C519269B4C00A58A83 /* DDRange.m in Sources */,
-				65FF7C03198DF62600E2D9C3 /* HTTPAsyncFileResponseEncrypted.m in Sources */,
 				658945C719269B4C00A58A83 /* HTTPAuthenticationRequest.m in Sources */,
 				6564985B18708DF800BBB3D1 /* ShareScanOperation.m in Sources */,
 				658945D719269B4C00A58A83 /* HTTPDataResponse.m in Sources */,

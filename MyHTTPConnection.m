@@ -12,7 +12,7 @@
 #import "HTTPErrorResponse.h"
 #import "HTTPFileResponse.h"
 #import "HTTPAsyncFileResponse.h"
-#import "HTTPAsyncFileResponseEncrypted.h"
+#import "HTTPAsyncEncryptedFileResponse.h"
 #import "Singleton.h"
 #import "Share.h"
 #import "RNDecryptor.h"
@@ -388,10 +388,9 @@
 		}
 		//DebugLog(@"url: %@", rv);
 	
-		return [[HTTPAsyncFileResponseEncrypted alloc] initWithFilePath:[localURL path]
-			   
-												forConnection:self
-												 withPassword:[requestForShare secret]];
+		return [[HTTPAsyncEncryptedFileResponse alloc] initWithFilePath:[localURL path]
+												  andPassword:[requestForShare secret]
+												forConnection:self];
 		/*
 		return [[HTTPAsyncFileResponse alloc] initWithFilePath:[localURL path] forConnection:self];
 		 */
