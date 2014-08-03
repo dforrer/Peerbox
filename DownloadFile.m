@@ -77,8 +77,8 @@
 		
 		decryptor = [[RNDecryptor alloc] initWithPassword:[[[rev peer] share] secret] handler:
 				   ^(RNCryptor *cryptor, NSData *data) {
+					   
 					   DebugLog(@"DownloadFile: 5. Decryptor-Handler");
-
 					   [download writeData:data];
 					   
 					   // Update the download-hash
@@ -244,7 +244,7 @@
 - (void) connection:(NSURLConnection*)connection
 	didReceiveData:(NSData*)dataIn
 {
-	DebugLog(@"DownloadFile: 4a. didReceiveData");
+	//DebugLog(@"DownloadFile: 4a. didReceiveData");
 	[decryptor addData:dataIn];
 	
 	//[download writeData:dataIn];
@@ -275,7 +275,7 @@
 // OVERRIDE
 - (void) connectionDidFinishLoading:(NSURLConnection*)connection
 {
-	DebugLog(@"DownloadFile: 4a. didFinishLoading");
+	DebugLog(@"DownloadFile: 4. didFinishLoading");
 	[decryptor finish];
 }
 
