@@ -81,14 +81,8 @@
 					   
 					   // Update the download-hash
 					   //--------------------------
-					   if([[rev fileSize] longLongValue] <= (downloadSize + [data length]))
-					   {
-						   CC_SHA1_Update(&state, [data bytes], (int)[data length]);
-					   }
-					   else
-					   {
-						   CC_SHA1_Update(&state, [data bytes], (int)([[rev fileSize] longLongValue] - downloadSize));
-					   }
+					   CC_SHA1_Update(&state, [data bytes], (int)[data length]);
+					   
 					   if (cryptor.isFinished)
 					   {
 						   [self decryptionDidFinish];
