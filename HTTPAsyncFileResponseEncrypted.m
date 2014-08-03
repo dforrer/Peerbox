@@ -74,6 +74,9 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 											  
 											  data = [[NSData alloc] initWithData:dataEncrypted];
 											  
+											  // Notify the connection that we have data available for it.
+											  [connection responseHasAvailableData:self];
+											  
 											  if (cryptor.isFinished)
 											  {
 												  DebugLog(@"Encryption finished");
@@ -81,8 +84,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 											  }
 											  else
 											  {
-												  // Notify the connection that we have data available for it.
-												  [connection responseHasAvailableData:self];
+												  
 
 											  }
 										  }];
