@@ -54,6 +54,7 @@
 		    andRevision:(Revision*)r
 			 andConfig:(Configuration*)c
 {
+	DebugLog(@"DownloadFile: 1. Init");
 	if ((self = [super init]))
 	{
 		rev	= r;
@@ -76,7 +77,8 @@
 		
 		decryptor = [[RNDecryptor alloc] initWithPassword:[[[rev peer] share] secret] handler:
 				   ^(RNCryptor *cryptor, NSData *data) {
-					   
+					   DebugLog(@"DownloadFile: 5. Decryptor-Handler");
+
 					   [download writeData:data];
 					   
 					   // Update the download-hash
@@ -137,8 +139,6 @@
 
 - (NSData*) preparePostData
 {
-	// Prepare POST-Data
-	//-------------------
 	NSMutableDictionary * postData = [[NSMutableDictionary alloc] init];
 	NSString * relUrl = [[rev relURL] stringByRemovingPercentEncoding];
 	[postData setObject:relUrl forKey:@"relUrl"];
@@ -151,14 +151,10 @@
 	}
 	error = nil;
 	
-	
-	// V2: Encrypt POST-Data
-	//-----------------------
 	rv = [RNEncryptor encryptData:rv
 				  withSettings:kRNCryptorAES256Settings
 					 password:[[[rev peer] share] secret]
 					    error:&error];
-	
 	if (error)
 	{
 		DebugLog(@"ERROR 2: %@", error);
@@ -183,11 +179,11 @@
 }
 
 
-
-- (NSURL*) urlFromNetService: (NSNetService*) n
+/**
+ * Prepare URL http://<hostname>/shares/<shareId>/files
+ */
+- (NSURL*) urlFromNetService: (NSNetService*)n
 {
-	// Prepare URL http://<hostname>/shares/<shareId>/files
-	//------------------------------------------------------
 	NSString * shareIDurlEncoded = [[[[rev peer] share] shareId] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 	return [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%ld/shares/%@/files", [n hostName],(long)[n port], shareIDurlEncoded]];
 }
@@ -196,7 +192,8 @@
 
 - (void) start
 {
-	DebugLog(@"DL start: %@", downloadPath);
+	DebugLog(@"DownloadFile: 2. start - %@", downloadPath);
+
 	// Starting the async request
 	//----------------------------
 	connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
@@ -222,6 +219,7 @@
 - (void) connection:(NSURLConnection*)connection
  didReceiveResponse:(NSURLResponse*)response
 {
+	DebugLog(@"DownloadFile: 3. didReceiveResponse");
 	if ([response respondsToSelector:@selector(statusCode)])
 	{
 		statusCode = (int)[((NSHTTPURLResponse *)response) statusCode];
@@ -246,7 +244,7 @@
 - (void) connection:(NSURLConnection*)connection
 	didReceiveData:(NSData*)dataIn
 {
-	//DebugLog(@"didReceiveData");
+	DebugLog(@"DownloadFile: 4a. didReceiveData");
 	[decryptor addData:dataIn];
 	
 	//[download writeData:dataIn];
@@ -277,7 +275,7 @@
 // OVERRIDE
 - (void) connectionDidFinishLoading:(NSURLConnection*)connection
 {
-	DebugLog(@"connectionDidFinishLoading");
+	DebugLog(@"DownloadFile: 4a. didFinishLoading");
 	[decryptor finish];
 }
 
