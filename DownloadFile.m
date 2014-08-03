@@ -93,6 +93,47 @@
 }
 
 
+- (void) decryptionDidFinish
+{
+	[download closeFile];
+	
+	if (decryptor.error)
+	{
+		// An error occurred. You cannot trust download at this point
+		[delegate downloadFileHasFailed:self];
+	}
+	else
+	{
+		// decryption complete
+		isFinished = TRUE;
+		
+		// Finish up the sha1
+		//--------------------
+		uint8_t digest[20];
+		CC_SHA1_Final(digest, &state);
+		NSMutableString * output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
+		for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++)
+		{
+			[output appendFormat:@"%02x", digest[i]];
+		}
+		sha1OfDownload = output;
+		
+		if ([sha1OfDownload isEqualToString:[rev getLastVersionHash]])
+		{
+			// Notify Revision-Instance that the download has finished
+			//---------------------------------------------------------
+			[delegate downloadFileHasFinished:self];
+		}
+		else
+		{
+			DebugLog(@"sha1OfDownload: %@", sha1OfDownload);
+			DebugLog(@"lastVersionhash:%@", [rev versions]);
+			[delegate downloadFileHasFailed:self];
+		}
+	}
+	decryptor = nil;
+}
+
 
 - (NSData*) preparePostData
 {
@@ -175,48 +216,6 @@
 }
 
 
-- (void) decryptionDidFinish
-{
-	[download closeFile];
-
-	if (decryptor.error)
-	{
-		// An error occurred. You cannot trust download at this point
-		[delegate downloadFileHasFailed:self];
-	}
-	else
-	{
-		// decryption complete
-		isFinished = TRUE;
-		
-		// Finish up the sha1
-		//--------------------
-		uint8_t digest[20];
-		CC_SHA1_Final(digest, &state);
-		NSMutableString * output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
-		for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++)
-		{
-			[output appendFormat:@"%02x", digest[i]];
-		}
-		sha1OfDownload = output;
-		
-		if ([sha1OfDownload isEqualToString:[rev getLastVersionHash]])
-		{
-			// Notify Revision-Instance that the download has finished
-			//---------------------------------------------------------
-			[delegate downloadFileHasFinished:self];
-		}
-		else
-		{
-			DebugLog(@"sha1OfDownload: %@", sha1OfDownload);
-			DebugLog(@"lastVersionhash:%@", [rev versions]);
-			[delegate downloadFileHasFailed:self];
-		}
-
-		
-	}
-	decryptor = nil;
-}
 
 
 // OVERRIDE
