@@ -34,6 +34,7 @@
 	dispatch_source_t readSource;
 	BOOL readSourceSuspended;
 	
+	// ADDED
 	NSString * password;
 	RNEncryptor * encryptor;
 }
