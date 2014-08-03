@@ -275,6 +275,8 @@
 	}
 	else
 	{
+		DebugLog(@"sha1OfDownload: %@", sha1OfDownload);
+		DebugLog(@"lastVersionhash:%@", [rev getLastVersionHash]);
 		[delegate downloadFileHasFailed:self];
 	}
 	
