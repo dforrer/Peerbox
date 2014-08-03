@@ -84,7 +84,7 @@
 			[connection responseHasAvailableData:self];
 			if (encryptor.isFinished)
 			{
-				[readStream close];
+				//[readStream close];
 				//DebugLog(@"Encryption finished");
 			}
 		};
