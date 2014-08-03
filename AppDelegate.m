@@ -99,13 +99,13 @@
 		NSMenu * subItems = [[NSMenu alloc] init];
 		NSMenuItem * peerID = [[NSMenuItem alloc] init];
 		[subItems addItem:peerID];
-		[peerID setTitle:[ns name]];
+		[peerID setTitle:[NSString stringWithFormat:@"PeerID: %@",[ns name]]];
 		[peer setSubmenu:subItems];
 		
 		[mymenu insertItem:peer atIndex:0];
 	}
 	NSMenuItem * peersTitle = [[NSMenuItem alloc] init];
-	[peersTitle setTitle:@"Peers available:"];
+	[peersTitle setTitle:@"Peers on network:"];
 	[mymenu insertItem:peersTitle atIndex:0];
 	[mymenu insertItem:[NSMenuItem separatorItem] atIndex:0];
 	
