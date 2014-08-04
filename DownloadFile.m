@@ -120,16 +120,17 @@
 		}
 		sha1OfDownload = output;
 		
+		// Verify the integrity of the downloaded file by comparing Hashes
+		
 		if ([sha1OfDownload isEqualToString:[rev getLastVersionHash]])
 		{
 			// Notify Revision-Instance that the download has finished
-			//---------------------------------------------------------
 			[delegate downloadFileHasFinished:self];
 		}
 		else
 		{
-			DebugLog(@"sha1OfDownload: %@", sha1OfDownload);
-			DebugLog(@"lastVersionhash:%@", [rev versions]);
+			DebugLog(@"ERROR: sha1OfDownload: %@", sha1OfDownload);
+			DebugLog(@"ERROR: lastVersionhash:%@", [rev versions]);
 			[delegate downloadFileHasFailed:self];
 		}
 	}

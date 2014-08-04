@@ -99,9 +99,11 @@
 
 - (void) asyncRead
 {
-	data = [[NSMutableData alloc] initWithLength:READ_CHUNKSIZE];
-	NSInteger bytesRead = [readStream read:[data mutableBytes]
+	//data = [[NSMutableData alloc] initWithLength:READ_CHUNKSIZE];
+	uint8_t buffer[READ_CHUNKSIZE];
+	NSInteger bytesRead = [readStream read:buffer
 						    maxLength:READ_CHUNKSIZE];
+	data = [NSData dataWithBytes:buffer length:bytesRead];
 	if (bytesRead < 0)
 	{
 		// Throw an error
@@ -114,7 +116,7 @@
 	}
 	else
 	{
-		[data setLength:bytesRead];
+		//[data setLength:bytesRead];
 		[encryptor addData:data];
 		//DebugLog(@"Sent %ld bytes to encryptor", (unsigned long)bytesRead);
 	}
@@ -144,7 +146,7 @@
 	//DebugLog(@"readDataOfLength:%lu", (unsigned long)length);
 	if (data)
 	{
-		NSData * result = [NSData dataWithData:data];
+		NSData * result = data;
 		data = nil;
 		if ([encryptor isFinished])
 		{
@@ -180,7 +182,7 @@
 
 - (void) connectionDidClose
 {
-	DebugLog(@"connectionDidClose");
+	//DebugLog(@"connectionDidClose");
 	[readStream close];
 	readStream	= nil;
 	filePath		= nil;
