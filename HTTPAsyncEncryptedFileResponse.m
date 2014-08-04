@@ -146,7 +146,7 @@
 	//DebugLog(@"readDataOfLength:%lu", (unsigned long)length);
 	if (data)
 	{
-		NSData * result = [NSData dataWithData:data];
+		NSData * result = data;
 		data = nil;
 		if ([encryptor isFinished])
 		{
