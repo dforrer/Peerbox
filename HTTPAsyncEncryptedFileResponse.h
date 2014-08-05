@@ -21,7 +21,7 @@
 	HTTPConnection *connection;
 	
 	NSString *filePath;
-	NSData *data;
+	__block NSMutableData *data;
 	NSInputStream *readStream;
 
 	BOOL aborted;
