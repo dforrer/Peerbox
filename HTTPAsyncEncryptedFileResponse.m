@@ -180,7 +180,7 @@
 
 - (void) connectionDidClose
 {
-	DebugLog(@"connectionDidClose");
+	//DebugLog(@"connectionDidClose");
 	[readStream close];
 	readStream	= nil;
 	filePath		= nil;
