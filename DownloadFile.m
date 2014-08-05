@@ -29,7 +29,7 @@
 
 @implementation DownloadFile
 {
-	RNEncryptor * decryptor;
+	RNDecryptor * decryptor;
 	NSURLConnection * connection;
 	CC_SHA1_CTX state;
 	uint64_t downloadSize;
@@ -75,7 +75,7 @@
 		//	DebugLog(@"URL: %@", [request URL]);
 		
 		
-		decryptor = [[RNEncryptor alloc] initWithSettings:kRNCryptorAES256Settings password:[[[rev peer] share] secret] handler:
+		decryptor = [[RNDecryptor alloc] initWithPassword:[[[rev peer] share] secret] handler:
 				   ^(RNCryptor *cryptor, NSData *data) {
 					   
 					   //DebugLog(@"DownloadFile: 5. Decryptor-Handler");
