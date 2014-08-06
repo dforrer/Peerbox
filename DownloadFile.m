@@ -99,9 +99,11 @@
 {
 	[download closeFile];
 	
-	if (decryptor.error)
+	if (decryptor.error || hasFailed == TRUE)
 	{
 		// An error occurred. You cannot trust download at this point
+		[self->connection cancel];  // stop connecting; no more delegate messages
+		
 		[delegate downloadFileHasFailed:self];
 	}
 	else
@@ -228,13 +230,8 @@
 		if (statusCode != 200)
 		{
 			DebugLog(@"HTTP-ERROR: didReceiveResponse statusCode: %i", statusCode);
-			[self->connection cancel];  // stop connecting; no more delegate messages
 			hasFailed = TRUE;
-			[download closeFile];
-			
-			// Notify Revision-Instance that the download has failed
-			//-------------------------------------------------------
-			return [delegate downloadFileHasFailed:self];
+			return [self decryptionDidFinish];
 		}
 	}
 	[download seekToFileOffset:0];
@@ -265,11 +262,7 @@
 	DebugLog(@"Error: %@",error);
 	DebugLog(@"StatusCode: %li", [error code]);
 	hasFailed = TRUE;
-	
-	// Notify Revision-Instance that the download has failed
-	//-------------------------------------------------------
-	[download closeFile];
-	[delegate downloadFileHasFailed:self];
+	[self decryptionDidFinish];
 }
 
 
