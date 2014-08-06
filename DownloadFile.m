@@ -54,7 +54,7 @@
 		    andRevision:(Revision*)r
 			 andConfig:(Configuration*)c
 {
-	DebugLog(@"DownloadFile: 1. Init");
+	//DebugLog(@"DownloadFile: 1. Init");
 	if ((self = [super init]))
 	{
 		rev	= r;
@@ -132,8 +132,8 @@
 		}
 		else
 		{
-			DebugLog(@"ERROR: sha1OfDownload: %@", sha1OfDownload);
-			DebugLog(@"ERROR: lastVersionhash:%@", [rev versions]);
+			//DebugLog(@"ERROR: sha1OfDownload: %@", sha1OfDownload);
+			//DebugLog(@"ERROR: lastVersionhash:%@", [rev versions]);
 			[delegate downloadFileHasFailed:self];
 		}
 	}
@@ -196,7 +196,7 @@
 
 - (void) start
 {
-	DebugLog(@"DownloadFile: 2. start - %@", downloadPath);
+	//DebugLog(@"DownloadFile: 2. start - %@", downloadPath);
 
 	// Starting the async request
 	//----------------------------
@@ -223,7 +223,7 @@
 - (void) connection:(NSURLConnection*)connection
  didReceiveResponse:(NSURLResponse*)response
 {
-	DebugLog(@"DownloadFile: 3. didReceiveResponse");
+	//DebugLog(@"DownloadFile: 3. didReceiveResponse");
 	if ([response respondsToSelector:@selector(statusCode)])
 	{
 		statusCode = (int)[((NSHTTPURLResponse *)response) statusCode];
@@ -270,7 +270,7 @@
 // OVERRIDE
 - (void) connectionDidFinishLoading:(NSURLConnection*)connection
 {
-	DebugLog(@"DownloadFile: 4. didFinishLoading");
+	//DebugLog(@"DownloadFile: 4. didFinishLoading");
 	[decryptor finish];
 }
 
