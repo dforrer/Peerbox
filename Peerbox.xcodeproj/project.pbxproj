@@ -63,9 +63,6 @@
 		658946BD19269B4C00A58A83 /* RNCryptorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589453219269B4C00A58A83 /* RNCryptorEngine.m */; };
 		658946BF19269B4C00A58A83 /* RNDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589453419269B4C00A58A83 /* RNDecryptor.m */; };
 		658946C119269B4C00A58A83 /* RNEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589453619269B4C00A58A83 /* RNEncryptor.m */; };
-		658946C319269B4C00A58A83 /* RNOpenSSLCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589453819269B4C00A58A83 /* RNOpenSSLCryptor.m */; };
-		658946C519269B4C00A58A83 /* RNOpenSSLDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589453A19269B4C00A58A83 /* RNOpenSSLDecryptor.m */; };
-		658946C719269B4C00A58A83 /* RNOpenSSLEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589453C19269B4C00A58A83 /* RNOpenSSLEncryptor.m */; };
 		658946C919269B4C00A58A83 /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = 6589453F19269B4C00A58A83 /* .travis.yml */; };
 		658946CD19269B4C00A58A83 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 6589454119269B4C00A58A83 /* LICENSE */; };
 		658946CF19269B4C00A58A83 /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 6589454219269B4C00A58A83 /* README.markdown */; };
@@ -212,12 +209,6 @@
 		6589453419269B4C00A58A83 /* RNDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDecryptor.m; sourceTree = "<group>"; };
 		6589453519269B4C00A58A83 /* RNEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNEncryptor.h; sourceTree = "<group>"; };
 		6589453619269B4C00A58A83 /* RNEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNEncryptor.m; sourceTree = "<group>"; };
-		6589453719269B4C00A58A83 /* RNOpenSSLCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLCryptor.h; sourceTree = "<group>"; };
-		6589453819269B4C00A58A83 /* RNOpenSSLCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLCryptor.m; sourceTree = "<group>"; };
-		6589453919269B4C00A58A83 /* RNOpenSSLDecryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLDecryptor.h; sourceTree = "<group>"; };
-		6589453A19269B4C00A58A83 /* RNOpenSSLDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLDecryptor.m; sourceTree = "<group>"; };
-		6589453B19269B4C00A58A83 /* RNOpenSSLEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNOpenSSLEncryptor.h; sourceTree = "<group>"; };
-		6589453C19269B4C00A58A83 /* RNOpenSSLEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNOpenSSLEncryptor.m; sourceTree = "<group>"; };
 		6589453F19269B4C00A58A83 /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		6589454119269B4C00A58A83 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6589454219269B4C00A58A83 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
@@ -493,12 +484,6 @@
 				6589453419269B4C00A58A83 /* RNDecryptor.m */,
 				6589453519269B4C00A58A83 /* RNEncryptor.h */,
 				6589453619269B4C00A58A83 /* RNEncryptor.m */,
-				6589453719269B4C00A58A83 /* RNOpenSSLCryptor.h */,
-				6589453819269B4C00A58A83 /* RNOpenSSLCryptor.m */,
-				6589453919269B4C00A58A83 /* RNOpenSSLDecryptor.h */,
-				6589453A19269B4C00A58A83 /* RNOpenSSLDecryptor.m */,
-				6589453B19269B4C00A58A83 /* RNOpenSSLEncryptor.h */,
-				6589453C19269B4C00A58A83 /* RNOpenSSLEncryptor.m */,
 			);
 			path = RNCryptor;
 			sourceTree = "<group>";
@@ -813,7 +798,6 @@
 				658945D119269B4C00A58A83 /* MultipartMessageHeader.m in Sources */,
 				65E61FFE18E49F83007A654B /* Share.m in Sources */,
 				658945BB19269B4C00A58A83 /* NSString+Equality.m in Sources */,
-				658946C319269B4C00A58A83 /* RNOpenSSLCryptor.m in Sources */,
 				658945C519269B4C00A58A83 /* DDRange.m in Sources */,
 				658945C719269B4C00A58A83 /* HTTPAuthenticationRequest.m in Sources */,
 				6564985B18708DF800BBB3D1 /* ShareScanOperation.m in Sources */,
@@ -823,11 +807,9 @@
 				656AA41F188AB6BF007C6ED9 /* DownloadShares.m in Sources */,
 				658946D519269B4C00A58A83 /* NSDictionary_JSONExtensions.m in Sources */,
 				658945C319269B4C00A58A83 /* DDNumber.m in Sources */,
-				658946C719269B4C00A58A83 /* RNOpenSSLEncryptor.m in Sources */,
 				65E5CC22180B0043001065AE /* File.m in Sources */,
 				658946AF19269B4C00A58A83 /* DDFileLogger.m in Sources */,
 				658946A719269B4C00A58A83 /* GCDAsyncSocket.m in Sources */,
-				658946C519269B4C00A58A83 /* RNOpenSSLDecryptor.m in Sources */,
 				658946B119269B4C00A58A83 /* DDLog.m in Sources */,
 				65E5CC1D180B0043001065AE /* AppDelegate.m in Sources */,
 				65384C761930C0AB0070F0A9 /* MainController.m in Sources */,
