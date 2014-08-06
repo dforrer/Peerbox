@@ -583,8 +583,23 @@
 {
 
 }
-
-
+/**
+ * @params: addOrRemove = 1 (add) or 0 (remove)
+ */
+- (void) addOrRemove:(int)addOrRemove synchronizedFromFileDownloads:(DownloadFile *)d
+{
+	@synchronized(fileDownloads)
+	{
+		if (addOrRemove == 1)
+		{
+			[fileDownloads addObject:d];
+		}
+		else
+		{
+			[fileDownloads removeObject:d];
+		}
+	}
+}
 
 /**
  * OVERRIDE: Delegate function called by "download" inherited from <DownloadFileDelegate>
@@ -592,7 +607,7 @@
 - (void) downloadFileHasFinished:(DownloadFile*)d
 {
 	DebugLog(@"DL finished: %@", [d downloadPath]);
-	[fileDownloads removeObject:d];
+	[self addOrRemove:0 synchronizedFromFileDownloads:d];
 	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
 	[self addOperation:o withDependecyToQueue:fileMatcherQueue];
@@ -606,7 +621,7 @@
 - (void) downloadFileHasFailed:(DownloadFile*)d
 {
 	DebugLog(@"ERROR: downloadFileHasFailed: %@", [d downloadPath]);
-	[fileDownloads removeObject:d];
+	[self addOrRemove:0 synchronizedFromFileDownloads:d];
 	
 	if ([d statusCode] != 404)
 	{
@@ -947,7 +962,7 @@
 					[s removeRevision:r forPeer:p];
 					
 					DownloadFile * d = [[DownloadFile alloc] initWithNetService:ns andRevision:r andConfig:config];
-					[fileDownloads addObject:d];
+					[self addOrRemove:1 synchronizedFromFileDownloads:d];
 					[d setDelegate:self];
 					[d start];
 
