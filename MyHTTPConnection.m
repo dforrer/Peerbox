@@ -60,8 +60,7 @@
 	//---------------------
 	if ([method isEqualToString:@"POST"])
 	{
-		DebugLog(@"%llu", requestContentLength);
-		return requestContentLength < 400;
+		return requestContentLength < 4096;
 	}
 	return [super supportsMethod:method atPath:path];
 }
