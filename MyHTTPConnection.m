@@ -102,7 +102,7 @@
 	if ( [method isEqualToString:@"POST"]
 	    && [path isEqualToString:@"/notification"] )
 	{
-		DebugLog(@"POST-REQUEST to URI /notification");
+		//DebugLog(@"POST-REQUEST to URI /notification");
 		
 		/*
 		NSString *postStr = nil;
@@ -141,7 +141,7 @@
 	if ( [method isEqualToString:@"GET"]
 	    && [path isEqualToString:@"/shares"])
 	{
-		DebugLog(@"GET-REQUEST to URI /shares");
+		//DebugLog(@"GET-REQUEST to URI /shares");
 		NSMutableArray * tmpArray = [NSMutableArray array];
 		for ( Share * s in [allShares allValues ])
 		{
@@ -254,7 +254,7 @@
 	    && [[pathComponents objectAtIndex:1] isEqualToString:@"shares"]
 	    && [[pathComponents objectAtIndex:3] isEqualToString:@"revisionsDict"])
 	{
-		DebugLog(@"POST-REQUEST to URI /shares/<shareId>/revisionsDict");
+		//DebugLog(@"POST-REQUEST to URI /shares/<shareId>/revisionsDict");
 		
 		NSString * shareId = [[pathComponents objectAtIndex: 2] stringByRemovingPercentEncoding];
 		Share * requestForShare = [allShares objectForKey:shareId];
@@ -264,7 +264,7 @@
 		//-------------------------------------
 		if (requestForShare == nil)
 		{
-			DebugLog(@"ERROR 4: 404");
+			DebugLog(@"ERROR: 404");
 			DebugLog(@"requestForShare == nil");
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
 		}
@@ -274,7 +274,7 @@
 		NSData * postData = [request body];
 		if (!postData)
 		{
-			DebugLog(@"ERROR 8: postData is nil");
+			DebugLog(@"ERROR: postData is nil");
 			return [[HTTPErrorResponse alloc] initWithErrorCode:404];
 		}
 
@@ -290,7 +290,7 @@
 													  error:&error];
 		if (error)
 		{
-			DebugLog(@"ERROR 9: %@", error);
+			DebugLog(@"ERROR: %@", error);
 			return [[HTTPErrorResponse alloc] initWithErrorCode:400];
 		}
 		NSNumber * fromRev = [postDict objectForKey:@"fromRev"];
@@ -348,7 +348,7 @@
 	    && [[pathComponents objectAtIndex:1] isEqualToString:@"shares"]
 	    && [[pathComponents objectAtIndex:3] isEqualToString:@"files"])
 	{
-		DebugLog(@"POST-REQUEST to URI /shares/<shareId>/files");
+		//DebugLog(@"POST-REQUEST to URI /shares/<shareId>/files");
 
 		NSString * shareId = [[pathComponents objectAtIndex: 2] stringByRemovingPercentEncoding];
 		Share * requestForShare = [allShares objectForKey:shareId];
@@ -380,6 +380,7 @@
 			return [[HTTPErrorResponse alloc] initWithErrorCode:400];
 		}
 		NSString * relUrl = [postDict objectForKey:@"relUrl"];
+		DebugLog(@"relUrl: %@", relUrl);
 		NSURL * localURL = [NSURL fileURLWithPathComponents:[NSArray arrayWithObjects:[[requestForShare root] path], relUrl, nil]];
 		if (![FileHelper fileFolderExists:[localURL path]])
 		{
