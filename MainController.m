@@ -628,6 +628,18 @@
 	DebugLog(@"ERROR: downloadFileHasFailed: %@", [d downloadPath]);
 	[self addOrRemove:0 synchronizedFromFileDownloads:d];
 	
+	// Remove failed download-file from downloads directory
+	//------------------------------------------------------
+	NSError * error;
+	[[NSFileManager defaultManager] removeItemAtPath:[d downloadPath] error:&error];
+	if (error)
+	{
+		DebugLog(@"ERROR: removeItemAtURL failed!, %@", error);
+		return;
+	}
+	
+	// Keep the revision unless we receive a 404-Error
+	//-------------------------------------------------
 	if ([d statusCode] != 404)
 	{
 		Revision * r = [d rev];
@@ -671,12 +683,12 @@
 		//DebugLog(@"fsWatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
 		
 		/*
-		 * If the 'operationCount' gets bigger than 20 the application
+		 * If the 'operationCount' gets bigger than FSWATCHER_QUEUE_THRESHOLD the application
 		 * should cancelAll ongoing operations,
 		 * sleep for 5 seconds and then scan all the shares.
 		 */
 		
-		if ([fsWatcherQueue operationCount] > 20)
+		if ([fsWatcherQueue operationCount] > FSWATCHER_QUEUE_THRESHOLD)
 		{
 			if (![fsWatcherQueue isSuspended])
 			{
