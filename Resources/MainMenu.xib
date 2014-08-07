@@ -739,6 +739,17 @@
                             <action selector="downloadShares:" target="494" id="Hik-J8-cXK"/>
                         </connections>
                     </button>
+                    <button verticalHuggingPriority="750" id="pWp-Xe-wu6">
+                        <rect key="frame" x="149" y="13" width="130" height="19"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="roundRect" title="Print Debuglogs" bezelStyle="roundedRect" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WB2-PC-pG0">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="titleBar" size="12"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="printDebugLogs:" target="494" id="JV9-aS-YJ8"/>
+                        </connections>
+                    </button>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="gWA-aW-nND">
                         <rect key="frame" x="-1" y="191" width="458" height="137"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>

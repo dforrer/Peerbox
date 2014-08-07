@@ -28,6 +28,7 @@
 - (void) saveModel;
 - (void) printResolvedServices;
 - (void) printMyShares;
+- (void) printDebugLogs;
 - (void) matchFiles;
 - (void) downloadSharesFromPeers;
 - (void) downloadRevisionsFromPeers;

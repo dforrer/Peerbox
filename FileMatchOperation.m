@@ -61,8 +61,8 @@
 								 withIntermediateDirectories:YES
 											   attributes:nil
 												   error:nil];
-			[[NSFileManager defaultManager] moveItemAtPath:[d downloadPath] toPath:[fullURL path] error:&error];
-			if (error)
+			BOOL successfullyMoved = [[NSFileManager defaultManager] moveItemAtPath:[d downloadPath] toPath:[fullURL path] error:&error];
+			if (successfullyMoved == NO || error)
 			{
 				DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
 				return;
@@ -70,13 +70,13 @@
 		}
 		else
 		{
-			DebugLog(@"downloadPath = %@, [fullURL path] = %@", [d downloadPath], [fullURL path]);
+			DebugLog(@"ERROR: downloadPath = %@, [fullURL path] = %@", [d downloadPath], [fullURL path]);
 			return;
 		}
 	}
 	else
 	{
-		DebugLog(@"Can't read file at %@", [d downloadPath]);
+		DebugLog(@"ERROR: Can't read file at %@", [d downloadPath]);
 		return;
 	}
 	

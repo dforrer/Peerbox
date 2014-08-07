@@ -13,6 +13,7 @@
 - (IBAction) matchFiles:(id)sender;
 - (IBAction) printShares: (id)sender;
 - (IBAction) printResolvedServices: (id)sender;
+- (IBAction) printDebugLogs:(id)sender;
 - (IBAction) openItem:(id)sender;
 
 @property (assign) IBOutlet NSTableView * sharesTableView;

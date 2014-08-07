@@ -238,6 +238,10 @@
 	[mc printMyShares];
 }
 
+- (IBAction) printDebugLogs:(id)sender
+{
+	
+}
 
 
 #pragma mark -----------------------
