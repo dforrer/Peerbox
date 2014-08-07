@@ -7,6 +7,7 @@
 
 NSString * const APP_NAME = @"Peerbox";
 int const MAX_REVS_PER_REQUEST = 256;
+int const FSWATCHER_QUEUE_THRESHOLD = 20;
 int const MAX_CONCURRENT_DOWNLOADS	= 8;
 BOOL const IGNORE_RESOURCE_FORKS = FALSE;
 int const MAX_VERSIONS_PER_FILE = 100;
