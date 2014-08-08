@@ -404,6 +404,7 @@
 - (void) printDebugLogs
 {
 	// TODO: Find out why certain downloads finish but the downloads are then not moved to their destination
+	DebugLog(@"FileDownloads-Count: %lu",(unsigned long)[fileDownloads count]);
 }
 
 
@@ -418,11 +419,12 @@
 
 - (void) bonjourSearcherServiceResolved:(NSNetService*)n
 {
-	// Notify peers
 	[self notifyPeers];
 	
 	// Update StatusBar
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"appShouldRefreshStatusBar" object:nil];
+	
+	[self matchFiles];
 }
 
 
@@ -611,7 +613,8 @@
  */
 - (void) downloadFileHasFinished:(DownloadFile*)d
 {
-	DebugLog(@"DL finished: %@", [d downloadPath]);
+	DebugLog(@"DL finished : %@", [[d rev] relURL]);
+	DebugLog(@"downloadPath: %@", [d downloadPath]);
 	[self addOrRemove:0 synchronizedFromFileDownloads:d];
 	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
