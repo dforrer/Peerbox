@@ -49,7 +49,7 @@
 - (NSString *) getLastVersionKey;
 
 // Core attributes from /revisions-request
-//-----------------------------------------
+
 @property (nonatomic, readwrite, strong) NSString * relURL;
 @property (nonatomic, readwrite, strong) NSNumber * revision;
 @property (nonatomic, readwrite, strong) NSNumber * isSet;

@@ -13,7 +13,7 @@
 - (id) initWithPeerID:(NSString*) pid andShare:(Share*) s;
 
 // Other
-//-------
+
 - (NSString*) description;
 - (NSDictionary*) plistEncoded;
 

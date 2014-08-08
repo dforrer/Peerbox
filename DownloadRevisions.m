@@ -86,7 +86,6 @@
 		
 		// Resolve IP and prepare URL:
 		// http://<hostname>/shares/<shareId>/revisionsDict
-		//--------------------------------------------------
 		
 		NSString * shareIDurlEncoded = [[[peer share] shareId] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 		
@@ -94,7 +93,7 @@
 		[request setURL:u];
 		
 		// Prepare POST-Data
-		//-------------------
+	
 		//DebugLog(@"fromRev: %@",[peer lastDownloadedRev]);
 		NSMutableDictionary * postData = [NSMutableDictionary dictionary];
 		[postData setObject:[NSNumber numberWithLongLong:[[peer lastDownloadedRev] longLongValue] + 1] forKey:@"fromRev"];
@@ -117,7 +116,7 @@
 - (void) start
 {
 	// Starting the async request
-	//----------------------------
+
 	connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
 	[connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
 	[connection start];
@@ -145,7 +144,7 @@
    didFailWithError:(NSError*)error
 {
 	// Handle the error properly
-	//---------------------------
+	
 	DebugLog(@"Error: %@",error);
 	
 	[delegate downloadRevisionsHasFailed:self];
@@ -158,7 +157,7 @@
 	isFinished = TRUE;
 
 	// Decrypt Data
-	//--------------
+	
 	NSError * error;
 	NSData * responseData = [RNDecryptor decryptData:response
 								 withPassword:[[peer share] secret]
@@ -172,7 +171,7 @@
 //	DebugLog(@"Size before inflation: %lu",(unsigned long)[response length]);
 	
 	// Decompress response
-	//---------------------
+	
 	response = [NSMutableData dataWithData:[responseData gzipInflate]];
 
 //	DebugLog(@"Size after inflation: %lu",(unsigned long)[response length]);

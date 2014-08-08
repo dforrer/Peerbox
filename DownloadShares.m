@@ -56,7 +56,7 @@
 		
 		// Resolve IP and prepare URL:
 		// http://<ip>/shares
-		//-----------------------------
+	
 		NSURL * u	= [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%ld/shares",[n hostName], (long)[n port]]];
 		[request setURL:u];
 	}
@@ -67,7 +67,7 @@
 - (void) start
 {
 	// Starting the async request
-	//----------------------------
+	
 	connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
 	[connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
 	[connection start];
@@ -106,7 +106,7 @@
 	isFinished = TRUE;
 	
 	// Convert NSData to NSDictionary
-	//--------------------------------
+	
 	NSError * error;
 
 	NSDictionary * dict = [NSDictionary dictionaryWithJSONData:response error:&error];

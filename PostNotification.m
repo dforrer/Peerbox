@@ -33,7 +33,7 @@
 		
 		// Resolve IP and prepare URL:
 		// http://<ip>/shares
-		//-----------------------------
+	
 		NSURL * u	= [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%ld/notification",[n hostName], (long)[n port]]];
 		[request setURL:u];
 	}
@@ -44,7 +44,7 @@
 - (void) start
 {
 	// Starting the async request
-	//----------------------------
+
 	connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
 	[connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
 	[connection start];

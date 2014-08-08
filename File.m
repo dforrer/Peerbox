@@ -160,7 +160,7 @@
 	int biggestSharedVersion;
 	
 	// Finding the smallest shared revision
-	//-------------------------------------
+	
 	smallestSharedVersion = MAX(local_smallest , remote_smallest);
 	//DebugLog(@"shared smallest: %i", smallestSharedVersion);
 	biggestSharedVersion  = MIN(local_biggest  , remote_biggest);
@@ -191,7 +191,7 @@
 	[versions setObject:hash forKey:[nextVersion stringValue]];
 
 	// Limit the number of versions for a single file to MAX_VERSIONS_PER_FILE
-	//-------------------------------------------------------------------------
+	
 	if ([nextVersion longLongValue] > MAX_VERSIONS_PER_FILE)
 	{
 		NSNumber * versionToRemove = [NSNumber numberWithLongLong:[nextVersion longLongValue] - MAX_VERSIONS_PER_FILE];
@@ -434,7 +434,7 @@
 	if ( [isSet boolValue] )
 	{
 		// Convert "extAttributes"-Dictionary-Values to BASE64-Strings:
-		//--------------------------------------------------------------
+		
 		NSMutableDictionary * extAttrBase64Encoded = [NSMutableDictionary dictionaryWithDictionary:[FileHelper getAllValuesOnFile:[url path]]];
 		
 		if (IGNORE_RESOURCE_FORKS)

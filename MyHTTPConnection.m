@@ -57,7 +57,7 @@
 			  atPath: (NSString *)path
 {
 	// Add support for POST
-	//---------------------
+	
 	if ([method isEqualToString:@"POST"])
 	{
 		return requestContentLength < 4096;
@@ -82,12 +82,12 @@
 									 URI:(NSString *)path
 {
 	// Singleton-Usage
-	//-----------------
+	
 	NSDictionary * allShares = [[[Singleton data] mainController] myShares];
 	NSString	   * myPeerID	= [[[[Singleton data] mainController] config] myPeerID];
 	
 	// Remove queries from the URI
-	//-----------------------------
+	
 	path = [[path componentsSeparatedByString:@"?"] objectAtIndex:0];
 	
 	// Here we switch between the different cases (GET, POST, Data-Response,
@@ -182,7 +182,7 @@
 		
 
 		// Handle error
-		//-------------
+	
 		if (requestForShare == nil)
 		{
 			DebugLog(@"ERROR 4: 404");
@@ -190,7 +190,7 @@
 		}
 		
 		// Read and decrypt post-data
-		//---------------------------
+		
 		NSData * postData = [request body];
 		NSError * error;
 		
@@ -211,19 +211,19 @@
 		
 		
 		// Prepare response
-		//-----------------
+		
 		NSMutableDictionary * responseDict = [NSMutableDictionary dictionary];
 		[responseDict setObject:myPeerID forKey:@"peerId"];
 		
 		
 		// Get Files-Array from share
-		//---------------------------
+		
 		NSArray * filesFromRev = [requestForShare getFilesAsJSONwithLimit:[NSNumber numberWithInt:MAX_REVS_PER_REQUEST] startingFromRev:fromRev];
 		[responseDict setObject:filesFromRev forKey:@"revisions"];
 		
 		
 		// Serialize response into JSON-Format
-		//------------------------------------
+		
 		NSData * response = [[CJSONSerializer serializer] serializeObject:responseDict error:&error];
 		if (error)
 		{
@@ -232,11 +232,11 @@
 		}
 		
 		// Compress the response with GZIP
-		//--------------------------------
+		
 		response = [response gzipDeflate];
 			
 		// Encrypt response with share-secret
-		//------------------------------------
+		
 		response = [RNEncryptor encryptData:response
 						   withSettings:kRNCryptorAES256Settings
 							  password:[requestForShare secret]
@@ -261,7 +261,7 @@
 		
 		
 		// Handle error for non-existing share
-		//-------------------------------------
+		
 		if (requestForShare == nil)
 		{
 			DebugLog(@"ERROR: 404");
@@ -270,7 +270,7 @@
 		}
 		
 		// Read and decrypt post-data
-		//---------------------------
+		
 		NSData * postData = [request body];
 		if (!postData)
 		{
@@ -300,13 +300,13 @@
 		}
 		
 		// Prepare response
-		//-----------------
+		
 		NSMutableDictionary * responseDict = [NSMutableDictionary dictionary];
 		[responseDict setObject:myPeerID forKey:@"peerId"];
 		
 		
 		// Get Revisions-Dictionary from share
-		//-------------------------------------
+		
 		NSNumber * biggestRev;
 		NSDictionary * dictFromRev = [requestForShare getFilesAsJSONDictWithLimit:[NSNumber numberWithInt:MAX_REVS_PER_REQUEST] startingFromRev:fromRev biggestRev:&biggestRev];
 		//DebugLog(@"dictFromRev:\%@", dictFromRev);
@@ -319,7 +319,7 @@
 		
 		
 		// Serialize response into JSON-Format
-		//------------------------------------
+		
 		NSData * response = [[CJSONSerializer serializer] serializeObject:responseDict error:&error];
 		if (error)
 		{
@@ -328,11 +328,11 @@
 		}
 	
 		// Compress the response with GZIP
-		//---------------------------------
+		
 		response = [response gzipDeflate];
 		
 		// Encrypt response with share-secret
-		//-----------------------------------
+		
 		response = [RNEncryptor encryptData:response
 						   withSettings:kRNCryptorAES256Settings
 							  password:[requestForShare secret]
@@ -354,7 +354,7 @@
 		Share * requestForShare = [allShares objectForKey:shareId];
 		
 		// Handle error
-		//-------------
+		
 		if (requestForShare == nil)
 		{
 			DebugLog(@"ERROR: 404 - Share does not exist")
@@ -362,7 +362,7 @@
 		}
 		
 		// Read and decrypt post-data
-		//---------------------------
+		
 		NSData *postData = [request body];
 		NSError * error;
 

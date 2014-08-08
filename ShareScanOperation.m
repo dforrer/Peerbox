@@ -34,7 +34,7 @@
 	DebugLog(@"ShareScanOperation");
 
 	// Search DELETED Files
-	//----------------------
+	
 	NSArray * urlsAsStrings = [share getURLsBelowURL:[share root]
 								    withIsSet:TRUE];
 	for (int i = 0; i < [urlsAsStrings count]; i++)
@@ -52,7 +52,7 @@
 	}
 	
 	// Search ADDED/CHANGED Files
-	//---------------------------
+	
 	NSArray * dirTree = [FileHelper scanDirectoryRecursive:[share root]];
 	for (NSURL * u in dirTree)
 	{

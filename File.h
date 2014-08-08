@@ -28,12 +28,12 @@
 + (BOOL) versions:(NSDictionary*)v1 hasConflictsWithVersions:(NSDictionary*)v2;
 
 // Setter
-//--------
+
 - (void) setIsSetBOOL:(BOOL)b;
 - (void) setIsSymlinkBOOL:(BOOL)b;
 
 // Updater
-//---------
+
 - (void) updateSymlink; // needs to be called before the other update functions
 - (void) updateFileSize;
 - (void) updateContentModDate;

@@ -82,7 +82,6 @@
 					   [download writeData:data];
 					   
 					   // Update the download-hash
-					   //--------------------------
 					   CC_SHA1_Update(&state, [data bytes], (int)[data length]);
 					   
 					   if (cryptor.isFinished)
@@ -112,7 +111,6 @@
 		isFinished = TRUE;
 		
 		// Finish up the sha1
-		//--------------------
 		uint8_t digest[20];
 		CC_SHA1_Final(digest, &state);
 		NSMutableString * output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
@@ -199,13 +197,11 @@
 	//DebugLog(@"DownloadFile: 2. start - %@", downloadPath);
 
 	// Starting the async request
-	//----------------------------
 	connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
 	[connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
 	[connection start];
 	
 	// Init SHA1 state
-	//-----------------
 	CC_SHA1_Init(&state);
 }
 
@@ -258,7 +254,6 @@
    didFailWithError:(NSError*)error
 {
 	// Handle the error properly
-	//---------------------------
 	DebugLog(@"Error: %@",error);
 	DebugLog(@"StatusCode: %li", [error code]);
 	hasFailed = TRUE;

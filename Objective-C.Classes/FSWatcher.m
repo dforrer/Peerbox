@@ -41,7 +41,7 @@
 {
 	// Switch between "Observe folders only" / "Observe Files and Folders"
 	// Set ignoreSelf-flag
-	//--------------------------------------------------------------------
+
 	flags = kFSEventStreamCreateFlagUseCFTypes|kFSEventStreamCreateFlagWatchRoot;
 	if (observeFiles)
 	{
@@ -78,7 +78,7 @@
 	}
 	
 	// Check if "paths" is empty
-	//--------------------------
+
 	if ( [watchedPaths count] == 0 )
 	{
 		isWatching = FALSE;
@@ -140,11 +140,11 @@ static void callback(ConstFSEventStreamRef streamRef,
 				 const FSEventStreamEventId eventIds[])
 {
 	// First, make a copy of the event path so we can modify it.
-	//-----------------------------------------------------------
+
 	NSArray * paths = (__bridge NSArray *)(eventPaths);
 	
 	// Loop through all FSEvents
-	//---------------------------
+	
 	for ( int i = 0 ; i < numEvents ; i++ )
 	{
 		/* Single & means BITWISE AND

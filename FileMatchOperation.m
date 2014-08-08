@@ -39,11 +39,11 @@
 	NSURL * fullURL = [NSURL URLWithString:[rev relURL] relativeToURL:[share root]];
 	
 	// Continue matching the file
-	//----------------------------
+
 	if ( [[NSFileManager defaultManager] isReadableFileAtPath:[d downloadPath]] )
 	{
 		// Move existing file to the trash
-		//---------------------------------
+	
 		NSError * error;
 		if ( [[NSFileManager defaultManager] isReadableFileAtPath:[fullURL path]] )
 		{
@@ -85,7 +85,7 @@
 	[FileHelper setFilePermissionsAtPath:[fullURL path] toOctal:755];
 	
 	// Save the File with the updated versions
-	//-----------------------------------------
+	
 	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
 	[newState setVersions:[NSMutableDictionary dictionaryWithDictionary:[rev versions]]];
 	[share setFile:newState];

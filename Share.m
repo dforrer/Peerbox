@@ -21,7 +21,7 @@
 @implementation Share
 {
 	// instance variables declared in implementation context
-	//-------------------------------------------------------
+
 	SQLiteDatabase * db;
 	NSMutableDictionary * peers; // key = peerId
 	NSNumber * currentRevision;
@@ -45,17 +45,17 @@
 {
 	
 	// Create path and init SQLite
-	//-----------------------------
+	
 	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [config workingDir], shareId];
 	db = [[SQLiteDatabase alloc] initCreateAtPath:sqlitePath];
 	
 	// Prepare Tables in "db"
-	//------------------------
+	
 	[self prepareTables];
 	
 	
 	// get current revision
-	//----------------------
+	
 	NSArray * rows;
 	NSError * error;
 	
@@ -85,7 +85,7 @@
 	@autoreleasepool
 	{
 		// Check if superclass could create its object
-		//--------------------------------------------
+	
 		if ((self = [super init]))
 		{
 			shareId	= i;
@@ -133,18 +133,18 @@
 	NSError * error;
 	
 	// Causes the sqlite-file to shrink after deletions
-	//--------------------------------------------------
+
 	//[db performQuery:@"PRAGMA auto_vacuum = FULL" rows:nil error:&error];
 	
 	
 	// Create Table "files" + index
-	//------------------------------
+	
 	[db performQuery:@"CREATE TABLE IF NOT EXISTS files (uid TEXT PRIMARY KEY, url TEXT, revision SQLITE3_INT64 UNIQUE, fileSize SQLITE3_INT64, contentModDate TEXT, attributesModDate TEXT, isSet INTEGER, extAttributes TEXT, versions TEXT, isSymlink INTEGER, targetPath TEXT)" rows:nil error:&error];
 	[db performQuery:@"CREATE INDEX IF NOT EXISTS index_files_revision ON files (revision);" rows:nil error:&error];
 	
 	
 	// Create Table "Revisions" + index
-	//----------------------------------
+	
 	[db performQuery:@"CREATE TABLE IF NOT EXISTS revisions (peerID TEXT, relURL TEXT, revision SQLITE3_INT64, fileSize SQLITE3_INT64, isSet INTEGER, extAttributes TEXT, versions TEXT, isDir INTEGER, lastMatchAttemptDate TEXT, isSymlink INTEGER, targetPath TEXT)" rows:nil error:&error];
 	[db performQuery:@"CREATE INDEX IF NOT EXISTS index_revisions_peerID_relURL ON revisions (peerID, relURL);" rows:nil error:&error];
 	[db performQuery:@"CREATE INDEX IF NOT EXISTS index_revisions_fileSize ON revisions (peerID, fileSize);" rows:nil error:&error];
@@ -241,7 +241,7 @@
 	@autoreleasepool
 	{
 		// Serialize "extAttrBase64Encoded" to JSON-String
-		//-------------------------------------------------
+	
 		NSError * error;
 		NSData * extAttrData = [[CJSONSerializer serializer] serializeObject:[r extAttributes] error:&error];
 		if (error)
@@ -254,7 +254,7 @@
 		error = nil;
 		
 		// Serialize "versions" to JSON-String
-		//-------------------------------------
+		
 		NSData * versionsData = [[CJSONSerializer serializer] serializeObject:[r versions] error:&error];
 		if (error)
 		{
@@ -281,7 +281,6 @@
 		
 		
 		// Perform SELECT to check if row exists
-		//---------------------------------------
 		
 		NSString * querySELECT = [[NSString alloc] initWithFormat:@"SELECT isSet FROM revisions WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString]];
 		NSArray * rows;
@@ -295,7 +294,7 @@
 		if (rv > 0)
 		{
 			// Try UPDATE
-			//------------
+		
 			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE revisions SET peerID='%@', relURL='%@', revision=%lld, fileSize=%lld, isSet=%i, extAttributes='%@', versions='%@', isDir=%i, lastMatchAttemptDate='%@', isSymlink=%i, targetPath='%@' WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue],[[r fileSize] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [[r isSymlink] intValue], [[r targetPath] sqlString], [p peerID], [[r relURL] sqlString]];
 			//DebugLog(@"%@", queryUPDATE);
 			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
@@ -307,7 +306,7 @@
 		else
 		{
 			// Try INSERT
-			//------------
+			
 			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO revisions (peerID, relURL, revision, fileSize, isSet, extAttributes, versions, isDir, lastMatchAttemptDate, isSymlink, targetPath) VALUES ('%@', '%@', %lld, %lld, %i, '%@', '%@', %i, '%@', %i, '%@');", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue], [[r fileSize] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [[r isSymlink] intValue], [[r targetPath] sqlString]];
 			//DebugLog(@"%@", queryINSERT);
 			rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
@@ -359,7 +358,7 @@
 	
 	
 	// Parsing the results-array into a Revision-Object
-	//--------------------------------------------------
+	
 	Revision * rv = [[Revision alloc] init];
 	
 	[rv setRelURL:rows[0][0]];
@@ -387,7 +386,7 @@
 	[rv setTargetPath:rows[0][9]];
 	
 	// Setting the Peer-Attribute of the Revision
-	//--------------------------------------------
+	
 	[rv setPeer:p];
 	
 	return rv;
@@ -423,7 +422,7 @@
 	}
 	
 	// Ignore .DS_Store
-	//------------------
+	
 	if ([[fileURL lastPathComponent] isEqualToString:@".DS_Store"])
 	{
 		return;
@@ -431,13 +430,13 @@
 	
 	
 	// Handle files, folders, symlinks
-	//---------------------------------
+	
 	BOOL exists = [FileHelper fileFolderSymlinkExists:[fileURL path]];
 
 	if (exists)
 	{
 		// File exists on HD (ADDED/CHANGED)
-		//-----------------------------------
+	
 		//DebugLog(@"File exists on HD");
 		
 		File * f = [self getFileForURL:fileURL];
@@ -445,7 +444,7 @@
 		if (f == nil)
 		{
 			// File doesn't exist in Share
-			//-----------------------------
+		
 			//DebugLog(@"File doesn't exist in Share");
 			f = [[File alloc] initAsNewFileWithPath:[fileURL path]];
 			if (f == nil)
@@ -455,7 +454,7 @@
 			[self setFile:f];
 			
 			// Recursive scan on dirs
-			//------------------------
+			
 			if (recursive && [f isDir])
 			{
 				[self scanSubDirectoriesOfURL:[f url]];
@@ -464,13 +463,9 @@
 		else
 		{
 			// File exists in Share
-			//----------------------
+			
 			//DebugLog(@"File exists in Share");
 
-			// Handle symlinks
-			//-----------------
-		
-			
 			[f setUrl:fileURL];
 			[f setIsSetBOOL:TRUE];
 			[f updateSymlink];
@@ -489,7 +484,7 @@
 			[self setFile:f];
 
 			// Recursive scan on dirs
-			//------------------------
+			
 			if (recursive && [f isDir])
 			{
 				[self scanSubDirectoriesOfURL:[f url]];
@@ -499,13 +494,13 @@
 	else
 	{
 		// File doesn't exist on HD (DELETE)
-		//-----------------------------------
+
 		//DebugLog(@"File doesn't exist on HD");
 		File * f = [self getFileForURL:fileURL];
 		if (f == nil)
 		{
 			// File doesn't exists in Share
-			//------------------------------
+		
 			//DebugLog(@"File doesn't exists in Share: %@", fileURL);
 			// DO NOTHING
 		}
@@ -562,7 +557,7 @@
 	@autoreleasepool
 	{
 		// 1. Determine if anything changed: SELECT current state
-		//-------------------------------------------------------
+	
 		File * currentState = [self getFileForURL:[f url]];
 		
 		if (currentState)
@@ -580,7 +575,7 @@
 		
 		
 		// Serialize "extAttrBase64Encoded" to JSON-String
-		//-------------------------------------------------
+		
 		NSError * error;
 		NSData * extAttrData = [[CJSONSerializer serializer] serializeObject:[f extAttributes] error:&error];
 		if (error)
@@ -593,7 +588,7 @@
 		error = nil;
 		
 		// Serialize "versions" to JSON-String
-		//-------------------------------------
+		
 		NSData * versionsData = [[CJSONSerializer serializer] serializeObject:[f versions] error:&error];
 		if (error)
 		{
@@ -607,7 +602,7 @@
 		if (currentState)
 		{
 			// UPDATE
-			//--------
+		
 			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE files SET url='%@', revision=%lld, fileSize=%lld, contentModDate='%@', attributesModDate='%@', isSet=%i, extAttributes='%@', versions='%@', isSymlink=%i, targetPath='%@' WHERE uid='%@';",[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[f isSymlink] intValue], [[f targetPath] sqlString], [[[[f url] absoluteString] lowercaseString] sqlString]];
 			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
 			if (error) {
@@ -618,7 +613,7 @@
 		else
 		{
 			// INSERT
-			//--------
+			
 			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO files (uid, url, revision, fileSize, contentModDate, attributesModDate, isSet, extAttributes, versions, isSymlink, targetPath) VALUES ('%@', '%@',%lld, %lld, '%@','%@',%i,'%@','%@',%i,'%@');", [[[[f url] absoluteString] lowercaseString] sqlString],[[[f url] absoluteString] sqlString], [[f revision] longLongValue], [[f fileSize] longLongValue], [f contentModDate], [f attributesModDate], [[f isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString] ,[[f isSymlink] intValue], [[f targetPath] sqlString]];
 			rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
 			if (error) {
@@ -649,7 +644,7 @@
 	}
 	
 	// Parsing the results-array into a File-Object
-	//----------------------------------------------
+	
 	File * rv = [[File alloc] init];
 	[rv setUrl:[NSURL URLWithString:rows[0][0]]];
 	[rv setRevision:rows[0][1]];
@@ -738,26 +733,26 @@
 	}
 	
 	// Parsing the results-array into a File-Object
-	//----------------------------------------------
+	
 	for (int i = 0; i < rowCount; i++)
 	{
 		NSMutableDictionary * f = [NSMutableDictionary dictionary];
 		
 		// Revision
-		//----------
+	
 		[f setObject:rows[i][1] forKey:@"revision"];
 		
 		// relUrl
-		//--------
+		
 		NSString * relUrl = [rows[i][0] substringFromIndex:[[[self root] absoluteString] length]];
 		[f setObject:relUrl forKey:@"relUrl"];
 		
 		// isSet
-		//-------
+		
 		[f setObject:rows[i][5] forKey:@"isSet"];
 		
 		// extendedAttributes
-		//--------------------
+		
 		NSError *theError = NULL;
 		NSMutableDictionary * extAttr = [NSMutableDictionary dictionaryWithJSONString:rows[i][6] error:&theError];
 		if (theError)
@@ -768,20 +763,20 @@
 		[f setObject:extAttr forKey:@"extendedAttributes"];
 		
 		// versions
-		//----------
+		
 		NSMutableDictionary * versions = [NSMutableDictionary dictionaryWithJSONString:rows[i][7] error:&theError];
 		[f setObject:versions forKey:@"versions"];
 		
 		// isSymlink
-		//-----------
+		
 		[f setObject:rows[i][8] forKey:@"isSymlink"];
 		
 		// targetPath
-		//-----------
+		
 		[f setObject:rows[i][9] forKey:@"targetPath"];
 		
 		// Finally add the new file to the Array that we return.
-		//-------------------------------------------------------
+		
 		[rv addObject:f];
 	}
 	return rv;
@@ -818,25 +813,25 @@
 	}
 	
 	// Parsing the results-array into a File-Object
-	//---------------------------------------------
+
 	for (int i = 0; i < rowCount; i++)
 	{
 		NSMutableDictionary * f = [NSMutableDictionary dictionary];
 		
 		// Revision
-		//----------
+	
 		[f setObject:rows[i][1] forKey:@"revision"];
 		
 		// fileSize
-		//----------
+		
 		[f setObject:rows[i][2] forKey:@"fileSize"];
 		
 		// isSet
-		//-------
+		
 		[f setObject:rows[i][5] forKey:@"isSet"];
 		
 		// extendedAttributes
-		//--------------------
+		
 		NSError *error2 = NULL;
 		NSMutableDictionary * extAttr = [NSMutableDictionary dictionaryWithJSONString:rows[i][6] error:&error2];
 		if (error2)
@@ -847,16 +842,16 @@
 		[f setObject:extAttr forKey:@"extendedAttributes"];
 		
 		// versions
-		//----------
+		
 		NSMutableDictionary * versions = [NSMutableDictionary dictionaryWithJSONString:rows[i][7] error:&error2];
 		[f setObject:versions forKey:@"versions"];
 		
 		// isSymlink
-		//-----------
+		
 		[f setObject:rows[i][8] forKey:@"isSymlink"];
 		
 		// targetPath
-		//-----------
+		
 		if ([rows[i][8] intValue] == 0)
 		{
 			[f setObject:@"" forKey:@"targetPath"];
@@ -867,13 +862,13 @@
 		}
 
 		// Finally add the new file to the NSDictionary that we return.
-		//--------------------------------------------------------------
+		
 		NSString * relUrl = [rows[i][0] substringFromIndex:[[[self root] absoluteString] length]];
 		[rv setObject:f forKey:relUrl];
 	}
 	
 	// Set the biggest revision
-	//--------------------------
+
 	*biggestRev = [rows lastObject][1];
 	
 	return rv;

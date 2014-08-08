@@ -64,7 +64,7 @@
 	
 	
 	// match directory / match file
-	//------------------------------
+	
 	if ([[rev isSymlink] boolValue])
 	{
 		[self matchSymlink];
@@ -85,7 +85,7 @@
 							  forPeer:[rev peer]];
 		
 		// match 'normal' files
-		//----------------------
+	
 		[self matchFile];
 	}
 	
@@ -213,7 +213,7 @@
 		// We intentionally don't check for conflicts
 		
 		// Match remoteState
-		//-------------------
+	
 		[self executeMatch];
 		
 		return;
@@ -241,7 +241,7 @@
 		//DebugLog(@"C");
 		
 		// check for conflicts
-		//---------------------
+		
 		if ([File versions:[rev versions] hasConflictsWithVersions:[localState versions]])
 		{
 			//DebugLog(@"C1");
@@ -262,11 +262,11 @@
 			
 			// Make sure we only delete a file...
 			// if the remoteState->Versions is bigger than on localState
-			//-----------------------------------------------------------
+		
 			if ([[localState getLastVersionKey] intValue] <= [[rev getLastVersionKey] intValue])
 			{
 				// Delete FILE
-				//-------------
+			
 				int rv = remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
 				
 				if (rv != 0)
@@ -299,29 +299,28 @@
 	{
 		//DebugLog(@"D");
 		// check for conflicts
-		//---------------------
+
 		if ([File versions:[rev versions] hasConflictsWithVersions:[localState versions]])
 		{
 			//DebugLog(@"D1");
 			// WITH CONFLICT
-			//---------------
+		
 			if ([[config myPeerID] isLessThan:[[rev peer] peerID]])
 			{
 				// myPeerId < otherPeerId
-				//------------------------
-				
+			
 				NSURL* conflictedCopyURL = [self createConflictedCopy];
 				
 				[[[rev peer] share] scanURL:conflictedCopyURL recursive:NO];
 				
 				// Match remoteState
-				//-------------------
+			
 				return [self executeMatch];
 			}
 			else
 			{
 				// myPeerId >= otherPeerId
-				//-------------------------
+				
 				//DebugLog(@"DO NOTHING because myPeerId >= otherPeerId");
 				
 				// DO NOTHING
@@ -332,11 +331,11 @@
 			//DebugLog(@"D2");
 			
 			// WITHOUT CONFLICT
-			//------------------
+			
 			if ([[localState getLastVersionKey] intValue] < [[rev getLastVersionKey] intValue])
 			{
 				// Match remoteState
-				//-------------------
+			
 				return [self executeMatch];
 			}
 			else
@@ -361,7 +360,7 @@
 	//DebugLog(@"matchRemoteState");
 	
 	// Store Revision in Share->db, if the file requires a download
-	//--------------------------------------------------------------
+
 	if (![rev canBeMatchedInstantly])
 	{
 		//DebugLog(@"Revision CAN'T be matched instantly");
@@ -370,7 +369,7 @@
 	}
 	
 	// match zero-length files
-	//-------------------------
+	
 	if ([rev isZeroLengthFile])
 	{
 		[self createZeroLengthFile];
@@ -384,11 +383,11 @@
 	DebugLog(@"matchZeroLengthFile");
 	
 	// Delete FILE (because writeData:[NSData data] doesn't work)
-	//------------------------------------------------------------
+	
 	remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
 	
 	// Create empty file
-	//-------------------
+	
 	NSFileHandle * fh = [FileHelper fileForWritingAtPath:[fullURL path]];
 	
 	/*
@@ -409,7 +408,7 @@
 		}
 		
 		// Retry
-		//-------
+	
 		fh = [FileHelper fileForWritingAtPath:[fullURL path]];
 	}
 	//[fh writeData:[NSData data]];
@@ -419,7 +418,7 @@
 	[FileHelper setFilePermissionsAtPath:[fullURL path] toOctal:755];
 	
 	// Set remoteState in Share s
-	//----------------------------
+
 	File * newState = [[File alloc] initAsNewFileWithPath:[fullURL path]];
 	[newState setVersions:[remoteState versions]];
 	[[[rev peer] share] setFile:newState];
@@ -430,13 +429,13 @@
 - (NSURL*) createConflictedCopy
 {
 	// Create CONFLICTEDCOPY
-	//-----------------------
+	
 	NSError * error;
 	NSURL * conflictedCopyURL;
 	if ( [[NSFileManager defaultManager] isReadableFileAtPath:[[localState url] path]] )
 	{
 		// Rename localState-File to "xxx conflicted copy on abc193848.xxx"
-		//------------------------------------------------------------------
+	
 		NSURL * superdir = [fullURL URLByDeletingLastPathComponent];
 		NSString * oldFilename = [[fullURL lastPathComponent] stringByDeletingPathExtension];
 		NSString * newFilename = [oldFilename stringByAppendingString:[NSString stringWithFormat:@" conflicted copy on %@", [config myPeerID]]];

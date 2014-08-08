@@ -12,7 +12,7 @@
 
 
 // Initialization
-//----------------
+
 - (id) initShareWithID:(NSString*)i
 		  andRootURL:(NSURL*)u
 		  withSecret:(NSString*)s
@@ -20,7 +20,7 @@
 
 
 // File-Management
-//-----------------
+
 - (void) scanURL:(NSURL*)fileURL recursive:(BOOL)recursive;
 - (int) setFile:(File*)f;	// should only be used by helper-classes of Share-class
 - (File*) getFileForURL:(NSURL*)u;
@@ -40,27 +40,27 @@
 - (int) commitAndBegin;
 
 // Peer-Management
-//-----------------
+
 - (Peer*) getPeerForID:(NSString*)i;
 - (BOOL) setPeer:(Peer*)p;
 - (NSArray*) allPeers;
 
 
 // Revision-Management
-//---------------------
+
 - (void) setRevision:(Revision*)r forPeer:(Peer*)p;
 - (void) removeRevision:(Revision*)r forPeer:(Peer*)p;
 - (Revision*) nextRevisionForPeer:(Peer*)p;
 
 
 // Other
-//-------
+
 - (NSString*) description;
 - (NSDictionary*) plistEncoded;
 
 
 // Model attributes
-//------------------
+
 @property (nonatomic, readonly, strong) NSString * shareId; // <shareId>.sql
 @property (nonatomic, readonly, strong) NSURL * root;
 @property (nonatomic, readonly, strong) NSString * secret; // SHA-256 of password

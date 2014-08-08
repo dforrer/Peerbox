@@ -63,7 +63,7 @@
 		
 		
 		// Initialize the BonjourSearcher
-		//--------------------------------
+	
 		NSString * serviceType = [NSString stringWithFormat:@"_%@._tcp.", APP_NAME];
 		bonjourSearcher = [[BonjourSearcher alloc] initWithServiceType:serviceType andDomain:@"local" andMyName:[config myPeerID]];
 		[bonjourSearcher setDelegate:self];
@@ -80,8 +80,8 @@
 		
 		fileDownloads	  = [[NSMutableArray alloc] init];
 
-		// KVO
-		//-----
+		// Setup KVO
+		
 		[revMatcherQueue  addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
 		[fsWatcherQueue   addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
 		[fileMatcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
@@ -91,17 +91,17 @@
 		
 		
 		// Remove all previously downloaded files from downloadsDir
-		//----------------------------------------------------------
+		
 		[FileHelper removeAllFilesInDir:[config downloadsDir]];
 		
 		
 		// Perform initial scans of the shares
-		//-------------------------------------
+	
 		[self restartFSWatcherQueue];
 		
 		
 		// Setup notification listeners
-		//------------------------------
+		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsDir" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsFile" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsSymlink" object:nil];
@@ -111,7 +111,7 @@
 		
 		
 		// Schedule timer for commit and begin on databases
-		//--------------------------------------------------
+		
 		[NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(scheduledTasks) userInfo:nil repeats:YES];
 		
 	}
@@ -160,7 +160,7 @@
 		if (![FileHelper fileFolderExists:modelPath] )
 		{
 			// "model.plist" DOESN'T exist
-			//-----------------------------
+			
 			[self generatePeerId];
 			return;
 		}
@@ -169,19 +169,19 @@
 		if (!model)
 		{
 			// File "model.plist" DOESN'T contain a dictionary
-			//-------------------------------------------------
+			
 			[self generatePeerId];
 			return;
 		}
 		
 		// Set myPeerID
-		//--------------
+	
 		[config setMyPeerID:[model objectForKey:@"myPeerID"]];
 		
 		DebugLog(@"%myPeerID: %@", [config myPeerID]);
 		
 		// Set myShares
-		//--------------
+		
 		NSDictionary * sharesSetup = [model objectForKey:@"myShares"];
 		for (id key1 in sharesSetup)
 		{
@@ -192,7 +192,7 @@
 									   andConfig:config];
 			
 			// Iterate through PEERS
-			//-----------------------
+		
 			NSDictionary * peers = [shareDict objectForKey:@"peers"];
 			for (id key2 in peers)
 			{
@@ -235,7 +235,7 @@
 	[model setObject:[config myPeerID] forKey:@"myPeerID"];
 	
 	// Write model to disk
-	//---------------------
+
 	NSString * path = [[config workingDir] stringByAppendingPathComponent:@"model.plist"];
 	if (![model writeToFile:path atomically:TRUE])
 	{
@@ -317,13 +317,13 @@
 - (void) createWorkingDirectories
 {
 	// Create directory "downloads"
-	//------------------------------
+	
 	[[NSFileManager defaultManager] createDirectoryAtPath:[config downloadsDir]
 						 withIntermediateDirectories:YES
 									   attributes:nil
 										   error:nil];
 	// Create directory "web"
-	//------------------------
+	
 	[[NSFileManager defaultManager] createDirectoryAtPath:[config webDir]
 						 withIntermediateDirectories:YES
 									   attributes:nil
@@ -448,7 +448,7 @@
 - (void) downloadSharesHasFinishedWithResponseDict:(NSDictionary*)d
 {
 	// Store response in model
-	//-------------------------
+	
 	NSArray * sharesRemote = [d objectForKey:@"shares"];
 	
 	if (!sharesRemote)
@@ -460,12 +460,12 @@
 	for (NSDictionary * dict in sharesRemote)
 	{
 		// Check if we even have a share with the shareId
-		//------------------------------------------------
+	
 		Share * s = [myShares objectForKey:[dict objectForKey:@"shareId"]];
 		if ( s )
 		{
 			// Check if s(hare) contains a peer with peerId
-			//----------------------------------------------
+		
 			Peer * p = [s getPeerForID:[d objectForKey:@"peerId"]];
 			if ( p == nil )
 			{
@@ -473,13 +473,13 @@
 				[s setPeer:p];
 			}
 			// Set the currentRev
-			//--------------------
+			
 			[p setCurrentRev:[dict objectForKey:@"currentRev"]];
 		}
 	}
 	
 	// Continue downloading revisions...
-	//-----------------------------------
+
 	if ([revMatcherQueue operationCount] == 0)
 	{
 		[self downloadRevisionsFromPeers];
@@ -487,7 +487,7 @@
 	
 
 	// ...and files
-	//---------------
+	
 	if ([fileDownloads count] < MAX_CONCURRENT_DOWNLOADS / 2)
 	{
 		[self matchFiles];
@@ -516,7 +516,7 @@
 	NSError * error;
 	
 	// Convert NSData to NSDictionary
-	//--------------------------------
+	
 	NSDictionary * dict = [NSDictionary dictionaryWithJSONData:[d response] error:&error];
 	if (error)
 	{
@@ -527,11 +527,11 @@
 	
 	
 	// Store revisions in share->peers->downloadedRevs
-	//-------------------------------------------------
+	
 	if ([[dict objectForKey:@"revisions"] count] > 0)
 	{
 		// Sort the downloaded revisions by the revision-number
-		//------------------------------------------------------
+	
 		NSArray * keysSortedByRevision = [[dict objectForKey:@"revisions"] keysSortedByValueUsingComparator: ^(id obj1, id obj2)
 		{
 			if ([[obj1 objectForKey:@"revision"] longLongValue] > [[obj2 objectForKey:@"revision"] longLongValue])
@@ -546,7 +546,7 @@
 		}];
 		
 		// Create a RevisionMatchOperation for every downloaded revision
-		//---------------------------------------------------------------
+		
 		for (id key in keysSortedByRevision)
 		{
 			NSDictionary * rev	= [[dict objectForKey:@"revisions"] objectForKey:key];
@@ -575,7 +575,7 @@
 				
 		
 		// Get biggest revision from response->revisions
-		//-----------------------------------------------
+		
 		NSNumber * biggestRev = [dict objectForKey:@"biggestRev"];
 		DebugLog(@"biggestRev: %@", biggestRev);
 		[[d peer] setLastDownloadedRev:biggestRev];
@@ -632,7 +632,7 @@
 	[self addOrRemove:0 synchronizedFromFileDownloads:d];
 	
 	// Remove failed download-file from downloads directory
-	//------------------------------------------------------
+
 	NSError * error;
 	[[NSFileManager defaultManager] removeItemAtPath:[d downloadPath] error:&error];
 	if (error)
@@ -642,7 +642,7 @@
 	}
 	
 	// Keep the revision unless we receive a 404-Error
-	//-------------------------------------------------
+	
 	if ([d statusCode] != 404)
 	{
 		Revision * r = [d rev];
@@ -665,18 +665,18 @@
 		if ([revMatcherQueue operationCount] == 0)
 		{
 			// Do something here when your queue has completed
-			//-------------------------------------------------
+			
 			DebugLog(@"queue has completed");
 			
 			
 			// Restart Revision-Download
-			//---------------------------
+	
 			[self downloadRevisionsFromPeers];
 			
 			if ([fileMatcherQueue operationCount] == 0)
 			{
 				// Download more files
-				//---------------------
+			
 				[self matchFiles];
 			}
 		}
@@ -711,7 +711,7 @@
 		if ([fileMatcherQueue operationCount] == 0)
 		{
 			// Download more files
-			//---------------------
+		
 			[self matchFiles];
 		}
 	}
@@ -736,7 +736,7 @@
 	DebugLog(@"restartFSWatcherQueue");
 	
 	// Do the rescan
-	//---------------
+
 	[fsWatcherQueue setSuspended:FALSE];
 	
 	for (Share * s in [myShares allValues])
@@ -757,7 +757,7 @@
 - (void) fsWatcherEvent: (NSNotification *)notification
 {
 	// Return from function if fsWatcherQueue isSuspended
-	//----------------------------------------------------
+	
 	if ([fsWatcherQueue isSuspended])
 	{
 		return;
@@ -785,7 +785,7 @@
 - (void) updateFSWatcher
 {
 	// Prepare temporary table with paths
-	//-----------------------------------
+	
 	NSMutableArray * a = [[NSMutableArray alloc] init];
 	
 	for (Share * s in [myShares allValues])
@@ -839,7 +839,7 @@
 		andPasswordHash:(NSString*)passwordHash
 {
 	// Verify Input values cannot be null
-	//------------------------------------
+	
 	if (shareId == nil || root == nil || passwordHash == nil)
 	{
 		return nil;
@@ -855,7 +855,7 @@
 		[self saveModel];
 
 		// Perform initial scan
-		//----------------------
+	
 		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
 		[self addOperation:o withDependecyToQueue:fsWatcherQueue];
 		[self updateFSWatcher];
@@ -877,13 +877,13 @@
 	[myShares removeObjectForKey:shareId];
 	
 	// Remove .sqlite-File
-	//---------------------
+
 	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [config workingDir], shareId];
 	NSError * error;
 	[[NSFileManager defaultManager] removeItemAtPath:sqlitePath error:&error];
 
 	// Resave model and update observed directories
-	//----------------------------------------------
+	
 	[self saveModel];
 	[self updateFSWatcher];
 	
@@ -902,13 +902,15 @@
 - (void) downloadSharesFromPeers
 {
 	DebugLog(@"downloadSharesFromPeers");
+	
 	// For every announced NetService...
-	//-----------------------------------
+	
 	for (id key in [bonjourSearcher resolvedServices])
 	{
 		NSNetService *aNetService = [[bonjourSearcher resolvedServices] objectForKey:key];
+		
 		// ...and for every Share
-		//------------------------
+	
 		DownloadShares * d = [[DownloadShares alloc] initWithNetService:aNetService];
 		[d setDelegate:self];
 		[d start];
@@ -921,7 +923,7 @@
 {
 	DebugLog(@"notifyPeers");
 	// For every announced NetService...
-	//-----------------------------------
+	
 	for (id key in [bonjourSearcher resolvedServices])
 	{
 		NSNetService *aNetService = [[bonjourSearcher resolvedServices] objectForKey:key];
@@ -938,7 +940,7 @@
 - (void) downloadRevisionsFromPeers
 {
 	// For every Share ....
-	//----------------------
+	
 	for (id key in myShares)
 	{
 		Share * s = [myShares objectForKey:key];
@@ -947,7 +949,7 @@
 			NSNetService * ns = [bonjourSearcher getNetServiceForName:[p peerID]];
 			
 			// Compare currentRev (on remote peer) with lastDownloadedRev
-			//------------------------------------------------------------
+	
 			if (ns != nil
 			    && ([[p currentRev] longLongValue] > [[p lastDownloadedRev] longLongValue]))
 			{
@@ -962,21 +964,20 @@
 
 - (void) matchFiles
 {
-	// For every Share ....
-	//----------------------
+	// For every Share ...
 	for (id key in myShares)
 	{
 		Share * s = [myShares objectForKey:key];
+
+		// For ervery Peer ...
 		for (Peer * p in [s allPeers])
 		{
 			NSNetService * ns = [bonjourSearcher getNetServiceForName:[p peerID]];
 			
-			// Compare currentRev (on remote peer) with lastDownloadedRev
-			//------------------------------------------------------------
 			if (ns != nil)
 			{
 				Revision * r = [s nextRevisionForPeer:p];
-
+				
 				while (r != nil && [fileDownloads count] < MAX_CONCURRENT_DOWNLOADS)
 				{
 					[s removeRevision:r forPeer:p];

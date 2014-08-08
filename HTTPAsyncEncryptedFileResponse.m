@@ -49,7 +49,7 @@
 	    forConnection: (HTTPConnection *)parent
 {
 	// Check Input Values
-	//-------------------
+	
 	if (fpath == nil || pw == nil || parent == nil)
 	{
 		return nil;
@@ -72,7 +72,7 @@
 		
 		// We don't need to keep making new NSData objects.
 		// We can just use one repeatedly.
-		//-------------------------------------------------
+		
 		data = nil;
 		readStream = [NSInputStream inputStreamWithFileAtPath:filePath];
 		[readStream open];

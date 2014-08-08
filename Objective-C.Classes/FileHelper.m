@@ -31,7 +31,7 @@
 + (void) setFilePermissionsAtPath:(NSString*)path toOctal:(int)oct
 {
 	// Convert octal to decimal
-	//--------------------------
+
 	int dec = octal_decimal(oct);
 	
 	NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
