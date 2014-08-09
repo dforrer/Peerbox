@@ -63,7 +63,7 @@
 
 @property (nonatomic, readonly, strong) NSString * shareId; // <shareId>.sql
 @property (nonatomic, readonly, strong) NSURL * root;
-@property (nonatomic, readonly, strong) NSString * secret; // SHA-256 of password
+@property (nonatomic, readonly, strong) NSString * secret; // SHA-1 of password
 @property (nonatomic, readonly, strong) Configuration * config;
 
 @end
