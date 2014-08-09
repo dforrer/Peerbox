@@ -96,13 +96,10 @@
 
 - (void) decryptionDidFinish
 {
-	[download closeFile];
-	
 	if (decryptor.error || hasFailed == TRUE)
 	{
 		// An error occurred. You cannot trust download at this point
 		[self->connection cancel];  // stop connecting; no more delegate messages
-		
 		[delegate downloadFileHasFailed:self];
 	}
 	else
@@ -122,10 +119,11 @@
 		
 		// Verify the integrity of the downloaded file by comparing Hashes
 		
-		if ([sha1OfDownload isEqualToString:[rev getLastVersionHash]])
+		NSNumber * sizeOfDownload = [NSNumber numberWithLongLong:[download seekToEndOfFile]];
+		
+		if ([sha1OfDownload isEqualToString:[rev getLastVersionHash]] && [sizeOfDownload isEqualToNumber:[rev fileSize]])
 		{
 			// Notify Revision-Instance that the download has finished
-		
 			[delegate downloadFileHasFinished:self];
 		}
 		else
@@ -135,6 +133,7 @@
 			[delegate downloadFileHasFailed:self];
 		}
 	}
+	[download closeFile];
 	decryptor = nil;
 }
 
