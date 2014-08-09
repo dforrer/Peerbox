@@ -105,29 +105,13 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsDir" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsFile" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsSymlink" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyPeers:) name:@"notifyPeers" object:nil];
 		
 		
 		[self updateFSWatcher];
 		
-		
-		// Schedule timer for commit and begin on databases
-		
-		[NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(scheduledTasks) userInfo:nil repeats:YES];
-		
 	}
 	return self;
-}
-
-
-
-- (void) scheduledTasks
-{
-	//DebugLog(@"scheduledTasks");
-	
-	if ([self commitAndBeginAllShareDBs] > 0)
-	{
-		[self notifyPeers];
-	}
 }
 
 
@@ -343,23 +327,6 @@
 }
 
 
-
-/**
- * Returns the number of all new changes on all the shares
- */
-
-- (int) commitAndBeginAllShareDBs
-{
-	int total_uncommitted = 0;
-	for (Share * s in [myShares allValues])
-	{
-		total_uncommitted += [s commitAndBegin];
-	}
-	return total_uncommitted;
-}
-
-
-
 - (void) commitAllShareDBs
 {
 	for (Share * s in [myShares allValues])
@@ -419,7 +386,7 @@
 
 - (void) bonjourSearcherServiceResolved:(NSNetService*)n
 {
-	[self notifyPeers];
+	[self notifyPeers:nil];
 	
 	// Update StatusBar
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"appShouldRefreshStatusBar" object:nil];
@@ -919,7 +886,7 @@
 
 
 
-- (void) notifyPeers
+- (void) notifyPeers:(NSNotification*)aNotification
 {
 	DebugLog(@"notifyPeers");
 	// For every announced NetService...

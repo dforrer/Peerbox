@@ -26,6 +26,7 @@
 	NSMutableDictionary * peers; // key = peerId
 	NSNumber * currentRevision;
 	int totalChanges;
+	NSTimer * timer;
 }
 
 
@@ -71,6 +72,9 @@
 	}
 	
 	[self dbBegin];
+	
+	// Schedule timer for commit and begin on databases
+	[self setTimer];
 }
 
 
@@ -101,6 +105,19 @@
 		return self;
 	}
 }
+
+
+- (void) setTimer
+{
+	if ([timer isValid])
+	{
+		return;
+	}
+	DebugLog(@"timer is not Valid");
+	timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(commitAndBegin) userInfo:nil repeats:YES];
+	[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+}
+
 
 - (NSDictionary*) plistEncoded
 {
@@ -156,9 +173,12 @@
  */
 - (int) commitAndBegin
 {
+	DebugLog(@"commitAndBegin called");
 	@autoreleasepool
 	{
-		// COMMIT Changes in "indexfile" if there are any
+		// COMMIT Changes in SQLite-DB-file if there are any
+		
+		[timer invalidate];
 
 		int changes_diff = 0;
 		int newTotalChanges = [db getTotalChanges];
@@ -170,6 +190,7 @@
 			DebugLog(@"UNCOMMITTED: %i\t currentRev:%@", changes_diff, currentRevision);
 			totalChanges = newTotalChanges;
 			[self dbBegin];
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"notifyPeers" object:nil];
 		}
 		return changes_diff;
 	}
@@ -315,6 +336,8 @@
 				DebugLog(@"ERROR during INSERT");
 			}
 		}
+
+		[self setTimer];
 	}
 }
 
@@ -324,6 +347,7 @@
 	NSError * error;
 	NSString * query = [NSString stringWithFormat:@"DELETE FROM revisions WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString]];
 	[db performQuery:query rows:nil error:&error];
+	[self setTimer];
 }
 
 
@@ -621,6 +645,7 @@
 				DebugLog(@"%@", error);
 			}
 		}
+		[self setTimer];
 		return rv;
 	}
 }
@@ -630,6 +655,7 @@
 	NSError * error;
 	NSString * query = [NSString stringWithFormat:@"DELETE FROM files WHERE uid='%@';",[[[[f url] absoluteString] lowercaseString] sqlString]];
 	[db performQuery:query rows:nil error:&error];
+	[self setTimer];
 }
 
 - (File*) getFileForQuery:(NSString*) query
