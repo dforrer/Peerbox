@@ -63,7 +63,7 @@
 		
 		
 		// Initialize the BonjourSearcher
-	
+		
 		NSString * serviceType = [NSString stringWithFormat:@"_%@._tcp.", APP_NAME];
 		bonjourSearcher = [[BonjourSearcher alloc] initWithServiceType:serviceType andDomain:@"local" andMyName:[config myPeerID]];
 		[bonjourSearcher setDelegate:self];
@@ -73,13 +73,13 @@
 		fsWatcherQueue	  = [[NSOperationQueue alloc] init];
 		revMatcherQueue  = [[NSOperationQueue alloc] init];
 		fileMatcherQueue = [[NSOperationQueue alloc] init];
-
+		
 		[fsWatcherQueue   setMaxConcurrentOperationCount:1];
 		[fileMatcherQueue setMaxConcurrentOperationCount:1];
 		[revMatcherQueue  setMaxConcurrentOperationCount:1];
 		
 		fileDownloads	  = [[NSMutableArray alloc] init];
-
+		
 		// Setup KVO
 		
 		[revMatcherQueue  addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
@@ -96,7 +96,7 @@
 		
 		
 		// Perform initial scans of the shares
-	
+		
 		[self restartFSWatcherQueue];
 		
 		
@@ -159,7 +159,7 @@
 		}
 		
 		// Set myPeerID
-	
+		
 		[config setMyPeerID:[model objectForKey:@"myPeerID"]];
 		
 		DebugLog(@"%myPeerID: %@", [config myPeerID]);
@@ -176,7 +176,7 @@
 									   andConfig:config];
 			
 			// Iterate through PEERS
-		
+			
 			NSDictionary * peers = [shareDict objectForKey:@"peers"];
 			for (id key2 in peers)
 			{
@@ -219,7 +219,7 @@
 	[model setObject:[config myPeerID] forKey:@"myPeerID"];
 	
 	// Write model to disk
-
+	
 	NSString * path = [[config workingDir] stringByAppendingPathComponent:@"model.plist"];
 	if (![model writeToFile:path atomically:TRUE])
 	{
@@ -427,12 +427,12 @@
 	for (NSDictionary * dict in sharesRemote)
 	{
 		// Check if we even have a share with the shareId
-	
+		
 		Share * s = [myShares objectForKey:[dict objectForKey:@"shareId"]];
 		if ( s )
 		{
 			// Check if s(hare) contains a peer with peerId
-		
+			
 			Peer * p = [s getPeerForID:[d objectForKey:@"peerId"]];
 			if ( p == nil )
 			{
@@ -446,13 +446,13 @@
 	}
 	
 	// Continue downloading revisions...
-
+	
 	if ([revMatcherQueue operationCount] == 0)
 	{
 		[self downloadRevisionsFromPeers];
 	}
 	
-
+	
 	// ...and files
 	
 	if ([fileDownloads count] < MAX_CONCURRENT_DOWNLOADS / 2)
@@ -498,19 +498,19 @@
 	if ([[dict objectForKey:@"revisions"] count] > 0)
 	{
 		// Sort the downloaded revisions by the revision-number
-	
+		
 		NSArray * keysSortedByRevision = [[dict objectForKey:@"revisions"] keysSortedByValueUsingComparator: ^(id obj1, id obj2)
-		{
-			if ([[obj1 objectForKey:@"revision"] longLongValue] > [[obj2 objectForKey:@"revision"] longLongValue])
-			{
-				return (NSComparisonResult)NSOrderedDescending;
-			}
-			if ([[obj1 objectForKey:@"revision"] longLongValue] < [[obj2 objectForKey:@"revision"] longLongValue])
-			{
-				return (NSComparisonResult)NSOrderedAscending;
-			}
-			return (NSComparisonResult)NSOrderedSame;
-		}];
+								    {
+									    if ([[obj1 objectForKey:@"revision"] longLongValue] > [[obj2 objectForKey:@"revision"] longLongValue])
+									    {
+										    return (NSComparisonResult)NSOrderedDescending;
+									    }
+									    if ([[obj1 objectForKey:@"revision"] longLongValue] < [[obj2 objectForKey:@"revision"] longLongValue])
+									    {
+										    return (NSComparisonResult)NSOrderedAscending;
+									    }
+									    return (NSComparisonResult)NSOrderedSame;
+								    }];
 		
 		// Create a RevisionMatchOperation for every downloaded revision
 		
@@ -539,7 +539,7 @@
 			RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithRevision:r andConfig:config];
 			[self addOperation:o withDependecyToQueue:revMatcherQueue];
 		}
-				
+		
 		
 		// Get biggest revision from response->revisions
 		
@@ -555,7 +555,7 @@
  */
 - (void) downloadRevisionsHasFailed:(DownloadRevisions*)d
 {
-
+	
 }
 /**
  * @params: addOrRemove = 1 (add) or 0 (remove)
@@ -599,7 +599,7 @@
 	[self addOrRemove:0 synchronizedFromFileDownloads:d];
 	
 	// Remove failed download-file from downloads directory
-
+	
 	NSError * error;
 	[[NSFileManager defaultManager] removeItemAtPath:[d downloadPath] error:&error];
 	if (error)
@@ -637,13 +637,13 @@
 			
 			
 			// Restart Revision-Download
-	
+			
 			[self downloadRevisionsFromPeers];
 			
 			if ([fileMatcherQueue operationCount] == 0)
 			{
 				// Download more files
-			
+				
 				[self matchFiles];
 			}
 		}
@@ -678,7 +678,7 @@
 		if ([fileMatcherQueue operationCount] == 0)
 		{
 			// Download more files
-		
+			
 			[self matchFiles];
 		}
 	}
@@ -695,7 +695,7 @@
 #pragma mark Controlling FSWatcher
 
 /**
- * Cancels all operations in 'fsWatcherQueue' 
+ * Cancels all operations in 'fsWatcherQueue'
  * and sets complete Share-rescans.
  */
 - (void) restartFSWatcherQueue
@@ -703,7 +703,7 @@
 	DebugLog(@"restartFSWatcherQueue");
 	
 	// Do the rescan
-
+	
 	[fsWatcherQueue setSuspended:FALSE];
 	
 	for (Share * s in [myShares allValues])
@@ -729,10 +729,10 @@
 	{
 		return;
 	}
-		
+	
 	NSURL * fileURL = [notification object];
 	//DebugLog(@"fsWatcherEvent: %@", fileURL);
-
+	
 	for (Share * share in [myShares allValues])
 	{
 		if (![FileHelper URL:fileURL hasAsRootURL:[share root]])
@@ -768,20 +768,22 @@
 
 - (void) addOperation:(NSOperation*)o withDependecyToQueue:(NSOperationQueue*)q
 {
-	if (o != nil)
+	if (o == nil || q == nil)
 	{
-		if ([q operationCount] > 0)
-		{
-			NSOperation * lastObject = [[q operations] lastObject];
-			if (lastObject == nil)
-			{
-				//DebugLog(@"lastObject == NULL");
-				return;
-			}
-			[o addDependency:lastObject];
-		}
-		[q addOperation:o];
+		DebugLog(@"ERROR: NSOperation-Object: %@ or Queue-Object: %@ are nil", o, q);
+		return;
 	}
+	if ([q operationCount] > 0)
+	{
+		NSOperation * lastObject = [[q operations] lastObject];
+		if (lastObject == nil)
+		{
+			DebugLog(@"ERROR: lastObject == NULL");
+			return;
+		}
+		[o addDependency:lastObject];
+	}
+	[q addOperation:o];
 }
 
 
@@ -820,9 +822,9 @@
 								   andConfig:config];
 		[myShares setObject:s forKey:shareId];
 		[self saveModel];
-
+		
 		// Perform initial scan
-	
+		
 		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
 		[self addOperation:o withDependecyToQueue:fsWatcherQueue];
 		[self updateFSWatcher];
@@ -844,11 +846,11 @@
 	[myShares removeObjectForKey:shareId];
 	
 	// Remove .sqlite-File
-
+	
 	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [config workingDir], shareId];
 	NSError * error;
 	[[NSFileManager defaultManager] removeItemAtPath:sqlitePath error:&error];
-
+	
 	// Resave model and update observed directories
 	
 	[self saveModel];
@@ -877,7 +879,7 @@
 		NSNetService *aNetService = [[bonjourSearcher resolvedServices] objectForKey:key];
 		
 		// ...and for every Share
-	
+		
 		DownloadShares * d = [[DownloadShares alloc] initWithNetService:aNetService];
 		[d setDelegate:self];
 		[d start];
@@ -894,7 +896,7 @@
 	for (id key in [bonjourSearcher resolvedServices])
 	{
 		NSNetService *aNetService = [[bonjourSearcher resolvedServices] objectForKey:key];
-
+		
 		PostNotification * n = [[PostNotification alloc] initWithNetService:aNetService];
 		[n start];
 	}
@@ -916,7 +918,7 @@
 			NSNetService * ns = [bonjourSearcher getNetServiceForName:[p peerID]];
 			
 			// Compare currentRev (on remote peer) with lastDownloadedRev
-	
+			
 			if (ns != nil
 			    && ([[p currentRev] longLongValue] > [[p lastDownloadedRev] longLongValue]))
 			{
@@ -935,7 +937,7 @@
 	for (id key in myShares)
 	{
 		Share * s = [myShares objectForKey:key];
-
+		
 		// For ervery Peer ...
 		for (Peer * p in [s allPeers])
 		{
@@ -953,7 +955,7 @@
 					[self addOrRemove:1 synchronizedFromFileDownloads:d];
 					[d setDelegate:self];
 					[d start];
-
+					
 					r = [s nextRevisionForPeer:p];
 				}
 			}

@@ -287,6 +287,11 @@
 		{
 			return [[shareAtIndex root] path];
 		}
+		
+		if ([[aTableColumn identifier] isEqualToString:@"Secret"])
+		{
+			return [shareAtIndex secret];
+		}
 		NSLog(@"***ERROR** dropped through pTableColumn identifiers");
 		
 		return NULL;

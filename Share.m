@@ -107,18 +107,6 @@
 }
 
 
-- (void) setTimer
-{
-	if ([timer isValid])
-	{
-		return;
-	}
-	DebugLog(@"timer is not Valid");
-	timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(commitAndBegin) userInfo:nil repeats:YES];
-	[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
-
 - (NSDictionary*) plistEncoded
 {
 	//DebugLog(@"plistEncoded: Share");
@@ -167,6 +155,19 @@
 	[db performQuery:@"CREATE INDEX IF NOT EXISTS index_revisions_fileSize ON revisions (peerID, fileSize);" rows:nil error:&error];
 	
 }
+
+
+- (void) setTimer
+{
+	if ([timer isValid])
+	{
+		return;
+	}
+	//DebugLog(@"timer is not Valid");
+	timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(commitAndBegin) userInfo:nil repeats:YES];
+	[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+}
+
 
 /**
  * Returns total number of uncommited changes
