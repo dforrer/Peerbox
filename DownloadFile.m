@@ -119,7 +119,11 @@
 		
 		// Verify the integrity of the downloaded file by comparing Hashes
 		
-		NSNumber * sizeOfDownload = [NSNumber numberWithLongLong:[download seekToEndOfFile]];
+		//NSNumber * sizeOfDownload = [NSNumber numberWithLongLong:[download seekToEndOfFile]];
+		NSNumber * sizeOfDownload;
+		[[NSURL fileURLWithPath:downloadPath] getResourceValue: &sizeOfDownload
+											   forKey: NSURLFileSizeKey
+											    error: nil];
 		
 		if ([sha1OfDownload isEqualToString:[rev getLastVersionHash]] && [sizeOfDownload isEqualToNumber:[rev fileSize]])
 		{
@@ -128,8 +132,10 @@
 		}
 		else
 		{
-			//DebugLog(@"ERROR: sha1OfDownload: %@", sha1OfDownload);
-			//DebugLog(@"ERROR: lastVersionhash:%@", [rev versions]);
+			DebugLog(@"ERROR: sha1OfDownload: %@", sha1OfDownload);
+			DebugLog(@"ERROR: lastVersionhash:%@", [rev versions]);
+			DebugLog(@"ERROR: sizeOfDownload: %@", sizeOfDownload);
+			DebugLog(@"ERROR: rev fileSize: %@", [rev fileSize]);
 			[delegate downloadFileHasFailed:self];
 		}
 	}
