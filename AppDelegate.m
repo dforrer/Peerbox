@@ -19,6 +19,7 @@
 
 
 @synthesize editWindow;
+@synthesize assistantWindow;
 @synthesize shareIdTextfield;
 @synthesize rootTextfield;
 @synthesize passwordTextfield;
@@ -47,7 +48,8 @@
 		
 		// Start Listening for Changes to the StatusBar
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appShouldRefreshStatusBar:) name:@"appShouldRefreshStatusBar" object:nil];
-		
+		NSColor * color = [NSColor colorWithDeviceRed:0.2 green:0.2 blue:0.2 alpha:1];
+		[self.assistantWindow setBackgroundColor:color];
 	}
 }
 

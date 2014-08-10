@@ -703,6 +703,13 @@
 					65582BCD197C4CF400A6D87C = {
 						TestTargetID = 65E5CBBB180AFF98001065AE;
 					};
+					65E5CBBB180AFF98001065AE = {
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = 65E5CBB7180AFF98001065AE /* Build configuration list for PBXProject "Peerbox" */;
@@ -971,6 +978,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -990,6 +998,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

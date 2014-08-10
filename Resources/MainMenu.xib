@@ -829,6 +829,7 @@
         </window>
         <customObject id="494" customClass="AppDelegate">
             <connections>
+                <outlet property="assistantWindow" destination="HR7-7p-d4y" id="piq-xZ-Yor"/>
                 <outlet property="editWindow" destination="371" id="Bhp-L4-arA"/>
                 <outlet property="passwordTextfield" destination="G2V-zL-ndu" id="eOb-ZW-TMZ"/>
                 <outlet property="rootTextfield" destination="1E4-Em-ft9" id="wGo-PN-2MR"/>
@@ -837,5 +838,35 @@
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
+        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="HR7-7p-d4y">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" texturedBackground="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="113" y="157" width="252" height="361"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
+            <view key="contentView" id="Mmt-UI-YSI">
+                <rect key="frame" x="0.0" y="0.0" width="252" height="361"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" id="FGE-Yg-c0u">
+                        <rect key="frame" x="18" y="324" width="122" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Enter Share-name:" id="KYs-Y8-M8c">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" id="Jgx-eb-MGz">
+                        <rect key="frame" x="20" y="295" width="212" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" drawsBackground="YES" id="1Oj-WY-Yhw">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+            </view>
+        </window>
     </objects>
 </document>

@@ -18,6 +18,7 @@
 
 @property (assign) IBOutlet NSTableView * sharesTableView;
 @property (weak) IBOutlet NSWindow * editWindow;
+@property (weak) IBOutlet NSWindow * assistantWindow;
 @property (weak) IBOutlet NSTextField * shareIdTextfield;
 @property (weak) IBOutlet NSTextField * rootTextfield;
 @property (weak) IBOutlet NSTextField * passwordTextfield;
