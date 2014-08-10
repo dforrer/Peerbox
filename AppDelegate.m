@@ -14,10 +14,9 @@
 
 @implementation AppDelegate
 {
-	MainController * mc;
 }
 
-
+@synthesize mc;
 @synthesize editWindow;
 @synthesize assistantWindow;
 @synthesize shareIdTextfield;
@@ -50,6 +49,34 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appShouldRefreshStatusBar:) name:@"appShouldRefreshStatusBar" object:nil];
 	}
 }
+
+/**
+ * Terminates the App when the window is
+ * closed. It does not have to be linked
+ * up, in the .xib-File
+ */
+- (BOOL) applicationShouldTerminateAfterLastWindowClosed: (NSApplication *)theApplication
+{
+	DebugLog(@"applicationShouldTerminateAfterLastWindowClosed");
+	return NO;
+}
+
+- (BOOL) applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
+{
+	return YES;
+}
+
+/**
+ * What to do when app is terminated
+ */
+- (void) applicationWillTerminate:(NSNotification *)aNotification
+{
+	DebugLog(@"applicationWillTerminate");
+	[mc commitAllShareDBs];
+	[mc saveFileDownloads];
+	[mc saveModelToPlist];
+}
+
 
 - (void) appShouldRefreshStatusBar:(NSNotification*)aNotification
 {
@@ -145,33 +172,6 @@
 {
 	[editWindow makeKeyAndOrderFront:self];
 	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-}
-
-/**
- * Terminates the App when the window is
- * closed. It does not have to be linked
- * up, in the .xib-File
- */
-- (BOOL) applicationShouldTerminateAfterLastWindowClosed: (NSApplication *)theApplication
-{
-	DebugLog(@"applicationShouldTerminateAfterLastWindowClosed");
-	return NO;
-}
-
-- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
-{
-	return YES;
-}
-
-/**
- * What to do when app is terminated
- */
-- (void)applicationWillTerminate:(NSNotification *)aNotification
-{
-	DebugLog(@"applicationWillTerminate");
-	[mc commitAllShareDBs];
-	[mc saveFileDownloads];
-	[mc saveModelToPlist];
 }
 
 

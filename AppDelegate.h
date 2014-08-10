@@ -3,6 +3,8 @@
 //  Copyright (c) 2014 Forrer. All rights reserved.
 //
 
+@class MainController;
+
 @interface AppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource>
 
 
@@ -22,8 +24,8 @@
 @property (weak) IBOutlet NSTextField * shareIdTextfield;
 @property (weak) IBOutlet NSTextField * rootTextfield;
 @property (weak) IBOutlet NSTextField * passwordTextfield;
-
 @property (nonatomic, readwrite, copy) NSStatusItem *statusItem;
+@property (nonatomic, readwrite, retain) MainController * mc;
 
 @end
 
