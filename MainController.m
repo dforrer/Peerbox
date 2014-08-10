@@ -210,10 +210,8 @@
  * Save 'myShares' and 'myPeerID' to 'model.plist'
  */
 
-- (void) saveModel
-{
-	[self saveFileDownloads];
-	
+- (void) saveModelToPlist
+{	
 	NSMutableDictionary * model = [[NSMutableDictionary alloc] init];
 	[model setObject:[self plistEncoded] forKey:@"myShares"];
 	[model setObject:[config myPeerID] forKey:@"myPeerID"];
@@ -821,7 +819,7 @@
 								  withSecret:passwordHash
 								   andConfig:config];
 		[myShares setObject:s forKey:shareId];
-		[self saveModel];
+		[self saveModelToPlist];
 		
 		// Perform initial scan
 		
@@ -852,8 +850,7 @@
 	[[NSFileManager defaultManager] removeItemAtPath:sqlitePath error:&error];
 	
 	// Resave model and update observed directories
-	
-	[self saveModel];
+	[self saveModelToPlist];
 	[self updateFSWatcher];
 	
 }

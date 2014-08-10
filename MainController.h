@@ -25,7 +25,8 @@
 - (Share*) addShareWithID:(NSString*)shareId andRootURL:(NSURL*)root andPasswordHash:(NSString*)passwordHash;
 - (void) removeShareForID:(NSString*) shareId;
 - (void) commitAllShareDBs;
-- (void) saveModel;
+- (void) saveModelToPlist;
+- (void) saveFileDownloads;
 - (void) printResolvedServices;
 - (void) printMyShares;
 - (void) printDebugLogs;
