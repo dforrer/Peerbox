@@ -10,6 +10,7 @@
 		650F1FDE1930942F00771814 /* RevisionMatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 650F1FDD1930942F00771814 /* RevisionMatchOperation.m */; };
 		65197BA018E2A18200440C6C /* Peer.m in Sources */ = {isa = PBXBuildFile; fileRef = 65197B9F18E2A18200440C6C /* Peer.m */; };
 		6526C1CD18F5CF2800B72389 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6526C1CC18F5CF2800B72389 /* Constants.m */; };
+		652AA56B19993EA100F421E4 /* AddShareWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 652AA56A19993EA100F421E4 /* AddShareWindow.xib */; };
 		652F704D184F71D3004E13C5 /* MyHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 652F704C184F71D3004E13C5 /* MyHTTPConnection.m */; };
 		65384C761930C0AB0070F0A9 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65384C751930C0AB0070F0A9 /* MainController.m */; };
 		65384C811936F1400070F0A9 /* FileMatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 65384C801936F1400070F0A9 /* FileMatchOperation.m */; };
@@ -69,8 +70,10 @@
 		658946D119269B4C00A58A83 /* CJSONDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589454519269B4C00A58A83 /* CJSONDeserializer.m */; };
 		658946D319269B4C00A58A83 /* CJSONSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589454719269B4C00A58A83 /* CJSONSerializer.m */; };
 		658946D519269B4C00A58A83 /* NSDictionary_JSONExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589454A19269B4C00A58A83 /* NSDictionary_JSONExtensions.m */; };
+		65930E891997C435008FB32C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65930E881997C435008FB32C /* ViewController.m */; };
 		6595E54418D4ED7300E13880 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6595E54318D4ED7300E13880 /* main.m */; };
 		6595E54618D4EDC300E13880 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6595E54518D4EDC300E13880 /* MainMenu.xib */; };
+		65A09D5F19994273008FC524 /* EditSharesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65A09D5E19994273008FC524 /* EditSharesWindow.xib */; };
 		65A1213419046F830082C251 /* Revision.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A1213319046F830082C251 /* Revision.m */; };
 		65AC4DDE197C486A003F08AD /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 65AC4DDD197C486A003F08AD /* COPYING */; };
 		65AD01E6186E0DBB00DC6A1B /* FileScanOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 65AD01E5186E0DBA00DC6A1B /* FileScanOperation.m */; };
@@ -108,6 +111,7 @@
 		65197B9F18E2A18200440C6C /* Peer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Peer.m; sourceTree = "<group>"; };
 		6526C1CB18F5C9DF00B72389 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		6526C1CC18F5CF2800B72389 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		652AA56A19993EA100F421E4 /* AddShareWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AddShareWindow.xib; path = Resources/AddShareWindow.xib; sourceTree = SOURCE_ROOT; };
 		652F704B184F71D3004E13C5 /* MyHTTPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyHTTPConnection.h; sourceTree = "<group>"; };
 		652F704C184F71D3004E13C5 /* MyHTTPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyHTTPConnection.m; sourceTree = "<group>"; };
 		65384C741930C0AB0070F0A9 /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
@@ -219,8 +223,11 @@
 		6589454819269B4C00A58A83 /* JSONRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONRepresentation.h; sourceTree = "<group>"; };
 		6589454919269B4C00A58A83 /* NSDictionary_JSONExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDictionary_JSONExtensions.h; sourceTree = "<group>"; };
 		6589454A19269B4C00A58A83 /* NSDictionary_JSONExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDictionary_JSONExtensions.m; sourceTree = "<group>"; };
+		65930E871997C435008FB32C /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		65930E881997C435008FB32C /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		6595E54318D4ED7300E13880 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Resources/main.m; sourceTree = SOURCE_ROOT; };
 		6595E54518D4EDC300E13880 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainMenu.xib; path = Resources/MainMenu.xib; sourceTree = SOURCE_ROOT; };
+		65A09D5E19994273008FC524 /* EditSharesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditSharesWindow.xib; path = Resources/EditSharesWindow.xib; sourceTree = SOURCE_ROOT; };
 		65A1212E190446DB0082C251 /* Peerbox-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Peerbox-Info.plist"; path = "Resources/Peerbox-Info.plist"; sourceTree = SOURCE_ROOT; };
 		65A1212F190446DB0082C251 /* Peerbox-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Peerbox-Prefix.pch"; path = "Resources/Peerbox-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		65A1213219046F830082C251 /* Revision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Revision.h; sourceTree = "<group>"; };
@@ -531,6 +538,8 @@
 				6526C1CC18F5CF2800B72389 /* Constants.m */,
 				65E5CBF5180B0043001065AE /* AppDelegate.h */,
 				65E5CBF6180B0043001065AE /* AppDelegate.m */,
+				65930E871997C435008FB32C /* ViewController.h */,
+				65930E881997C435008FB32C /* ViewController.m */,
 				65384C741930C0AB0070F0A9 /* MainController.h */,
 				65384C751930C0AB0070F0A9 /* MainController.m */,
 				65E5CC15180B0043001065AE /* Singleton.h */,
@@ -591,6 +600,8 @@
 				65D830E9193B608600DF3F8B /* menubar_icon_stopped.png */,
 				6595E54318D4ED7300E13880 /* main.m */,
 				6595E54518D4EDC300E13880 /* MainMenu.xib */,
+				652AA56A19993EA100F421E4 /* AddShareWindow.xib */,
+				65A09D5E19994273008FC524 /* EditSharesWindow.xib */,
 				65A1212E190446DB0082C251 /* Peerbox-Info.plist */,
 				65A1212F190446DB0082C251 /* Peerbox-Prefix.pch */,
 			);
@@ -747,8 +758,10 @@
 			files = (
 				65AC4DDE197C486A003F08AD /* COPYING in Resources */,
 				658946CD19269B4C00A58A83 /* LICENSE in Resources */,
+				652AA56B19993EA100F421E4 /* AddShareWindow.xib in Resources */,
 				658945EB19269B4C00A58A83 /* LICENSE.txt in Resources */,
 				658946A919269B4C00A58A83 /* About.txt in Resources */,
+				65A09D5F19994273008FC524 /* EditSharesWindow.xib in Resources */,
 				65D830EA193B608600DF3F8B /* menubar_icon_stopped.png in Resources */,
 				658946C919269B4C00A58A83 /* .travis.yml in Resources */,
 				658946A519269B4C00A58A83 /* About.txt in Resources */,
@@ -830,6 +843,7 @@
 				658945C919269B4C00A58A83 /* HTTPConnection.m in Sources */,
 				658945DF19269B4C00A58A83 /* HTTPRedirectResponse.m in Sources */,
 				65CDF14D188C4B9700F31C13 /* DownloadRevisions.m in Sources */,
+				65930E891997C435008FB32C /* ViewController.m in Sources */,
 				65E5CC2D180B0043001065AE /* Singleton.m in Sources */,
 				658946AD19269B4C00A58A83 /* DDASLLogger.m in Sources */,
 				658945CB19269B4C00A58A83 /* HTTPMessage.m in Sources */,

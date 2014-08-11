@@ -4,28 +4,12 @@
 //
 
 @class MainController;
+@class ViewController;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource>
+@interface AppDelegate : NSObject <NSApplicationDelegate>
 
-
-- (IBAction) addShare: (id)sender;
-- (IBAction) removeShare: (id)sender;
-- (IBAction) downloadShares:(id)sender;
-- (IBAction) downloadRevisions:(id)sender;
-- (IBAction) matchFiles:(id)sender;
-- (IBAction) printShares: (id)sender;
-- (IBAction) printResolvedServices: (id)sender;
-- (IBAction) printDebugLogs:(id)sender;
-- (IBAction) openItem:(id)sender;
-
-@property (assign) IBOutlet NSTableView * sharesTableView;
-@property (weak) IBOutlet NSWindow * editWindow;
-@property (weak) IBOutlet NSWindow * assistantWindow;
-@property (weak) IBOutlet NSTextField * shareIdTextfield;
-@property (weak) IBOutlet NSTextField * rootTextfield;
-@property (weak) IBOutlet NSTextField * passwordTextfield;
-@property (nonatomic, readwrite, copy) NSStatusItem *statusItem;
-@property (nonatomic, readwrite, retain) MainController * mc;
+@property (nonatomic, readonly, retain) MainController * mc;
+@property (nonatomic, readonly, retain) ViewController * vc;
 
 @end
 

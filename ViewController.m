@@ -1,23 +1,21 @@
 //
-//  Created by Daniel Forrer on 16.05.14.
-//  Copyright (c) 2014 Forrer. All rights reserved.
+//  Created by Daniel Forrer on 10.08.14.
+//  Copyright (c) 2014 putitinthebox.com. All rights reserved.
 //
 
-// HEADER
-#import "AppDelegate.h"
+#import "ViewController.h"
 
+#import "MainController.h"
 #import "FileHelper.h"
 #import "Share.h"
 #import "Singleton.h"
-#import "MainController.h"
 
 
-@implementation AppDelegate
+@implementation ViewController
 {
+	MainController * mc;
 }
 
-@synthesize mc;
-@synthesize editWindow;
 @synthesize assistantWindow;
 @synthesize shareIdTextfield;
 @synthesize rootTextfield;
@@ -25,58 +23,20 @@
 @synthesize sharesTableView;
 @synthesize statusItem;
 
-
-
-#pragma mark -----------------------
-#pragma mark NSApplicationDelegate
-
-
-
-/**
- * What to do when app finishes loading
- */
-- (void) applicationDidFinishLaunching: (NSNotification *)aNotification
+- (id) initWithMainController:(MainController*) m
 {
-	@autoreleasepool
-	{		
-		DebugLog(@"applicationDidFinishLaunching");
-
-		mc = [[Singleton data] mainController];
+	self = [self initWithWindowNibName:@"EditSharesWindow"];
+	if (self)
+	{
+		mc = m;
 		
 		[self createStatusBarGUI];
-		
+
 		// Start Listening for Changes to the StatusBar
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appShouldRefreshStatusBar:) name:@"appShouldRefreshStatusBar" object:nil];
 	}
+	return self;
 }
-
-/**
- * Terminates the App when the window is
- * closed. It does not have to be linked
- * up, in the .xib-File
- */
-- (BOOL) applicationShouldTerminateAfterLastWindowClosed: (NSApplication *)theApplication
-{
-	DebugLog(@"applicationShouldTerminateAfterLastWindowClosed");
-	return NO;
-}
-
-- (BOOL) applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
-{
-	return YES;
-}
-
-/**
- * What to do when app is terminated
- */
-- (void) applicationWillTerminate:(NSNotification *)aNotification
-{
-	DebugLog(@"applicationWillTerminate");
-	[mc commitAllShareDBs];
-	[mc saveFileDownloads];
-	[mc saveModelToPlist];
-}
-
 
 - (void) appShouldRefreshStatusBar:(NSNotification*)aNotification
 {
@@ -104,6 +64,7 @@
 	// Allocate Default NSMenuItems
 	NSMenuItem  * default_edit = [[NSMenuItem alloc ] init];
 	NSMenuItem  * default_quit = [[NSMenuItem alloc ] init];
+	[default_edit setTarget:self];
 	
 	// Set Titles of Default-Items
 	[default_edit setTitle:@"Edit Shares..."];
@@ -143,6 +104,7 @@
 		NSMenuItem  * share_item = [[NSMenuItem alloc] initWithTitle:[s shareId]
 												    action:@selector(openItem:)
 											  keyEquivalent:@""];
+		[share_item setTarget:self];
 		[share_item setRepresentedObject:key];
 		
 		// Get and prepare icon for item
@@ -155,7 +117,7 @@
 		
 		[mymenu insertItem:share_item atIndex:0];
 	}
-
+	
 	NSMenuItem  * shares_title = [[NSMenuItem alloc ] init];
 	[shares_title setTitle:@"Shares being synced:"];
 	[mymenu insertItem:shares_title atIndex:0];
@@ -170,7 +132,9 @@
 
 - (void) openEditDialog
 {
-	[editWindow makeKeyAndOrderFront:self];
+	DebugLog(@"openEditDialog");
+	[self showWindow:nil];
+	[[self window] makeKeyAndOrderFront:self];
 	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
 }
 
@@ -184,7 +148,7 @@
 	NSString	* shareId		= [shareIdTextfield stringValue];
 	NSURL	* root		= [NSURL fileURLWithPath:[rootTextfield stringValue]];
 	NSString	* passwordHash	= [FileHelper sha1OfNSString:[passwordTextfield stringValue]];
-
+	
 	[mc addShareWithID:shareId andRootURL:root andPasswordHash:passwordHash];
 	[mc downloadSharesFromPeers];
 	
@@ -203,9 +167,9 @@
 	NSArray * mySharesArray = [[mc myShares] allValues];
 	Share * shareAtIndex = [mySharesArray objectAtIndex:index];
 	[mc removeShareForID:[shareAtIndex shareId]];
-
+	
 	[sharesTableView reloadData];
-
+	
 	[self updateStatusBarMenu];
 }
 
