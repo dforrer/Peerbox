@@ -16,7 +16,6 @@
 	MainController * mc;
 }
 
-@synthesize assistantWindow;
 @synthesize shareIdTextfield;
 @synthesize rootTextfield;
 @synthesize passwordTextfield;
