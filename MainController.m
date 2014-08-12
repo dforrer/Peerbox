@@ -535,7 +535,7 @@
 			[r setPeer:[d peer]];
 			
 			RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithRevision:r andConfig:config];
-			[self addOperation:o withDependecyToQueue:revMatcherQueue];
+			[revMatcherQueue addOperation:o];
 		}
 		
 		
@@ -583,7 +583,7 @@
 	[self addOrRemove:0 synchronizedFromFileDownloads:d];
 	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
-	[self addOperation:o withDependecyToQueue:fileMatcherQueue];
+	[fileMatcherQueue addOperation:o];
 }
 
 
@@ -707,7 +707,7 @@
 	for (Share * s in [myShares allValues])
 	{
 		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
-		[self addOperation:o withDependecyToQueue:fsWatcherQueue];
+		[fsWatcherQueue addOperation:o];
 	}
 }
 
@@ -739,7 +739,7 @@
 		}
 		
 		FileScanOperation * o = [[FileScanOperation alloc] initWithURL:fileURL andShare:share];
-		[self addOperation:o withDependecyToQueue:fsWatcherQueue];
+		[fsWatcherQueue addOperation:o];
 	}
 }
 
@@ -760,28 +760,6 @@
 	DebugLog(@"%@", a);
 	[fswatcher setPaths:a];
 	[fswatcher startWatching];
-}
-
-
-
-- (void) addOperation:(NSOperation*)o withDependecyToQueue:(NSOperationQueue*)q
-{
-	if (o == nil || q == nil)
-	{
-		DebugLog(@"ERROR: NSOperation-Object: %@ or Queue-Object: %@ are nil", o, q);
-		return;
-	}
-	if ([q operationCount] > 0)
-	{
-		NSOperation * lastObject = [[q operations] lastObject];
-		if (lastObject == nil)
-		{
-			DebugLog(@"ERROR: lastObject == NULL");
-			return;
-		}
-		[o addDependency:lastObject];
-	}
-	[q addOperation:o];
 }
 
 
@@ -824,7 +802,7 @@
 		// Perform initial scan
 		
 		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
-		[self addOperation:o withDependecyToQueue:fsWatcherQueue];
+		[fsWatcherQueue addOperation:o];
 		[self updateFSWatcher];
 		
 		return s;
