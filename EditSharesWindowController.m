@@ -86,18 +86,6 @@
 }
 
 
-- (IBAction) downloadRevisions:(id)sender
-{
-	[mc downloadRevisionsFromPeers];
-}
-
-
-- (IBAction) matchFiles:(id)sender
-{
-	[mc matchFiles];
-}
-
-
 - (IBAction) printResolvedServices: (id)sender
 {
 	[mc printResolvedServices];

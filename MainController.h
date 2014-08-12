@@ -4,7 +4,7 @@
 //
 
 /**
- * The MainModel should never use the Singleton
+ * The MainController should never use the Singleton
  */
 
 
@@ -30,14 +30,12 @@
 - (void) printResolvedServices;
 - (void) printMyShares;
 - (void) printDebugLogs;
-- (void) matchFiles;
 - (void) downloadSharesFromPeers;
-- (void) downloadRevisionsFromPeers;
 
 @property (nonatomic, readonly, strong)	Configuration * config;
 @property (nonatomic, readonly, strong)	BonjourSearcher * bonjourSearcher;
 @property (nonatomic, readonly, strong)	HTTPServer * httpServer;
-@property (nonatomic, readonly, strong)	FSWatcher  * fswatcher;
+@property (nonatomic, readonly, strong)	FSWatcher * fswatcher;
 
 @property (nonatomic, readonly, strong) NSMutableArray * fileDownloads;
 @property (nonatomic, readonly, strong) NSMutableDictionary * myShares; // shareId = key of NSDictionary
