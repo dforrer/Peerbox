@@ -8,13 +8,12 @@
 
 #import "Singleton.h"
 #import "MainController.h"
-#import "ViewController.h"
+#import "StatusBarController.h"
 
 @implementation AppDelegate
 
 @synthesize mc;
-@synthesize vc;
-
+@synthesize sbc;
 
 #pragma mark -----------------------
 #pragma mark NSApplicationDelegate
@@ -31,7 +30,7 @@
 		DebugLog(@"applicationDidFinishLaunching");
 
 		mc = [[Singleton data] mainController];
-		vc = [[ViewController alloc] initWithMainController:mc];
+		sbc = [[StatusBarController alloc] initWithMainController:mc];
 	}
 }
 

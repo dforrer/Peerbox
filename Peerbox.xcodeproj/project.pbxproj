@@ -70,10 +70,11 @@
 		658946D119269B4C00A58A83 /* CJSONDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589454519269B4C00A58A83 /* CJSONDeserializer.m */; };
 		658946D319269B4C00A58A83 /* CJSONSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589454719269B4C00A58A83 /* CJSONSerializer.m */; };
 		658946D519269B4C00A58A83 /* NSDictionary_JSONExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6589454A19269B4C00A58A83 /* NSDictionary_JSONExtensions.m */; };
-		65930E891997C435008FB32C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65930E881997C435008FB32C /* ViewController.m */; };
+		65930E891997C435008FB32C /* EditSharesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65930E881997C435008FB32C /* EditSharesWindowController.m */; };
 		6595E54418D4ED7300E13880 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6595E54318D4ED7300E13880 /* main.m */; };
 		6595E54618D4EDC300E13880 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6595E54518D4EDC300E13880 /* MainMenu.xib */; };
 		65A09D5F19994273008FC524 /* EditSharesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65A09D5E19994273008FC524 /* EditSharesWindow.xib */; };
+		65A09D621999D709008FC524 /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A09D611999D709008FC524 /* StatusBarController.m */; };
 		65A1213419046F830082C251 /* Revision.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A1213319046F830082C251 /* Revision.m */; };
 		65AC4DDE197C486A003F08AD /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 65AC4DDD197C486A003F08AD /* COPYING */; };
 		65AD01E6186E0DBB00DC6A1B /* FileScanOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 65AD01E5186E0DBA00DC6A1B /* FileScanOperation.m */; };
@@ -223,11 +224,13 @@
 		6589454819269B4C00A58A83 /* JSONRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONRepresentation.h; sourceTree = "<group>"; };
 		6589454919269B4C00A58A83 /* NSDictionary_JSONExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDictionary_JSONExtensions.h; sourceTree = "<group>"; };
 		6589454A19269B4C00A58A83 /* NSDictionary_JSONExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDictionary_JSONExtensions.m; sourceTree = "<group>"; };
-		65930E871997C435008FB32C /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		65930E881997C435008FB32C /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		65930E871997C435008FB32C /* EditSharesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSharesWindowController.h; sourceTree = "<group>"; };
+		65930E881997C435008FB32C /* EditSharesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSharesWindowController.m; sourceTree = "<group>"; };
 		6595E54318D4ED7300E13880 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Resources/main.m; sourceTree = SOURCE_ROOT; };
 		6595E54518D4EDC300E13880 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainMenu.xib; path = Resources/MainMenu.xib; sourceTree = SOURCE_ROOT; };
 		65A09D5E19994273008FC524 /* EditSharesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditSharesWindow.xib; path = Resources/EditSharesWindow.xib; sourceTree = SOURCE_ROOT; };
+		65A09D601999D709008FC524 /* StatusBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusBarController.h; sourceTree = "<group>"; };
+		65A09D611999D709008FC524 /* StatusBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusBarController.m; sourceTree = "<group>"; };
 		65A1212E190446DB0082C251 /* Peerbox-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Peerbox-Info.plist"; path = "Resources/Peerbox-Info.plist"; sourceTree = SOURCE_ROOT; };
 		65A1212F190446DB0082C251 /* Peerbox-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Peerbox-Prefix.pch"; path = "Resources/Peerbox-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		65A1213219046F830082C251 /* Revision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Revision.h; sourceTree = "<group>"; };
@@ -538,8 +541,10 @@
 				6526C1CC18F5CF2800B72389 /* Constants.m */,
 				65E5CBF5180B0043001065AE /* AppDelegate.h */,
 				65E5CBF6180B0043001065AE /* AppDelegate.m */,
-				65930E871997C435008FB32C /* ViewController.h */,
-				65930E881997C435008FB32C /* ViewController.m */,
+				65930E871997C435008FB32C /* EditSharesWindowController.h */,
+				65930E881997C435008FB32C /* EditSharesWindowController.m */,
+				65A09D601999D709008FC524 /* StatusBarController.h */,
+				65A09D611999D709008FC524 /* StatusBarController.m */,
 				65384C741930C0AB0070F0A9 /* MainController.h */,
 				65384C751930C0AB0070F0A9 /* MainController.m */,
 				65E5CC15180B0043001065AE /* Singleton.h */,
@@ -840,10 +845,11 @@
 				650F1FDE1930942F00771814 /* RevisionMatchOperation.m in Sources */,
 				658945A119269B4C00A58A83 /* NSDataGZipCategory.m in Sources */,
 				658946B519269B4C00A58A83 /* ContextFilterLogFormatter.m in Sources */,
+				65A09D621999D709008FC524 /* StatusBarController.m in Sources */,
 				658945C919269B4C00A58A83 /* HTTPConnection.m in Sources */,
 				658945DF19269B4C00A58A83 /* HTTPRedirectResponse.m in Sources */,
 				65CDF14D188C4B9700F31C13 /* DownloadRevisions.m in Sources */,
-				65930E891997C435008FB32C /* ViewController.m in Sources */,
+				65930E891997C435008FB32C /* EditSharesWindowController.m in Sources */,
 				65E5CC2D180B0043001065AE /* Singleton.m in Sources */,
 				658946AD19269B4C00A58A83 /* DDASLLogger.m in Sources */,
 				658945CB19269B4C00A58A83 /* HTTPMessage.m in Sources */,

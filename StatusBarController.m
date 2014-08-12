@@ -1,36 +1,35 @@
 //
-//  Created by Daniel Forrer on 10.08.14.
+//  StatusBarController.m
+//  Peerbox
+//
+//  Created by Daniel Forrer on 12.08.14.
 //  Copyright (c) 2014 putitinthebox.com. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "StatusBarController.h"
 
+#import "EditSharesWindowController.h"
 #import "MainController.h"
 #import "FileHelper.h"
 #import "Share.h"
 #import "Singleton.h"
 
+@implementation StatusBarController
 
-@implementation ViewController
-{
-	MainController * mc;
-}
-
-@synthesize shareIdTextfield;
-@synthesize rootTextfield;
-@synthesize passwordTextfield;
-@synthesize sharesTableView;
 @synthesize statusItem;
+@synthesize mc;
+@synthesize eswc;
 
 - (id) initWithMainController:(MainController*) m
 {
-	self = [self initWithWindowNibName:@"EditSharesWindow"];
-	if (self)
+	if ((self = [super init]))
 	{
 		mc = m;
 		
+		eswc = [[EditSharesWindowController alloc] initWithMainController:mc];
+		
 		[self createStatusBarGUI];
-
+		
 		// Start Listening for Changes to the StatusBar
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appShouldRefreshStatusBar:) name:@"appShouldRefreshStatusBar" object:nil];
 	}
@@ -63,7 +62,7 @@
 	// Allocate Default NSMenuItems
 	NSMenuItem  * default_edit = [[NSMenuItem alloc ] init];
 	NSMenuItem  * default_quit = [[NSMenuItem alloc ] init];
-	[default_edit setTarget:self];
+	[default_edit setTarget:eswc];
 	
 	// Set Titles of Default-Items
 	[default_edit setTitle:@"Edit Shares..."];
@@ -128,140 +127,6 @@
 	Share * s = [[mc myShares] objectForKey:key];
 	[[NSWorkspace sharedWorkspace] openFile:[[s root] path]];
 }
-
-- (void) openEditDialog
-{
-	DebugLog(@"openEditDialog");
-	[self showWindow:nil];
-	[[self window] makeKeyAndOrderFront:self];
-	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-}
-
-
-#pragma mark -----------------------
-#pragma mark Interface
-
-
-- (IBAction) addShare:(id)sender
-{
-	NSString	* shareId		= [shareIdTextfield stringValue];
-	NSURL	* root		= [NSURL fileURLWithPath:[rootTextfield stringValue]];
-	NSString	* passwordHash	= [FileHelper sha1OfNSString:[passwordTextfield stringValue]];
-	
-	[mc addShareWithID:shareId andRootURL:root andPasswordHash:passwordHash];
-	[mc downloadSharesFromPeers];
-	
-	[sharesTableView reloadData];
-	
-	[self updateStatusBarMenu];
-}
-
-
-
-- (IBAction) removeShare: (id)sender
-{
-	NSIndexSet * i = [sharesTableView selectedRowIndexes];
-	long index = [i firstIndex];
-	
-	NSArray * mySharesArray = [[mc myShares] allValues];
-	Share * shareAtIndex = [mySharesArray objectAtIndex:index];
-	[mc removeShareForID:[shareAtIndex shareId]];
-	
-	[sharesTableView reloadData];
-	
-	[self updateStatusBarMenu];
-}
-
-
-- (IBAction) downloadShares:(id)sender
-{
-	[mc downloadSharesFromPeers];
-}
-
-
-- (IBAction) downloadRevisions:(id)sender
-{
-	[mc downloadRevisionsFromPeers];
-}
-
-
-- (IBAction) matchFiles:(id)sender
-{
-	[mc matchFiles];
-}
-
-
-- (IBAction) printResolvedServices: (id)sender
-{
-	[mc printResolvedServices];
-}
-
-
-- (IBAction) printShares:(id)sender
-{
-	[mc printMyShares];
-}
-
-- (IBAction) printDebugLogs:(id)sender
-{
-	
-}
-
-
-#pragma mark -----------------------
-#pragma mark NSTableViewDataSource
-
-
-
-/**
- * OVERRIDE
- */
-- (NSInteger) numberOfRowsInTableView:(NSTableView *)aTableView
-{
-	long rv = (long)[[mc myShares] count];
-	return rv;
-}
-
-
-
-/**
- * OVERRIDE: Getter for NSTableView
- */
-- (id) tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
-{
-	@autoreleasepool
-	{
-		//DebugLog(@"tableView objectValueForTableColumn");
-		NSArray * mySharesArray = [[mc myShares] allValues];
-		Share * shareAtIndex = [mySharesArray objectAtIndex:rowIndex];
-		if (!shareAtIndex)
-		{
-			NSLog(@"tableView: objectAtIndex:%ld = NULL",(long)rowIndex);
-			return NULL;
-		}
-		
-		//NSLog(@"pTableColumn identifier = %@",[aTableColumn identifier]);
-		
-		if ([[aTableColumn identifier] isEqualToString:@"ShareID"])
-		{
-			return [shareAtIndex shareId];
-		}
-		
-		if ([[aTableColumn identifier] isEqualToString:@"Path"])
-		{
-			return [[shareAtIndex root] path];
-		}
-		
-		if ([[aTableColumn identifier] isEqualToString:@"Secret"])
-		{
-			return [shareAtIndex secret];
-		}
-		NSLog(@"***ERROR** dropped through pTableColumn identifiers");
-		
-		return NULL;
-	}
-}
-
 
 
 @end

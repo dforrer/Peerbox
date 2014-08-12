@@ -7,9 +7,10 @@
 
 @class MainController;
 
-@interface ViewController : NSWindowController <NSTableViewDataSource>
+@interface EditSharesWindowController : NSWindowController <NSTableViewDataSource>
 
 - (id) initWithMainController:(MainController*) m;
+- (void) openEditDialog;
 
 - (IBAction) addShare: (id)sender;
 - (IBAction) removeShare: (id)sender;
@@ -22,7 +23,6 @@
 @property (nonatomic, readonly, retain) IBOutlet NSTextField * shareIdTextfield;
 @property (nonatomic, readonly, retain) IBOutlet NSTextField * rootTextfield;
 @property (nonatomic, readonly, retain) IBOutlet NSTextField * passwordTextfield;
-@property (nonatomic, readonly, retain) NSStatusItem * statusItem;
 
 
 @end

@@ -4,12 +4,13 @@
 //
 
 @class MainController;
-@class ViewController;
+@class EditSharesWindowController;
+@class StatusBarController;
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (nonatomic, readonly, retain) MainController * mc;
-@property (nonatomic, readonly, retain) ViewController * vc;
+@property (nonatomic, readonly, retain) StatusBarController * sbc;
 
 @end
 
