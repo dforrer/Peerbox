@@ -24,7 +24,10 @@
 #import "FileMatchOperation.h"
 #import "Revision.h"
 #import "PostNotification.h"
-
+#import "DataModel.h"
+#import "Singleton.h"
+#import "StatusBarController.h"
+#import "EditSharesWindowController.h"
 
 /**
  * Contains all the Domain-logic
@@ -40,11 +43,11 @@
 
 
 @synthesize bonjourSearcher;
-@synthesize config;	// passed down to Share, Peer, Revision
 @synthesize httpServer;
 @synthesize fswatcher;
-@synthesize fileDownloads;
-@synthesize myShares;
+@synthesize dataModel;
+@synthesize statusBarController;
+@synthesize editSharesWindowController;
 
 #pragma mark -----------------------
 #pragma mark Initializer & Setup & Shutdown
@@ -58,14 +61,15 @@
 {
 	if ((self = [super init]))
 	{
-		[self setupConfig];
+		dataModel = [[Singleton data] dataModel];
+		
 		[self openModel];
 		
 		
 		// Initialize the BonjourSearcher
 		
 		NSString * serviceType = [NSString stringWithFormat:@"_%@._tcp.", APP_NAME];
-		bonjourSearcher = [[BonjourSearcher alloc] initWithServiceType:serviceType andDomain:@"local" andMyName:[config myPeerID]];
+		bonjourSearcher = [[BonjourSearcher alloc] initWithServiceType:serviceType andDomain:@"local" andMyName:[[Singleton data] myPeerID]];
 		[bonjourSearcher setDelegate:self];
 		
 		fswatcher		  = [[FSWatcher alloc] init];
@@ -78,7 +82,7 @@
 		[fileMatcherQueue setMaxConcurrentOperationCount:1];
 		[revMatcherQueue  setMaxConcurrentOperationCount:1];
 		
-		fileDownloads	  = [[NSMutableArray alloc] init];
+		
 		
 		// Setup KVO
 		
@@ -92,7 +96,7 @@
 		
 		// Remove all previously downloaded files from downloadsDir
 		
-		[FileHelper removeAllFilesInDir:[config downloadsDir]];
+		[FileHelper removeAllFilesInDir:[[[Singleton data] config] downloadsDir]];
 		
 		
 		// Perform initial scans of the shares
@@ -106,29 +110,65 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsFile" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsSymlink" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyPeers:) name:@"notifyPeers" object:nil];
-		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadSharesFromPeers:) name:@"downloadSharesFromPeers" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addShare:) name:@"addShare" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeShare:) name:@"removeShare" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openEditDialog:) name:@"openEditDialog" object:nil];
 		
 		[self updateFSWatcher];
-		
+		statusBarController = [[StatusBarController alloc] initWithDataModel:dataModel andBonjourSearcher:bonjourSearcher];
+		editSharesWindowController = [[EditSharesWindowController alloc] initWithDataModel:dataModel];
 	}
 	return self;
 }
 
 
-
-/**
- * Sets up the config-object with the different paths
- */
-
-- (void) setupConfig
+- (void) openEditDialog:(NSNotification*)aNotification
 {
-	config = [[Configuration alloc] init];
-	[config setWorkingDir:[[NSString alloc] initWithString:[[FileHelper getDocumentsDirectory] stringByAppendingPathComponent:APP_NAME]]];
-	[config setDownloadsDir:[[[NSString alloc] initWithString:[[FileHelper getDocumentsDirectory] stringByAppendingPathComponent:APP_NAME]] stringByAppendingPathComponent:@"downloads"]];
-	[config setWebDir:[[[NSString alloc] initWithString:[[FileHelper getDocumentsDirectory] stringByAppendingPathComponent:APP_NAME]] stringByAppendingPathComponent:@"web"]];
+	[editSharesWindowController openEditDialog];
 }
 
 
+- (void) addShare:(NSNotification*)aNotification
+{
+	Share * s = [aNotification object];
+	[dataModel addShare:s];
+	[self saveModelToPlist];
+	
+	// Perform initial scan
+	
+	ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
+	[fsWatcherQueue addOperation:o];
+	[self updateFSWatcher];
+	
+	[self downloadSharesFromPeers:nil];
+	
+	// Update GUI
+	
+	[[editSharesWindowController sharesTableView] reloadData];
+	[statusBarController updateStatusBarMenu];
+}
+
+- (void) removeShare:(NSNotification*)aNotification
+{
+	Share * s = [aNotification object];
+	[dataModel removeShare:s];
+	[self saveModelToPlist];
+
+	[self updateFSWatcher];
+	
+	// Remove .sqlite-File
+	
+	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [[[Singleton data] config] workingDir], [s shareId]];
+	NSError * error;
+	[[NSFileManager defaultManager] removeItemAtPath:sqlitePath error:&error];
+
+	
+	// Update GUI
+	
+	[[editSharesWindowController sharesTableView] reloadData];
+	[statusBarController updateStatusBarMenu];
+}
 
 /**
  * Load 'myShares' and 'myPeerID' from 'model.plist'
@@ -138,9 +178,8 @@
 {
 	@autoreleasepool
 	{
-		myShares = [[NSMutableDictionary alloc] init];
 		
-		NSString * modelPath = [[config workingDir] stringByAppendingPathComponent:@"model.plist"];
+		NSString * modelPath = [[[[Singleton data] config] workingDir] stringByAppendingPathComponent:@"model.plist"];
 		if (![FileHelper fileFolderExists:modelPath] )
 		{
 			// "model.plist" DOESN'T exist
@@ -160,9 +199,9 @@
 		
 		// Set myPeerID
 		
-		[config setMyPeerID:[model objectForKey:@"myPeerID"]];
+		[[Singleton data] setMyPeerID:[model objectForKey:@"myPeerID"]];
 		
-		DebugLog(@"%myPeerID: %@", [config myPeerID]);
+		DebugLog(@"%myPeerID: %@", [[Singleton data] myPeerID]);
 		
 		// Set myShares
 		
@@ -172,8 +211,7 @@
 			NSDictionary * shareDict = [sharesSetup objectForKey:key1];
 			Share * s = [[Share alloc] initShareWithID:[shareDict objectForKey:@"shareId"]
 									  andRootURL:[NSURL URLWithString:[shareDict objectForKey:@"root"]]
-									  withSecret:[shareDict objectForKey:@"secret"]
-									   andConfig:config];
+									  withSecret:[shareDict objectForKey:@"secret"]];
 			
 			// Iterate through PEERS
 			
@@ -187,22 +225,13 @@
 				[p setLastDownloadedRev:[peerDict objectForKey:@"lastDownloadedRev"]];
 				[s setPeer:p];
 			}
-			[myShares setObject:s forKey:key1];
+			[[dataModel myShares] setObject:s forKey:key1];
 		}
 	}
 }
 
 
 
-- (void) saveFileDownloads
-{
-	// TODO: change to not use fast-enumeration
-	for (DownloadFile * d in fileDownloads)
-	{
-		Revision * r = [d rev];
-		[[[r peer] share] setRevision:r forPeer:[r peer]];
-	}
-}
 
 
 
@@ -213,12 +242,12 @@
 - (void) saveModelToPlist
 {	
 	NSMutableDictionary * model = [[NSMutableDictionary alloc] init];
-	[model setObject:[self plistEncoded] forKey:@"myShares"];
-	[model setObject:[config myPeerID] forKey:@"myPeerID"];
+	[model setObject:[dataModel plistEncoded] forKey:@"myShares"];
+	[model setObject:[[Singleton data] myPeerID] forKey:@"myPeerID"];
 	
 	// Write model to disk
 	
-	NSString * path = [[config workingDir] stringByAppendingPathComponent:@"model.plist"];
+	NSString * path = [[[[Singleton data] config] workingDir] stringByAppendingPathComponent:@"model.plist"];
 	if (![model writeToFile:path atomically:TRUE])
 	{
 		DebugLog(@"AN ERROR OCCURED DURING SAVING OF: model.plist");
@@ -227,21 +256,6 @@
 
 
 
-/**
- * Helper function for encoding the model in a readable format
- */
-
-- (NSDictionary*) plistEncoded
-{
-	//DebugLog(@"plistEncoded: MainModel");
-	NSMutableDictionary * plist = [[NSMutableDictionary alloc] init];
-	for (id key in myShares)
-	{
-		Share * s = [myShares objectForKey:key];
-		[plist setObject:[s plistEncoded] forKey:[s shareId]];
-	}
-	return plist;
-}
 
 
 
@@ -272,8 +286,8 @@
 	// This allows browsers such as Safari to automatically discover our service.
 	NSString * serviceType = [NSString stringWithFormat:@"_%@._tcp.", APP_NAME];
 	[httpServer setType:serviceType];
-	[httpServer setName:[config myPeerID]];
-	[httpServer setDocumentRoot:[config webDir]];
+	[httpServer setName:[[Singleton data] myPeerID]];
+	[httpServer setDocumentRoot:[[[Singleton data] config] webDir]];
 	NSError *error = nil;
 	
 	if( ![httpServer start:&error] )
@@ -300,13 +314,13 @@
 {
 	// Create directory "downloads"
 	
-	[[NSFileManager defaultManager] createDirectoryAtPath:[config downloadsDir]
+	[[NSFileManager defaultManager] createDirectoryAtPath:[[[Singleton data] config] downloadsDir]
 						 withIntermediateDirectories:YES
 									   attributes:nil
 										   error:nil];
 	// Create directory "web"
 	
-	[[NSFileManager defaultManager] createDirectoryAtPath:[config webDir]
+	[[NSFileManager defaultManager] createDirectoryAtPath:[[[Singleton data] config] webDir]
 						 withIntermediateDirectories:YES
 									   attributes:nil
 										   error:nil];
@@ -321,17 +335,10 @@
 - (void) generatePeerId
 {
 	NSData * random = [FileHelper createRandomNSDataOfSize:20];
-	[config setMyPeerID:[FileHelper sha1OfNSData:random]];
+	[[Singleton data] setMyPeerID:[FileHelper sha1OfNSData:random]];
 }
 
 
-- (void) commitAllShareDBs
-{
-	for (Share * s in [myShares allValues])
-	{
-		[s dbCommit];
-	}
-}
 
 
 
@@ -354,8 +361,8 @@
 
 - (void) printMyShares
 {
-	DebugLog(@"myPeerId: %@", [config myPeerID]);
-	for (Share * s in [myShares allValues])
+	DebugLog(@"myPeerId: %@", [[Singleton data] myPeerID]);
+	for (Share * s in [[dataModel myShares] allValues])
 	{
 		DebugLog(@"%@", s);
 		for (Peer * p in [s allPeers])
@@ -369,7 +376,7 @@
 - (void) printDebugLogs
 {
 	// TODO: Find out why certain downloads finish but the downloads are then not moved to their destination
-	DebugLog(@"FileDownloads-Count: %lu",(unsigned long)[fileDownloads count]);
+	DebugLog(@"FileDownloads-Count: %lu",(unsigned long)[[dataModel fileDownloads] count]);
 }
 
 
@@ -426,7 +433,7 @@
 	{
 		// Check if we even have a share with the shareId
 		
-		Share * s = [myShares objectForKey:[dict objectForKey:@"shareId"]];
+		Share * s = [[dataModel myShares] objectForKey:[dict objectForKey:@"shareId"]];
 		if ( s )
 		{
 			// Check if s(hare) contains a peer with peerId
@@ -453,7 +460,7 @@
 	
 	// ...and files
 	
-	if ([fileDownloads count] < MAX_CONCURRENT_DOWNLOADS / 2)
+	if ([[dataModel fileDownloads] count] < MAX_CONCURRENT_DOWNLOADS / 2)
 	{
 		[self matchFiles];
 	}
@@ -534,7 +541,7 @@
 			[r setTargetPath:targetPath];
 			[r setPeer:[d peer]];
 			
-			RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithRevision:r andConfig:config];
+			RevisionMatchOperation * o = [[RevisionMatchOperation alloc] initWithRevision:r];
 			[revMatcherQueue addOperation:o];
 		}
 		
@@ -555,23 +562,7 @@
 {
 	
 }
-/**
- * @params: addOrRemove = 1 (add) or 0 (remove)
- */
-- (void) addOrRemove:(int)addOrRemove synchronizedFromFileDownloads:(DownloadFile *)d
-{
-	@synchronized(fileDownloads)
-	{
-		if (addOrRemove == 1)
-		{
-			[fileDownloads addObject:d];
-		}
-		else
-		{
-			[fileDownloads removeObject:d];
-		}
-	}
-}
+
 
 /**
  * OVERRIDE: Delegate function called by "download" inherited from <DownloadFileDelegate>
@@ -580,7 +571,7 @@
 {
 	DebugLog(@"DL finished : %@", [[d rev] relURL]);
 	DebugLog(@"downloadPath: %@", [d downloadPath]);
-	[self addOrRemove:0 synchronizedFromFileDownloads:d];
+	[dataModel addOrRemove:0 synchronizedFromFileDownloads:d];
 	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
 	[fileMatcherQueue addOperation:o];
@@ -594,7 +585,7 @@
 - (void) downloadFileHasFailed:(DownloadFile*)d
 {
 	DebugLog(@"ERROR: downloadFileHasFailed: %@", [d downloadPath]);
-	[self addOrRemove:0 synchronizedFromFileDownloads:d];
+	[dataModel addOrRemove:0 synchronizedFromFileDownloads:d];
 	
 	// Remove failed download-file from downloads directory
 	
@@ -704,7 +695,7 @@
 	
 	[fsWatcherQueue setSuspended:FALSE];
 	
-	for (Share * s in [myShares allValues])
+	for (Share * s in [[dataModel myShares] allValues])
 	{
 		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
 		[fsWatcherQueue addOperation:o];
@@ -731,7 +722,7 @@
 	NSURL * fileURL = [notification object];
 	//DebugLog(@"fsWatcherEvent: %@", fileURL);
 	
-	for (Share * share in [myShares allValues])
+	for (Share * share in [[dataModel myShares] allValues])
 	{
 		if (![FileHelper URL:fileURL hasAsRootURL:[share root]])
 		{
@@ -753,7 +744,7 @@
 	
 	NSMutableArray * a = [[NSMutableArray alloc] init];
 	
-	for (Share * s in [myShares allValues])
+	for (Share * s in [[dataModel myShares] allValues])
 	{
 		[a addObject:[[s root] path]];
 	}
@@ -763,75 +754,6 @@
 }
 
 
-#pragma mark -----------------------
-#pragma mark Getter / Setter
-
-
-
-- (Share*) getShareForID:(NSString*)shareID
-{
-	return [myShares objectForKey:shareID];
-}
-
-
-
-/**
- * Creates and adds a Share to 'myShares',
- * but only if there is no Share with the same name already
- */
-- (Share*) addShareWithID:(NSString*)shareId
-			andRootURL:(NSURL*)root
-		andPasswordHash:(NSString*)passwordHash
-{
-	// Verify Input values cannot be null
-	
-	if (shareId == nil || root == nil || passwordHash == nil)
-	{
-		return nil;
-	}
-	
-	if (![[myShares allKeys] containsObject:shareId])
-	{
-		Share * s = [[Share alloc] initShareWithID:shareId
-								  andRootURL:root
-								  withSecret:passwordHash
-								   andConfig:config];
-		[myShares setObject:s forKey:shareId];
-		[self saveModelToPlist];
-		
-		// Perform initial scan
-		
-		ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
-		[fsWatcherQueue addOperation:o];
-		[self updateFSWatcher];
-		
-		return s;
-	}
-	return nil;
-}
-
-
-
-- (void) removeShareForID:(NSString*)shareId
-{
-	if (shareId == nil)
-	{
-		return;
-	}
-	
-	[myShares removeObjectForKey:shareId];
-	
-	// Remove .sqlite-File
-	
-	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [config workingDir], shareId];
-	NSError * error;
-	[[NSFileManager defaultManager] removeItemAtPath:sqlitePath error:&error];
-	
-	// Resave model and update observed directories
-	[self saveModelToPlist];
-	[self updateFSWatcher];
-	
-}
 
 
 
@@ -843,7 +765,7 @@
 /**
  * Status: COMPLETE
  */
-- (void) downloadSharesFromPeers
+- (void) downloadSharesFromPeers:(NSNotification*)aNotification
 {
 	DebugLog(@"downloadSharesFromPeers");
 	
@@ -885,9 +807,9 @@
 {
 	// For every Share ....
 	
-	for (id key in myShares)
+	for (id key in [dataModel myShares])
 	{
-		Share * s = [myShares objectForKey:key];
+		Share * s = [[dataModel myShares] objectForKey:key];
 		for (Peer * p in [s allPeers])
 		{
 			NSNetService * ns = [bonjourSearcher getNetServiceForName:[p peerID]];
@@ -909,9 +831,9 @@
 - (void) matchFiles
 {
 	// For every Share ...
-	for (id key in myShares)
+	for (id key in [dataModel myShares])
 	{
-		Share * s = [myShares objectForKey:key];
+		Share * s = [[dataModel myShares] objectForKey:key];
 		
 		// For ervery Peer ...
 		for (Peer * p in [s allPeers])
@@ -922,12 +844,12 @@
 			{
 				Revision * r = [s nextRevisionForPeer:p];
 				
-				while (r != nil && [fileDownloads count] < MAX_CONCURRENT_DOWNLOADS)
+				while (r != nil && [[dataModel fileDownloads] count] < MAX_CONCURRENT_DOWNLOADS)
 				{
 					[s removeRevision:r forPeer:p];
 					
-					DownloadFile * d = [[DownloadFile alloc] initWithNetService:ns andRevision:r andConfig:config];
-					[self addOrRemove:1 synchronizedFromFileDownloads:d];
+					DownloadFile * d = [[DownloadFile alloc] initWithNetService:ns andRevision:r];
+					[dataModel addOrRemove:1 synchronizedFromFileDownloads:d];
 					[d setDelegate:self];
 					[d start];
 					

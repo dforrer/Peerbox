@@ -5,11 +5,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class MainController;
+@class DataModel;
 
 @interface EditSharesWindowController : NSWindowController <NSTableViewDataSource>
 
-- (id) initWithMainController:(MainController*) m;
+- (id) initWithDataModel:(DataModel*) dm;
 - (void) openEditDialog;
 
 - (IBAction) addShare: (id)sender;

@@ -45,21 +45,18 @@
 @synthesize rev;
 @synthesize delegate;
 @synthesize sha1OfDownload;
-@synthesize config;
 @synthesize statusCode;
 
 
 
 - (id) initWithNetService:(NSNetService*)netService
 		    andRevision:(Revision*)r
-			 andConfig:(Configuration*)c
 {
 	//DebugLog(@"DownloadFile: 1. Init");
 	if ((self = [super init]))
 	{
 		rev	= r;
 		//DebugLog(@"DownloadFile: %@", [[remoteState url] absoluteString]);
-		config		= c;
 		isFinished	= FALSE;
 		hasFailed		= FALSE;
 		downloadPath	= [self prepareDownloadPath];
@@ -180,9 +177,9 @@
  */
 - (NSString*) prepareDownloadPath
 {
-	//return [NSString stringWithFormat:@"%@/%@-%@", [config downloadsDir], [[[rev peer] share] shareId], [FileHelper sha1OfNSString:[rev relURL]]];
+	//return [NSString stringWithFormat:@"%@/%@-%@", [[[Singleton data] config] downloadsDir], [[[rev peer] share] shareId], [FileHelper sha1OfNSString:[rev relURL]]];
 	
-	return [NSString stringWithFormat:@"%@/%@-%@", [config downloadsDir], [[[rev peer] share] shareId], [[NSUUID UUID] UUIDString]];
+	return [NSString stringWithFormat:@"%@/%@-%@", [[[Singleton data] config] downloadsDir], [[[rev peer] share] shareId], [[NSUUID UUID] UUIDString]];
 }
 
 

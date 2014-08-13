@@ -3,24 +3,20 @@
 //  Copyright (c) 2014 Forrer. All rights reserved.
 //
 
-@class MainController;
-
+@class DataModel;
+@class Configuration;
 /**
  * Singletons should be used with caution!
  * ----------------------------------------
  * Rules for using the Singleton:
- * - use Singleton only in the initializer
  * - usage should be transparent
  */
 
 @interface Singleton : NSObject
-/*{
-	MainController * mainController;
-}*/
 
-
-@property (nonatomic, retain) MainController * mainController;	// only used by 'MyHTTPConnection'
-
+@property (nonatomic, readwrite, retain) DataModel * dataModel;
+@property (nonatomic, readwrite, retain) NSString * myPeerID;
+@property (nonatomic, readonly, retain) Configuration * config;
 
 + (id) data;
 

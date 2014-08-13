@@ -5,19 +5,22 @@
 
 // HEADER
 #import "Singleton.h"
-#import "MainController.h"
+#import "DataModel.h"
+#import "Configuration.h"
 
 @implementation Singleton
 
 
-@synthesize mainController;
-
+@synthesize dataModel;
+@synthesize config;
+@synthesize myPeerID;
 
 - (id) init
 {
 	if (self = [super init])
 	{
-		mainController = [[MainController alloc] init];
+		dataModel = [[DataModel alloc] init];
+		config = [[Configuration alloc] init];
 	}
 	return self;
 }

@@ -75,6 +75,7 @@
 		6595E54618D4EDC300E13880 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6595E54518D4EDC300E13880 /* MainMenu.xib */; };
 		65A09D5F19994273008FC524 /* EditSharesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65A09D5E19994273008FC524 /* EditSharesWindow.xib */; };
 		65A09D621999D709008FC524 /* StatusBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A09D611999D709008FC524 /* StatusBarController.m */; };
+		65A09D65199B1AE3008FC524 /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A09D64199B1AE3008FC524 /* DataModel.m */; };
 		65A1213419046F830082C251 /* Revision.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A1213319046F830082C251 /* Revision.m */; };
 		65AC4DDE197C486A003F08AD /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 65AC4DDD197C486A003F08AD /* COPYING */; };
 		65AD01E6186E0DBB00DC6A1B /* FileScanOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 65AD01E5186E0DBA00DC6A1B /* FileScanOperation.m */; };
@@ -231,6 +232,8 @@
 		65A09D5E19994273008FC524 /* EditSharesWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditSharesWindow.xib; path = Resources/EditSharesWindow.xib; sourceTree = SOURCE_ROOT; };
 		65A09D601999D709008FC524 /* StatusBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusBarController.h; sourceTree = "<group>"; };
 		65A09D611999D709008FC524 /* StatusBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusBarController.m; sourceTree = "<group>"; };
+		65A09D63199B1AE3008FC524 /* DataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModel.h; sourceTree = "<group>"; };
+		65A09D64199B1AE3008FC524 /* DataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataModel.m; sourceTree = "<group>"; };
 		65A1212E190446DB0082C251 /* Peerbox-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Peerbox-Info.plist"; path = "Resources/Peerbox-Info.plist"; sourceTree = SOURCE_ROOT; };
 		65A1212F190446DB0082C251 /* Peerbox-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Peerbox-Prefix.pch"; path = "Resources/Peerbox-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		65A1213219046F830082C251 /* Revision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Revision.h; sourceTree = "<group>"; };
@@ -547,6 +550,8 @@
 				65A09D611999D709008FC524 /* StatusBarController.m */,
 				65384C741930C0AB0070F0A9 /* MainController.h */,
 				65384C751930C0AB0070F0A9 /* MainController.m */,
+				65A09D63199B1AE3008FC524 /* DataModel.h */,
+				65A09D64199B1AE3008FC524 /* DataModel.m */,
 				65E5CC15180B0043001065AE /* Singleton.h */,
 				65E5CC16180B0043001065AE /* Singleton.m */,
 				658943EC192125EA00A58A83 /* Configuration.h */,
@@ -803,6 +808,7 @@
 				658943EE192125EA00A58A83 /* Configuration.m in Sources */,
 				652F704D184F71D3004E13C5 /* MyHTTPConnection.m in Sources */,
 				657657D918D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m in Sources */,
+				65A09D65199B1AE3008FC524 /* DataModel.m in Sources */,
 				6547B5A6188D91B1005F3BD4 /* DownloadFile.m in Sources */,
 				6589459F19269B4C00A58A83 /* FSWatcher.m in Sources */,
 				658945DB19269B4C00A58A83 /* HTTPErrorResponse.m in Sources */,

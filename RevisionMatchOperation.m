@@ -12,22 +12,21 @@
 #import "Constants.h"
 #import "FileHelper.h"
 #import "Configuration.h"
+#import "Singleton.h"
 
 @implementation RevisionMatchOperation
 {
 	Revision		* rev;
 	NSURL		* fullURL;
-	Configuration	* config;
 	File			* localState;
 	File			* remoteState;
 }
 
-- (id) initWithRevision:(Revision*)r andConfig:(Configuration*)c
+- (id) initWithRevision:(Revision*)r
 {
 	if ((self = [super init]))
 	{
 		rev	   = r;
-		config  = c;
 		fullURL = [NSURL URLWithString:[rev relURL] relativeToURL:[[[rev peer] share] root]];
 	}
 	return self;
@@ -305,7 +304,7 @@
 			//DebugLog(@"D1");
 			// WITH CONFLICT
 		
-			if ([[config myPeerID] isLessThan:[[rev peer] peerID]])
+			if ([[[Singleton data] myPeerID] isLessThan:[[rev peer] peerID]])
 			{
 				// myPeerId < otherPeerId
 			
@@ -438,7 +437,7 @@
 	
 		NSURL * superdir = [fullURL URLByDeletingLastPathComponent];
 		NSString * oldFilename = [[fullURL lastPathComponent] stringByDeletingPathExtension];
-		NSString * newFilename = [oldFilename stringByAppendingString:[NSString stringWithFormat:@" conflicted copy on %@", [config myPeerID]]];
+		NSString * newFilename = [oldFilename stringByAppendingString:[NSString stringWithFormat:@" conflicted copy on %@", [[Singleton data] myPeerID]]];
 		newFilename = [newFilename stringByAppendingPathExtension:[fullURL pathExtension]];
 		conflictedCopyURL = [superdir URLByAppendingPathComponent:newFilename];
 		

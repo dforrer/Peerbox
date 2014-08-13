@@ -4,10 +4,9 @@
 //
 
 @class Revision;
-@class Configuration;
 
 @interface RevisionMatchOperation : NSOperation
 
-- (id) initWithRevision:(Revision*)r andConfig:(Configuration*)c;
+- (id) initWithRevision:(Revision*)r;
 
 @end

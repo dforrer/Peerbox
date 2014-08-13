@@ -8,15 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@class MainController;
-@class EditSharesWindowController;
+@class DataModel;
+@class BonjourSearcher;
 
 @interface StatusBarController : NSObject
 
-- (id) initWithMainController:(MainController*) m;
+- (id) initWithDataModel:(DataModel*)dm andBonjourSearcher:(BonjourSearcher*)bs;
+- (void) updateStatusBarMenu;
 
 @property (nonatomic, readonly, retain) NSStatusItem * statusItem;
-@property (nonatomic, readonly, retain) EditSharesWindowController * eswc;
-@property (nonatomic, readonly, retain) MainController * mc;
+@property (nonatomic, readonly, retain) DataModel * dataModel;
+@property (nonatomic, readonly, retain) BonjourSearcher * bonjourSearcher;
 
 @end

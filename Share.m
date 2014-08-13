@@ -16,7 +16,7 @@
 #import "CJSONDeserializer.h"
 #import "CJSONSerializer.h"
 #import "Configuration.h"
-
+#import "Singleton.h"
 
 @implementation Share
 {
@@ -36,7 +36,6 @@
 @synthesize shareId;
 @synthesize root;
 @synthesize secret;
-@synthesize config;
 
 
 #pragma mark -----------------------
@@ -47,7 +46,7 @@
 	
 	// Create path and init SQLite
 	
-	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [config workingDir], shareId];
+	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [[[Singleton data] config] workingDir], shareId];
 	db = [[SQLiteDatabase alloc] initCreateAtPath:sqlitePath];
 	
 	// Prepare Tables in "db"
@@ -84,7 +83,6 @@
 - (id) initShareWithID:(NSString*)i
 		  andRootURL:(NSURL*)u
 		  withSecret:(NSString*)s
-		   andConfig:(Configuration*)c
 {
 	@autoreleasepool
 	{
@@ -95,7 +93,6 @@
 			shareId	= i;
 			root		= u;
 			secret	= s;
-			config	= c;
 			peers	= [NSMutableDictionary dictionary];
 			
 			[self helperInit];

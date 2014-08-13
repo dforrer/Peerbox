@@ -22,7 +22,7 @@
 #import "NSDictionary_JSONExtensions.h"
 #import "FileHelper.h"
 #import "Constants.h"
-#import "MainController.h"
+#import "DataModel.h"
 #import "Configuration.h"
 
 
@@ -83,8 +83,8 @@
 {
 	// Singleton-Usage
 	
-	NSDictionary * allShares = [[[Singleton data] mainController] myShares];
-	NSString	   * myPeerID	= [[[[Singleton data] mainController] config] myPeerID];
+	NSDictionary * allShares = [[[Singleton data] dataModel] myShares];
+	NSString	   * myPeerID	= [[Singleton data] myPeerID];
 	
 	// Remove queries from the URI
 	
@@ -113,7 +113,7 @@
 		}
 		 */
 		
-		[[[Singleton data] mainController] downloadSharesFromPeers];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"downloadSharesFromPeers" object:nil];
 		return [[HTTPErrorResponse alloc] initWithErrorCode:200];
 	}
 	

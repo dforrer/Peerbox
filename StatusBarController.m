@@ -13,20 +13,20 @@
 #import "FileHelper.h"
 #import "Share.h"
 #import "Singleton.h"
+#import "DataModel.h"
 
 @implementation StatusBarController
 
 @synthesize statusItem;
-@synthesize mc;
-@synthesize eswc;
+@synthesize dataModel;
+@synthesize bonjourSearcher;
 
-- (id) initWithMainController:(MainController*) m
+- (id) initWithDataModel:(DataModel*) dm andBonjourSearcher:(BonjourSearcher *)bs
 {
 	if ((self = [super init]))
 	{
-		mc = m;
-		
-		eswc = [[EditSharesWindowController alloc] initWithMainController:mc];
+		dataModel = dm;
+		bonjourSearcher = bs;
 		
 		[self createStatusBarGUI];
 		
@@ -62,7 +62,7 @@
 	// Allocate Default NSMenuItems
 	NSMenuItem  * default_edit = [[NSMenuItem alloc ] init];
 	NSMenuItem  * default_quit = [[NSMenuItem alloc ] init];
-	[default_edit setTarget:eswc];
+	[default_edit setTarget:self];
 	
 	// Set Titles of Default-Items
 	[default_edit setTitle:@"Edit Shares..."];
@@ -76,11 +76,11 @@
 	[mymenu addItem: [NSMenuItem separatorItem]];
 	[mymenu addItem: default_edit];
 	[mymenu addItem: default_quit];
-	
+
 	// NSMenu needed to group the NSMenuItems
-	for (id key  in [[mc bonjourSearcher] resolvedServices])
+	for (id key  in [bonjourSearcher resolvedServices])
 	{
-		NSNetService * ns = [[[mc bonjourSearcher] resolvedServices] objectForKey:key];
+		NSNetService * ns = [[bonjourSearcher resolvedServices] objectForKey:key];
 		NSMenuItem * peer = [[NSMenuItem alloc ] initWithTitle:[ns hostName] action:nil keyEquivalent:@""];
 		NSMenu * subItems = [[NSMenu alloc] init];
 		NSMenuItem * peerID = [[NSMenuItem alloc] init];
@@ -94,11 +94,11 @@
 	[peersTitle setTitle:@"Peers on network:"];
 	[mymenu insertItem:peersTitle atIndex:0];
 	[mymenu insertItem:[NSMenuItem separatorItem] atIndex:0];
-	
+
 	// loop through myShares
-	for (id key  in [mc myShares])
+	for (id key  in [dataModel myShares])
 	{
-		Share * s = [[mc myShares] objectForKey:key];
+		Share * s = [[dataModel myShares] objectForKey:key];
 		NSMenuItem  * share_item = [[NSMenuItem alloc] initWithTitle:[s shareId]
 												    action:@selector(openItem:)
 											  keyEquivalent:@""];
@@ -124,8 +124,13 @@
 - (IBAction) openItem:(id)sender;
 {
 	NSString * key = [sender representedObject];
-	Share * s = [[mc myShares] objectForKey:key];
+	Share * s = [[dataModel myShares] objectForKey:key];
 	[[NSWorkspace sharedWorkspace] openFile:[[s root] path]];
+}
+
+- (void) openEditDialog
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"openEditDialog" object:nil];
 }
 
 

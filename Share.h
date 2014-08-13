@@ -5,7 +5,6 @@
 
 @class File;
 @class Peer;
-@class Configuration;
 @class Revision;
 
 @interface Share : NSObject
@@ -15,8 +14,7 @@
 
 - (id) initShareWithID:(NSString*)i
 		  andRootURL:(NSURL*)u
-		  withSecret:(NSString*)s
-		   andConfig:(Configuration*)c;
+		  withSecret:(NSString*)s;
 
 
 // File-Management
@@ -64,6 +62,5 @@
 @property (nonatomic, readonly, strong) NSString * shareId; // <shareId>.sql
 @property (nonatomic, readonly, strong) NSURL * root;
 @property (nonatomic, readonly, strong) NSString * secret; // SHA-1 of password
-@property (nonatomic, readonly, strong) Configuration * config;
 
 @end

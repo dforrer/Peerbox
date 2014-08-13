@@ -4,7 +4,6 @@
 //
 
 @class Revision;
-@class Configuration;
 @class DownloadFile;
 
 
@@ -19,8 +18,7 @@
 @interface DownloadFile : NSObject
 
 - (id) initWithNetService:(NSNetService*)netService
-		    andRevision:(Revision*)r
-			 andConfig:(Configuration*)c;
+		    andRevision:(Revision*)r;
 - (void) start;
 - (void) cancel;
 
@@ -32,6 +30,5 @@
 @property (nonatomic, readonly) BOOL hasFailed;
 @property (nonatomic, assign) id <DownloadFileDelegate> delegate;
 @property (nonatomic, readonly, strong) NSString * sha1OfDownload;
-@property (nonatomic, readonly, strong) Configuration * config;
 @property (nonatomic, readonly) int statusCode;
 @end

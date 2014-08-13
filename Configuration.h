@@ -5,11 +5,11 @@
 
 @interface Configuration : NSObject
 
+- (id) init;
 
 @property (nonatomic, readwrite, strong) NSString * workingDir;
 @property (nonatomic, readwrite, strong) NSString * downloadsDir;
 @property (nonatomic, readwrite, strong) NSString * webDir;
-@property (nonatomic, readwrite, strong) NSString * myPeerID;
 
 
 @end

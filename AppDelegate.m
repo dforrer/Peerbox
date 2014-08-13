@@ -8,12 +8,11 @@
 
 #import "Singleton.h"
 #import "MainController.h"
-#import "StatusBarController.h"
+#import "DataModel.h"
 
 @implementation AppDelegate
 
 @synthesize mc;
-@synthesize sbc;
 
 #pragma mark -----------------------
 #pragma mark NSApplicationDelegate
@@ -29,8 +28,7 @@
 	{		
 		DebugLog(@"applicationDidFinishLaunching");
 
-		mc = [[Singleton data] mainController];
-		sbc = [[StatusBarController alloc] initWithMainController:mc];
+		mc = [[MainController alloc] init];
 	}
 }
 
@@ -56,8 +54,8 @@
 - (void) applicationWillTerminate:(NSNotification *)aNotification
 {
 	DebugLog(@"applicationWillTerminate");
-	[mc commitAllShareDBs];
-	[mc saveFileDownloads];
+	[[mc dataModel] commitAllShareDBs];
+	[[mc dataModel] saveFileDownloads];
 	[mc saveModelToPlist];
 }
 

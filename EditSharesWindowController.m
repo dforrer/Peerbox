@@ -5,7 +5,7 @@
 
 #import "EditSharesWindowController.h"
 
-#import "MainController.h"
+#import "DataModel.h"
 #import "FileHelper.h"
 #import "Share.h"
 #import "Singleton.h"
@@ -13,7 +13,7 @@
 
 @implementation EditSharesWindowController
 {
-	MainController * mc;
+	DataModel * dataModel;
 }
 
 @synthesize shareIdTextfield;
@@ -21,12 +21,12 @@
 @synthesize passwordTextfield;
 @synthesize sharesTableView;
 
-- (id) initWithMainController:(MainController*) m
+- (id) initWithDataModel:(DataModel*) dm;
 {
 	self = [self initWithWindowNibName:@"EditSharesWindow"];
 	if (self)
 	{
-		mc = m;
+		dataModel = dm;
 	}
 	return self;
 }
@@ -47,18 +47,19 @@
 
 - (IBAction) addShare:(id)sender
 {
+	/*
+	 1. Here: Create new Share-object
+	 2. Notify the MainController
+	 3. MainController tells GUI to refresh
+	 */
+	
 	NSString	* shareId		= [shareIdTextfield stringValue];
 	NSURL	* root		= [NSURL fileURLWithPath:[rootTextfield stringValue]];
 	NSString	* passwordHash	= [FileHelper sha1OfNSString:[passwordTextfield stringValue]];
 	
-	[mc addShareWithID:shareId andRootURL:root andPasswordHash:passwordHash];
-	[mc downloadSharesFromPeers];
+	Share * s = [[Share alloc] initShareWithID:shareId andRootURL:root withSecret:passwordHash];
 	
-	[sharesTableView reloadData];
-	
-	// Update StatusBar
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"appShouldRefreshStatusBar" object:nil];
-	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"addShare" object:s];
 }
 
 
@@ -68,33 +69,29 @@
 	NSIndexSet * i = [sharesTableView selectedRowIndexes];
 	long index = [i firstIndex];
 	
-	NSArray * mySharesArray = [[mc myShares] allValues];
-	Share * shareAtIndex = [mySharesArray objectAtIndex:index];
-	[mc removeShareForID:[shareAtIndex shareId]];
-	
-	[sharesTableView reloadData];
+	NSArray * mySharesArray = [[dataModel myShares] allValues];
+	Share * s = [mySharesArray objectAtIndex:index];
 	
 	// Update StatusBar
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"appShouldRefreshStatusBar" object:nil];
-	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"removeShare" object:s];
 }
 
 
 - (IBAction) downloadShares:(id)sender
 {
-	[mc downloadSharesFromPeers];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"downloadSharesFromPeers" object:nil];
 }
 
 
 - (IBAction) printResolvedServices: (id)sender
 {
-	[mc printResolvedServices];
+	//[mc printResolvedServices];
 }
 
 
 - (IBAction) printShares:(id)sender
 {
-	[mc printMyShares];
+	//[mc printMyShares];
 }
 
 - (IBAction) printDebugLogs:(id)sender
@@ -113,7 +110,7 @@
  */
 - (NSInteger) numberOfRowsInTableView:(NSTableView *)aTableView
 {
-	long rv = (long)[[mc myShares] count];
+	long rv = (long)[[dataModel myShares] count];
 	return rv;
 }
 
@@ -127,7 +124,7 @@
 	@autoreleasepool
 	{
 		//DebugLog(@"tableView objectValueForTableColumn");
-		NSArray * mySharesArray = [[mc myShares] allValues];
+		NSArray * mySharesArray = [[dataModel myShares] allValues];
 		Share * shareAtIndex = [mySharesArray objectAtIndex:rowIndex];
 		if (!shareAtIndex)
 		{
