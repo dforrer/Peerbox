@@ -537,6 +537,8 @@
 		65E5CBB3180AFF98001065AE = {
 			isa = PBXGroup;
 			children = (
+				65384C741930C0AB0070F0A9 /* MainController.h */,
+				65384C751930C0AB0070F0A9 /* MainController.m */,
 				65FF7BFE19896A1100E2D9C3 /* Model */,
 				65FF7BFF198C278A00E2D9C3 /* Network Requests */,
 				65FF7C00198C285F00E2D9C3 /* HTTP Responses */,
@@ -548,10 +550,6 @@
 				65930E881997C435008FB32C /* EditSharesWindowController.m */,
 				65A09D601999D709008FC524 /* StatusBarController.h */,
 				65A09D611999D709008FC524 /* StatusBarController.m */,
-				65384C741930C0AB0070F0A9 /* MainController.h */,
-				65384C751930C0AB0070F0A9 /* MainController.m */,
-				65A09D63199B1AE3008FC524 /* DataModel.h */,
-				65A09D64199B1AE3008FC524 /* DataModel.m */,
 				65E5CC15180B0043001065AE /* Singleton.h */,
 				65E5CC16180B0043001065AE /* Singleton.m */,
 				658943EC192125EA00A58A83 /* Configuration.h */,
@@ -636,12 +634,14 @@
 		65FF7BFE19896A1100E2D9C3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				65E5CBFF180B0043001065AE /* File.h */,
-				65E5CC00180B0043001065AE /* File.m */,
+				65A09D63199B1AE3008FC524 /* DataModel.h */,
+				65A09D64199B1AE3008FC524 /* DataModel.m */,
 				65E61FFC18E49F83007A654B /* Share.h */,
 				65E61FFD18E49F83007A654B /* Share.m */,
 				65197B9E18E2A18200440C6C /* Peer.h */,
 				65197B9F18E2A18200440C6C /* Peer.m */,
+				65E5CBFF180B0043001065AE /* File.h */,
+				65E5CC00180B0043001065AE /* File.m */,
 				65A1213219046F830082C251 /* Revision.h */,
 				65A1213319046F830082C251 /* Revision.m */,
 			);

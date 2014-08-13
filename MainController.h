@@ -13,6 +13,7 @@
 #import "DownloadRevisions.h"
 #import "BonjourSearcher.h"
 
+
 @class Share;
 @class Configuration;
 @class FSWatcher;
@@ -20,6 +21,7 @@
 @class DataModel;
 @class StatusBarController;
 @class EditSharesWindowController;
+
 
 @interface MainController : NSObject <DownloadSharesDelegate, DownloadRevisionsDelegate, DownloadFileDelegate, BonjourSearcherDelegate>
 

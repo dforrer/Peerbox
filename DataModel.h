@@ -12,7 +12,9 @@
 @class BonjourSearcher;
 @class DownloadFile;
 
+
 @interface DataModel : NSObject
+
 
 - (BOOL) addShare:(Share*)s;
 - (void) removeShare:(Share*)s;
@@ -21,7 +23,9 @@
 - (NSDictionary*) plistEncoded;
 - (void) addOrRemove:(int)addOrRemove synchronizedFromFileDownloads:(DownloadFile *)d;
 
+
 @property (nonatomic, readonly, strong) NSMutableArray * fileDownloads;
 @property (nonatomic, readwrite, strong) NSMutableDictionary * myShares; // shareId = key of NSDictionary
+
 
 @end

@@ -8,16 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
+
 @class DataModel;
 @class BonjourSearcher;
 
+
 @interface StatusBarController : NSObject
+
 
 - (id) initWithDataModel:(DataModel*)dm andBonjourSearcher:(BonjourSearcher*)bs;
 - (void) updateStatusBarMenu;
 
+
 @property (nonatomic, readonly, retain) NSStatusItem * statusItem;
 @property (nonatomic, readonly, retain) DataModel * dataModel;
 @property (nonatomic, readonly, retain) BonjourSearcher * bonjourSearcher;
+
 
 @end

@@ -394,7 +394,8 @@
 	[self notifyPeers:nil];
 	
 	// Update StatusBar
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"appShouldRefreshStatusBar" object:nil];
+
+	[statusBarController updateStatusBarMenu];
 	
 	[self matchFiles];
 }
@@ -408,7 +409,8 @@
 - (void) bonjourSearcherServiceRemoved:(NSNetService*)n
 {
 	// Update StatusBar
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"appShouldRefreshStatusBar" object:nil];
+	
+	[statusBarController updateStatusBarMenu];
 }
 
 

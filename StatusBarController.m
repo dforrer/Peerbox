@@ -15,31 +15,28 @@
 #import "Singleton.h"
 #import "DataModel.h"
 
+
 @implementation StatusBarController
+
 
 @synthesize statusItem;
 @synthesize dataModel;
 @synthesize bonjourSearcher;
 
+
 - (id) initWithDataModel:(DataModel*) dm andBonjourSearcher:(BonjourSearcher *)bs
 {
-	if ((self = [super init]))
+	if (self = [super init])
 	{
 		dataModel = dm;
 		bonjourSearcher = bs;
 		
 		[self createStatusBarGUI];
-		
-		// Start Listening for Changes to the StatusBar
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appShouldRefreshStatusBar:) name:@"appShouldRefreshStatusBar" object:nil];
 	}
 	return self;
 }
 
-- (void) appShouldRefreshStatusBar:(NSNotification*)aNotification
-{
-	[self updateStatusBarMenu];
-}
+
 
 - (void) createStatusBarGUI
 {
@@ -78,6 +75,7 @@
 	[mymenu addItem: default_quit];
 
 	// NSMenu needed to group the NSMenuItems
+	
 	for (id key  in [bonjourSearcher resolvedServices])
 	{
 		NSNetService * ns = [[bonjourSearcher resolvedServices] objectForKey:key];
@@ -95,7 +93,9 @@
 	[mymenu insertItem:peersTitle atIndex:0];
 	[mymenu insertItem:[NSMenuItem separatorItem] atIndex:0];
 
+	
 	// loop through myShares
+	
 	for (id key  in [dataModel myShares])
 	{
 		Share * s = [[dataModel myShares] objectForKey:key];
