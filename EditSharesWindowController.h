@@ -23,6 +23,7 @@
 @property (nonatomic, readonly, retain) IBOutlet NSTextField * shareIdTextfield;
 @property (nonatomic, readonly, retain) IBOutlet NSTextField * rootTextfield;
 @property (nonatomic, readonly, retain) IBOutlet NSTextField * passwordTextfield;
+@property (nonatomic, readonly, retain) DataModel * dataModel;
 
 
 @end

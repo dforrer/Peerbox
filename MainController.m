@@ -116,6 +116,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openEditDialog:) name:@"openEditDialog" object:nil];
 		
 		[self updateFSWatcher];
+		
 		statusBarController = [[StatusBarController alloc] initWithDataModel:dataModel andBonjourSearcher:bonjourSearcher];
 		editSharesWindowController = [[EditSharesWindowController alloc] initWithDataModel:dataModel];
 	}

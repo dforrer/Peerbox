@@ -12,14 +12,14 @@
 
 
 @implementation EditSharesWindowController
-{
-	DataModel * dataModel;
-}
+
 
 @synthesize shareIdTextfield;
 @synthesize rootTextfield;
 @synthesize passwordTextfield;
 @synthesize sharesTableView;
+@synthesize dataModel;
+
 
 - (id) initWithDataModel:(DataModel*) dm;
 {
@@ -59,6 +59,7 @@
 	
 	Share * s = [[Share alloc] initShareWithID:shareId andRootURL:root withSecret:passwordHash];
 	
+	// Notify "MainController"
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"addShare" object:s];
 }
 
@@ -72,13 +73,14 @@
 	NSArray * mySharesArray = [[dataModel myShares] allValues];
 	Share * s = [mySharesArray objectAtIndex:index];
 	
-	// Update StatusBar
+	// Notify "MainController"
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"removeShare" object:s];
 }
 
 
 - (IBAction) downloadShares:(id)sender
 {
+	// Notify "MainController"
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"downloadSharesFromPeers" object:nil];
 }
 
