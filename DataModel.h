@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @class Share;
-@class Configuration;
 @class BonjourSearcher;
 @class DownloadFile;
 
@@ -24,6 +23,5 @@
 
 @property (nonatomic, readonly, strong) NSMutableArray * fileDownloads;
 @property (nonatomic, readwrite, strong) NSMutableDictionary * myShares; // shareId = key of NSDictionary
-@property (nonatomic, readonly, strong) Configuration * config;
 
 @end
