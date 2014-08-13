@@ -507,18 +507,19 @@
 	{
 		// Sort the downloaded revisions by the revision-number
 		
-		NSArray * keysSortedByRevision = [[dict objectForKey:@"revisions"] keysSortedByValueUsingComparator: ^(id obj1, id obj2)
-								    {
-									    if ([[obj1 objectForKey:@"revision"] longLongValue] > [[obj2 objectForKey:@"revision"] longLongValue])
-									    {
-										    return (NSComparisonResult)NSOrderedDescending;
-									    }
-									    if ([[obj1 objectForKey:@"revision"] longLongValue] < [[obj2 objectForKey:@"revision"] longLongValue])
-									    {
-										    return (NSComparisonResult)NSOrderedAscending;
-									    }
-									    return (NSComparisonResult)NSOrderedSame;
-								    }];
+		NSArray * keysSortedByRevision =
+		[[dict objectForKey:@"revisions"] keysSortedByValueUsingComparator:^(id obj1, id obj2)
+		 {
+			 if ([[obj1 objectForKey:@"revision"] longLongValue] > [[obj2 objectForKey:@"revision"] longLongValue])
+			 {
+				 return (NSComparisonResult)NSOrderedDescending;
+			 }
+			 if ([[obj1 objectForKey:@"revision"] longLongValue] < [[obj2 objectForKey:@"revision"] longLongValue])
+			 {
+				 return (NSComparisonResult)NSOrderedAscending;
+			 }
+			 return (NSComparisonResult)NSOrderedSame;
+		 }];
 		
 		// Create a RevisionMatchOperation for every downloaded revision
 		
@@ -765,6 +766,22 @@
 #pragma mark Download Manager Functions
 
 
+- (void) notifyPeers:(NSNotification*)aNotification
+{
+	DebugLog(@"notifyPeers");
+	// For every announced NetService...
+	
+	for (id key in [bonjourSearcher resolvedServices])
+	{
+		NSNetService *aNetService = [[bonjourSearcher resolvedServices] objectForKey:key];
+		
+		PostNotification * n = [[PostNotification alloc] initWithNetService:aNetService];
+		[n start];
+	}
+}
+
+
+
 /**
  * Status: COMPLETE
  */
@@ -786,21 +803,6 @@
 	}
 }
 
-
-
-- (void) notifyPeers:(NSNotification*)aNotification
-{
-	DebugLog(@"notifyPeers");
-	// For every announced NetService...
-	
-	for (id key in [bonjourSearcher resolvedServices])
-	{
-		NSNetService *aNetService = [[bonjourSearcher resolvedServices] objectForKey:key];
-		
-		PostNotification * n = [[PostNotification alloc] initWithNetService:aNetService];
-		[n start];
-	}
-}
 
 
 /**
