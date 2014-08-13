@@ -41,13 +41,13 @@
 }
 
 
-
 @synthesize bonjourSearcher;
 @synthesize httpServer;
 @synthesize fswatcher;
 @synthesize dataModel;
 @synthesize statusBarController;
 @synthesize editSharesWindowController;
+
 
 #pragma mark -----------------------
 #pragma mark Initializer & Setup & Shutdown
@@ -83,7 +83,6 @@
 		[revMatcherQueue  setMaxConcurrentOperationCount:1];
 		
 		
-		
 		// Setup KVO
 		
 		[revMatcherQueue  addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
@@ -110,10 +109,10 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsFile" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsSymlink" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyPeers:) name:@"notifyPeers" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadSharesFromPeers:) name:@"downloadSharesFromPeers" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addShare:) name:@"addShare" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeShare:) name:@"removeShare" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openEditDialog:) name:@"openEditDialog" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadSharesFromPeers:) name:@"downloadSharesFromPeers" object:nil];
 		
 		[self updateFSWatcher];
 		

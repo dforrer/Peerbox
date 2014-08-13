@@ -25,11 +25,13 @@
 
 @interface MainController : NSObject <DownloadSharesDelegate, DownloadRevisionsDelegate, DownloadFileDelegate, BonjourSearcherDelegate>
 
+
 - (id) init;
 - (void) saveModelToPlist;
 - (void) printResolvedServices;
 - (void) printMyShares;
 - (void) printDebugLogs;
+
 
 @property (nonatomic, readonly, strong)	BonjourSearcher * bonjourSearcher;
 @property (nonatomic, readonly, strong)	HTTPServer * httpServer;
