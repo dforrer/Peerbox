@@ -11,6 +11,7 @@
 @class Share;
 @class Configuration;
 @class BonjourSearcher;
+@class DownloadFile;
 
 @interface DataModel : NSObject
 
