@@ -161,7 +161,7 @@
 		return;
 	}
 	//DebugLog(@"timer is not Valid");
-	timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(commitAndBegin) userInfo:nil repeats:YES];
+	timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(commitAndBegin) userInfo:nil repeats:NO];
 	[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 

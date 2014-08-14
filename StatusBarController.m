@@ -22,7 +22,7 @@
 @synthesize statusItem;
 @synthesize dataModel;
 @synthesize bonjourSearcher;
-
+@synthesize activeDownloads;
 
 - (id) initWithDataModel:(DataModel*) dm andBonjourSearcher:(BonjourSearcher *)bs
 {
@@ -30,6 +30,7 @@
 	{
 		dataModel = dm;
 		bonjourSearcher = bs;
+		activeDownloads = [[NSMenuItem alloc] init];
 		
 		[self createStatusBarGUI];
 	}
@@ -119,6 +120,11 @@
 	NSMenuItem  * shares_title = [[NSMenuItem alloc ] init];
 	[shares_title setTitle:@"Shares being synced:"];
 	[mymenu insertItem:shares_title atIndex:0];
+
+	[mymenu insertItem:[NSMenuItem separatorItem] atIndex:0];
+
+	[self setNumberOfActiveDownloads:(int)[[dataModel fileDownloads] count]];
+	[mymenu insertItem:activeDownloads atIndex:0];
 }
 
 - (IBAction) openItem:(id)sender;
@@ -131,6 +137,16 @@
 - (void) openEditDialog
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"openEditDialog" object:nil];
+}
+
+- (void) setNumberOfActiveDownloads:(int) num
+{
+	DebugLog(@"setNumberOfActiveDownloads called: %i", num);
+	
+	@synchronized(activeDownloads)
+	{
+		[activeDownloads setTitle:[NSString stringWithFormat:@"Active Downloads: %i",num]];
+	}
 }
 
 

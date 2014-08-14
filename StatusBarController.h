@@ -18,9 +18,11 @@
 
 - (id) initWithDataModel:(DataModel*)dm andBonjourSearcher:(BonjourSearcher*)bs;
 - (void) updateStatusBarMenu;
+- (void) setNumberOfActiveDownloads:(int)num;
 
 
 @property (nonatomic, readonly, retain) NSStatusItem * statusItem;
+@property (nonatomic, readonly, retain) NSMenuItem * activeDownloads;
 @property (nonatomic, readonly, retain) DataModel * dataModel;
 @property (nonatomic, readonly, retain) BonjourSearcher * bonjourSearcher;
 
