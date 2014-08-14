@@ -87,7 +87,7 @@
 		
 		[revMatcherQueue  addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
 		[fsWatcherQueue   addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
-	//	[fileMatcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
+		[fileMatcherQueue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
 		
 		[self setupHTTPServer];
 		[self createWorkingDirectories];
@@ -114,7 +114,9 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openEditDialog:) name:@"openEditDialog" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadSharesFromPeers:) name:@"downloadSharesFromPeers" object:nil];
 		
+		
 		[self updateFSWatcher];
+		
 		
 		statusBarController = [[StatusBarController alloc] initWithDataModel:dataModel andBonjourSearcher:bonjourSearcher];
 		editSharesWindowController = [[EditSharesWindowController alloc] initWithDataModel:dataModel];
@@ -578,11 +580,6 @@
 	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
 	[fileMatcherQueue addOperation:o];
-	
-	if ([[dataModel fileDownloads] count] < MAX_CONCURRENT_DOWNLOADS / 2)
-	{
-		[self matchFiles];
-	}
 }
 
 
@@ -636,13 +633,12 @@
 			// Restart Revision-Download
 			
 			[self downloadRevisionsFromPeers];
-			/*
+			
 			if ([fileMatcherQueue operationCount] == 0)
 			{
 				// Download more files
 				[self matchFiles];
 			}
-			 */
 		}
 	}
 	else if (object == fsWatcherQueue && [keyPath isEqualToString:@"operationCount"])
@@ -669,17 +665,16 @@
 			return;
 		}
 	}
-/*	else if (object == fileMatcherQueue && [keyPath isEqualToString:@"operationCount"])
+	else if (object == fileMatcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
 		//DebugLog(@"fileMatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
 		
 		if ([fileMatcherQueue operationCount] == 0)
 		{
 			// Download more files
-			DebugLog(@"--A--");
 			[self matchFiles];
 		}
-	}	*/
+	}
 	else
 	{
 		[super observeValueForKeyPath:keyPath ofObject:object
