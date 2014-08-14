@@ -92,7 +92,6 @@
 		65E5CC2D180B0043001065AE /* Singleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E5CC16180B0043001065AE /* Singleton.m */; };
 		65E5CC35180B0166001065AE /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E5CC34180B0166001065AE /* libsqlite3.dylib */; };
 		65E61FFE18E49F83007A654B /* Share.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E61FFD18E49F83007A654B /* Share.m */; };
-		65E98251184F9AA5000282C1 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E98250184F9AA5000282C1 /* libcrypto.dylib */; };
 		65E98254184F9E75000282C1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E98253184F9E75000282C1 /* Security.framework */; };
 /* End PBXBuildFile section */
 
@@ -266,7 +265,6 @@
 		65E5CC34180B0166001065AE /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		65E61FFC18E49F83007A654B /* Share.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Share.h; sourceTree = "<group>"; };
 		65E61FFD18E49F83007A654B /* Share.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Share.m; sourceTree = "<group>"; };
-		65E98250184F9AA5000282C1 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = usr/lib/libcrypto.dylib; sourceTree = SDKROOT; };
 		65E98253184F9E75000282C1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		65F0EBED18FDAEAE0044A9AB /* FileHelper Unit Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FileHelper Unit Tests.m"; path = "Peerbox Tests/FileHelper Unit Tests.m"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -285,7 +283,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				65E98254184F9E75000282C1 /* Security.framework in Frameworks */,
-				65E98251184F9AA5000282C1 /* libcrypto.dylib in Frameworks */,
 				65ADCAEE180B1C1E00CB05B5 /* libz.dylib in Frameworks */,
 				65ADCAEC180B1B6C00CB05B5 /* CoreFoundation.framework in Frameworks */,
 				65ADCAEA180B1B6B00CB05B5 /* Foundation.framework in Frameworks */,
@@ -606,7 +603,6 @@
 				6595E54318D4ED7300E13880 /* main.m */,
 				6595E54518D4EDC300E13880 /* MainMenu.xib */,
 				652AA56A19993EA100F421E4 /* AddShareWindow.xib */,
-				65A09D5E19994273008FC524 /* EditSharesWindow.xib */,
 				65A1212E190446DB0082C251 /* Peerbox-Info.plist */,
 				65A1212F190446DB0082C251 /* Peerbox-Prefix.pch */,
 			);
@@ -621,7 +617,6 @@
 				65E5CBBF180AFF98001065AE /* Cocoa.framework */,
 				65ADCAEB180B1B6C00CB05B5 /* CoreFoundation.framework */,
 				65E5CBDE180AFF98001065AE /* XCTest.framework */,
-				65E98250184F9AA5000282C1 /* libcrypto.dylib */,
 				65ADCAED180B1C1E00CB05B5 /* libz.dylib */,
 				65E5CC34180B0166001065AE /* libsqlite3.dylib */,
 			);
@@ -631,6 +626,7 @@
 		65F611FF199BA1120060A4DF /* GUI */ = {
 			isa = PBXGroup;
 			children = (
+				65A09D5E19994273008FC524 /* EditSharesWindow.xib */,
 				65930E871997C435008FB32C /* EditSharesWindowController.h */,
 				65930E881997C435008FB32C /* EditSharesWindowController.m */,
 				65A09D601999D709008FC524 /* StatusBarController.h */,
