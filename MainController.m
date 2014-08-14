@@ -580,6 +580,11 @@
 	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
 	[fileMatcherQueue addOperation:o];
+	
+	if ([[dataModel fileDownloads] count] < MAX_CONCURRENT_DOWNLOADS / 2)
+	{
+		[self matchFiles];
+	}
 }
 
 
