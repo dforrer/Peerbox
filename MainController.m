@@ -868,7 +868,6 @@
 			}
 		}
 	}
-	[statusBarController setNumberOfActiveDownloads:(int)[[dataModel fileDownloads] count]];
 }
 
 
