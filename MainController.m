@@ -636,12 +636,13 @@
 			// Restart Revision-Download
 			
 			[self downloadRevisionsFromPeers];
-			
+			/*
 			if ([fileMatcherQueue operationCount] == 0)
 			{
 				// Download more files
 				[self matchFiles];
 			}
+			 */
 		}
 	}
 	else if (object == fsWatcherQueue && [keyPath isEqualToString:@"operationCount"])
