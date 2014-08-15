@@ -23,6 +23,7 @@
 @property (nonatomic, readonly, retain) NSStatusItem * statusItem;
 @property (nonatomic, readonly, retain) DataModel * dataModel;
 @property (nonatomic, readonly, retain) BonjourSearcher * bonjourSearcher;
+@property (nonatomic, retain) NSTimer * timer;
 
 
 @end

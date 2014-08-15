@@ -17,14 +17,12 @@
 
 
 @implementation StatusBarController
-{
-	NSTimer * timer;
-}
 
 
 @synthesize statusItem;
 @synthesize dataModel;
 @synthesize bonjourSearcher;
+@synthesize timer;
 
 
 - (id) initWithDataModel:(DataModel*) dm andBonjourSearcher:(BonjourSearcher *)bs
@@ -49,6 +47,8 @@
 
 - (void) setTimer
 {
+	@synchronized(timer)
+	{
 	if ([timer isValid])
 	{
 		return;
@@ -56,8 +56,8 @@
 	//DebugLog(@"timer is not Valid");
 	timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(updateStatusBarMenu) userInfo:nil repeats:NO];
 	[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+	}
 }
-
 
 - (void) createStatusBarGUI
 {
@@ -75,6 +75,7 @@
 - (void) updateStatusBarMenu
 {
 	[timer invalidate];
+	timer = nil;
 	
 	// Get NSMenu-Pointer
 	NSMenu * mymenu = [statusItem menu];
