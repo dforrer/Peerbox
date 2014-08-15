@@ -585,6 +585,7 @@
 	{
 		[self matchFiles];
 	}
+	[statusBarController refreshStatusBar];
 }
 
 
@@ -614,6 +615,8 @@
 		Revision * r = [d rev];
 		[[[r peer] share] setRevision:r forPeer:[r peer]];
 	}
+	
+	[statusBarController refreshStatusBar];
 }
 
 
@@ -839,9 +842,7 @@
 
 
 - (void) matchFiles
-{
-	[statusBarController refreshStatusBar];
-	
+{	
 	// For every Share ...
 	for (id key in [dataModel myShares])
 	{
