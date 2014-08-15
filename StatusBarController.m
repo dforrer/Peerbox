@@ -17,6 +17,9 @@
 
 
 @implementation StatusBarController
+{
+	NSTimer * timer;
+}
 
 
 @synthesize statusItem;
@@ -32,8 +35,27 @@
 		bonjourSearcher = bs;
 		
 		[self createStatusBarGUI];
+		[self setTimer];
 	}
 	return self;
+}
+
+
+- (void) refreshStatusBar
+{
+	[self setTimer];
+}
+
+
+- (void) setTimer
+{
+	if ([timer isValid])
+	{
+		return;
+	}
+	//DebugLog(@"timer is not Valid");
+	timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(updateStatusBarMenu) userInfo:nil repeats:NO];
+	[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 
@@ -52,6 +74,8 @@
 
 - (void) updateStatusBarMenu
 {
+	[timer invalidate];
+	
 	// Get NSMenu-Pointer
 	NSMenu * mymenu = [statusItem menu];
 	[mymenu removeAllItems];
@@ -119,6 +143,12 @@
 	NSMenuItem  * shares_title = [[NSMenuItem alloc ] init];
 	[shares_title setTitle:@"Shares being synced:"];
 	[mymenu insertItem:shares_title atIndex:0];
+	
+	[mymenu insertItem:[NSMenuItem separatorItem] atIndex:0];
+	
+	NSMenuItem  * activeDownloads = [[NSMenuItem alloc ] init];
+	[activeDownloads setTitle:[NSString stringWithFormat:@"Active Downloads: %lu", [[dataModel fileDownloads] count]]];
+	[mymenu insertItem:activeDownloads atIndex:0];
 }
 
 

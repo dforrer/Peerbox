@@ -17,7 +17,7 @@
 
 
 - (id) initWithDataModel:(DataModel*)dm andBonjourSearcher:(BonjourSearcher*)bs;
-- (void) updateStatusBarMenu;
+- (void) refreshStatusBar;
 
 
 @property (nonatomic, readonly, retain) NSStatusItem * statusItem;

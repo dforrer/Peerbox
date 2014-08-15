@@ -148,7 +148,7 @@
 	// Update GUI
 	
 	[[editSharesWindowController sharesTableView] reloadData];
-	[statusBarController updateStatusBarMenu];
+	[statusBarController refreshStatusBar];
 }
 
 - (void) removeShare:(NSNotification*)aNotification
@@ -169,7 +169,7 @@
 	// Update GUI
 	
 	[[editSharesWindowController sharesTableView] reloadData];
-	[statusBarController updateStatusBarMenu];
+	[statusBarController refreshStatusBar];
 }
 
 /**
@@ -397,7 +397,7 @@
 	
 	// Update StatusBar
 
-	[statusBarController updateStatusBarMenu];
+	[statusBarController refreshStatusBar];
 	
 	[self matchFiles];
 }
@@ -412,7 +412,7 @@
 {
 	// Update StatusBar
 	
-	[statusBarController updateStatusBarMenu];
+	[statusBarController refreshStatusBar];
 }
 
 
@@ -840,6 +840,8 @@
 
 - (void) matchFiles
 {
+	[statusBarController refreshStatusBar];
+	
 	// For every Share ...
 	for (id key in [dataModel myShares])
 	{
