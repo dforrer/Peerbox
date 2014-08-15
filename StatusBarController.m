@@ -49,13 +49,13 @@
 {
 	@synchronized(timer)
 	{
-	if ([timer isValid])
-	{
-		return;
-	}
-	//DebugLog(@"timer is not Valid");
-	timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(updateStatusBarMenu) userInfo:nil repeats:NO];
-	[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+		if ([timer isValid])
+		{
+			return;
+		}
+		//DebugLog(@"timer is not Valid");
+		timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(updateStatusBarMenu) userInfo:nil repeats:NO];
+		[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 	}
 }
 
@@ -98,7 +98,7 @@
 	[mymenu addItem: [NSMenuItem separatorItem]];
 	[mymenu addItem: default_edit];
 	[mymenu addItem: default_quit];
-
+	
 	// NSMenu needed to group the NSMenuItems
 	
 	for (id key  in [bonjourSearcher resolvedServices])
@@ -117,7 +117,7 @@
 	[peersTitle setTitle:@"Peers on network:"];
 	[mymenu insertItem:peersTitle atIndex:0];
 	[mymenu insertItem:[NSMenuItem separatorItem] atIndex:0];
-
+	
 	
 	// loop through myShares
 	
