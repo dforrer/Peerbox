@@ -156,15 +156,17 @@
 
 - (void) setTimer
 {
-	if ([timer isValid])
+	@synchronized(timer)
 	{
-		return;
+		if ([timer isValid])
+		{
+			return;
+		}
+		//DebugLog(@"timer is not Valid");
+		timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(commitAndBegin) userInfo:nil repeats:NO];
+		[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 	}
-	//DebugLog(@"timer is not Valid");
-	timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(commitAndBegin) userInfo:nil repeats:NO];
-	[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
-
 
 /**
  * Returns total number of uncommited changes
