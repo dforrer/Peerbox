@@ -75,7 +75,6 @@
 - (void) updateStatusBarMenu
 {
 	[timer invalidate];
-	timer = nil;
 	
 	// Get NSMenu-Pointer
 	NSMenu * mymenu = [statusItem menu];
@@ -144,12 +143,6 @@
 	NSMenuItem  * shares_title = [[NSMenuItem alloc ] init];
 	[shares_title setTitle:@"Shares being synced:"];
 	[mymenu insertItem:shares_title atIndex:0];
-	
-	[mymenu insertItem:[NSMenuItem separatorItem] atIndex:0];
-	
-	NSMenuItem  * activeDownloads = [[NSMenuItem alloc ] init];
-	[activeDownloads setTitle:[NSString stringWithFormat:@"Active Downloads: %lu", [[dataModel fileDownloads] count]]];
-	[mymenu insertItem:activeDownloads atIndex:0];
 }
 
 
