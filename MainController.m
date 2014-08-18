@@ -56,7 +56,6 @@
 /**
  * Initializer
  */
-
 - (id) init
 {
 	if ((self = [super init]))
@@ -125,57 +124,9 @@
 }
 
 
-- (void) openEditDialog:(NSNotification*)aNotification
-{
-	[editSharesWindowController openEditDialog];
-}
-
-
-- (void) addShare:(NSNotification*)aNotification
-{
-	Share * s = [aNotification object];
-	[dataModel addShare:s];
-	[self saveModelToPlist];
-	
-	// Perform initial scan
-	
-	ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
-	[fsWatcherQueue addOperation:o];
-	[self updateFSWatcher];
-	
-	[self downloadSharesFromPeers:nil];
-	
-	// Update GUI
-	
-	[[editSharesWindowController sharesTableView] reloadData];
-	[statusBarController refreshStatusBar];
-}
-
-- (void) removeShare:(NSNotification*)aNotification
-{
-	Share * s = [aNotification object];
-	[dataModel removeShare:s];
-	[self saveModelToPlist];
-
-	[self updateFSWatcher];
-	
-	// Remove .sqlite-File
-	
-	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [[[Singleton data] config] workingDir], [s shareId]];
-	NSError * error;
-	[[NSFileManager defaultManager] removeItemAtPath:sqlitePath error:&error];
-
-	
-	// Update GUI
-	
-	[[editSharesWindowController sharesTableView] reloadData];
-	[statusBarController refreshStatusBar];
-}
-
 /**
  * Load 'myShares' and 'myPeerID' from 'model.plist'
  */
-
 - (void) openModel
 {
 	@autoreleasepool
@@ -233,14 +184,9 @@
 }
 
 
-
-
-
-
 /**
  * Save 'myShares' and 'myPeerID' to 'model.plist'
  */
-
 - (void) saveModelToPlist
 {	
 	NSMutableDictionary * model = [[NSMutableDictionary alloc] init];
@@ -257,14 +203,9 @@
 }
 
 
-
-
-
-
 /**
  * Setup and start httpserver
  */
-
 - (void) setupHTTPServer
 {
 	/*
@@ -305,13 +246,11 @@
 }
 
 
-
 /**
  * Creates the directories:
  *	/APP_NAME/web
  *	/APP_NAME/downloads
  */
-
 - (void) createWorkingDirectories
 {
 	// Create directory "downloads"
@@ -329,19 +268,14 @@
 }
 
 
-
 /**
  * Generates a new random PeerID
  */
-
 - (void) generatePeerId
 {
 	NSData * random = [FileHelper createRandomNSDataOfSize:20];
 	[[Singleton data] setMyPeerID:[FileHelper sha1OfNSData:random]];
 }
-
-
-
 
 
 #pragma mark -----------------------
@@ -375,6 +309,7 @@
 }
 
 
+
 - (void) printDebugLogs
 {
 	// TODO: Find out why certain downloads finish but the downloads are then not moved to their destination
@@ -382,15 +317,14 @@
 }
 
 
+
 #pragma mark -----------------------
 #pragma mark Implemented Interfaces (Protocols)
-
 
 
 /**
  * OVERRIDE: BonjourSearcherDelegate
  */
-
 - (void) bonjourSearcherServiceResolved:(NSNetService*)n
 {
 	[self notifyPeers:nil];
@@ -403,11 +337,9 @@
 }
 
 
-
 /**
  * OVERRIDE: BonjourSearcherDelegate
  */
-
 - (void) bonjourSearcherServiceRemoved:(NSNetService*)n
 {
 	// Update StatusBar
@@ -416,11 +348,9 @@
 }
 
 
-
 /**
  * OVERRIDE: DownloadSharesDelegate
  */
-
 - (void) downloadSharesHasFinishedWithResponseDict:(NSDictionary*)d
 {
 	// Store response in model
@@ -471,22 +401,18 @@
 }
 
 
-
 /**
  * OVERRIDE: DownloadSharesDelegate
  */
-
 - (void) downloadSharesHasFailed
 {
 	DebugLog(@"downloadSharesHasFailed: Whatever...!");
 }
 
 
-
 /**
  * OVERRIDE: DownloadRevisionsDelegate
  */
-
 - (void) downloadRevisionsHasFinished:(DownloadRevisions*)d
 {
 	NSError * error;
@@ -588,7 +514,6 @@
 }
 
 
-
 /**
  * OVERRIDE: Delegate function called by "download" inherited from <DownloadFileDelegate>
  */
@@ -615,7 +540,6 @@
 		[[[r peer] share] setRevision:r forPeer:[r peer]];
 	}
 }
-
 
 
 /**
@@ -712,9 +636,6 @@
 }
 
 
-
-
-
 /**
  * Notification from Watcher
  * This is the buffer for the firehose of fsevents
@@ -763,8 +684,57 @@
 }
 
 
+#pragma mark -----------------------
+#pragma mark GUI Controller Functions
 
 
+- (void) openEditDialog:(NSNotification*)aNotification
+{
+	[editSharesWindowController openEditDialog];
+}
+
+
+- (void) addShare:(NSNotification*)aNotification
+{
+	Share * s = [aNotification object];
+	[dataModel addShare:s];
+	[self saveModelToPlist];
+	
+	// Perform initial scan
+	
+	ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
+	[fsWatcherQueue addOperation:o];
+	[self updateFSWatcher];
+	
+	[self downloadSharesFromPeers:nil];
+	
+	// Update GUI
+	
+	[[editSharesWindowController sharesTableView] reloadData];
+	[statusBarController refreshStatusBar];
+}
+
+
+- (void) removeShare:(NSNotification*)aNotification
+{
+	Share * s = [aNotification object];
+	[dataModel removeShare:s];
+	[self saveModelToPlist];
+	
+	[self updateFSWatcher];
+	
+	// Remove .sqlite-File
+	
+	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [[[Singleton data] config] workingDir], [s shareId]];
+	NSError * error;
+	[[NSFileManager defaultManager] removeItemAtPath:sqlitePath error:&error];
+	
+	
+	// Update GUI
+	
+	[[editSharesWindowController sharesTableView] reloadData];
+	[statusBarController refreshStatusBar];
+}
 
 
 #pragma mark -----------------------
@@ -786,9 +756,9 @@
 }
 
 
-
 /**
- * Status: COMPLETE
+ * Downloads from every resolved BonjourService the available Shares
+ * by requesting the URL /shares
  */
 - (void) downloadSharesFromPeers:(NSNotification*)aNotification
 {
@@ -809,9 +779,9 @@
 }
 
 
-
 /**
- *
+ * Goes through all the Shares and downloads the next couple of revisions
+ * from the available Peers.
  */
 - (void) downloadRevisionsFromPeers
 {
@@ -838,6 +808,10 @@
 }
 
 
+/** 
+ * Loads the next Revision and starts a new Download until 
+ * MAX_CONCURRENT_DOWNLOADS is reached. 
+ */
 - (void) matchFiles
 {	
 	// For every Share ...
@@ -869,7 +843,6 @@
 		}
 	}
 }
-
 
 
 @end
