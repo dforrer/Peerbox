@@ -34,6 +34,10 @@
 
 - (void) main
 {
+	if ([fileURL isEqualTo:[share root]])
+	{
+		return;
+	}
 	[share scanURL:fileURL recursive:YES];
 }
 
