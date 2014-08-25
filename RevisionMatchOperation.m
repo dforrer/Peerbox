@@ -385,19 +385,9 @@
 	
 	remove([[fullURL path] cStringUsingEncoding:NSUTF8StringEncoding]);
 	
-	// Create empty file
 	
-	NSFileHandle * fh = [FileHelper fileForWritingAtPath:[fullURL path]];
-	
-	/*
-	 * Because file-creation might fail, if the
-	 * super-directories weren't readily created
-	 * we have to make sure it is done again here
-	 */
-	
-	if (fh == nil)
+	if (![FileHelper fileFolderExists:[[fullURL URLByDeletingLastPathComponent] path]])
 	{
-		DebugLog(@"ERROR: Failure to create empty file at %@", [fullURL path]);
 		NSError * error = nil;
 		[[NSFileManager defaultManager] createDirectoryAtURL:[fullURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:&error];
 		if (error != nil)
@@ -405,11 +395,19 @@
 			DebugLog(@"ERROR creating directory: %@", error);
 			return;
 		}
-		
-		// Retry
-	
-		fh = [FileHelper fileForWritingAtPath:[fullURL path]];
 	}
+	
+	// Create empty file
+	
+	NSFileHandle * fh = [FileHelper fileForWritingAtPath:[fullURL path]];
+	
+	if (fh == nil)
+	{
+		DebugLog(@"ERROR: Failure to create empty file at %@", [fullURL path]);
+		
+		return;
+	}
+	
 	//[fh writeData:[NSData data]];
 	[fh closeFile];
 	
