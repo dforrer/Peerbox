@@ -23,7 +23,6 @@
 		657657D918D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 657657D818D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m */; };
 		658943EE192125EA00A58A83 /* Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943ED192125EA00A58A83 /* Configuration.m */; };
 		6589459719269B4C00A58A83 /* BonjourSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943F519269B4A00A58A83 /* BonjourSearcher.m */; };
-		6589459B19269B4C00A58A83 /* FileCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943F819269B4A00A58A83 /* FileCryptor.m */; };
 		6589459D19269B4C00A58A83 /* FileHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943FA19269B4A00A58A83 /* FileHelper.m */; };
 		6589459F19269B4C00A58A83 /* FSWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943FC19269B4A00A58A83 /* FSWatcher.m */; };
 		658945A119269B4C00A58A83 /* NSDataGZipCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943FE19269B4A00A58A83 /* NSDataGZipCategory.m */; };
@@ -134,8 +133,6 @@
 		658943ED192125EA00A58A83 /* Configuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Configuration.m; sourceTree = "<group>"; };
 		658943F419269B4A00A58A83 /* BonjourSearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BonjourSearcher.h; sourceTree = "<group>"; };
 		658943F519269B4A00A58A83 /* BonjourSearcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BonjourSearcher.m; sourceTree = "<group>"; };
-		658943F719269B4A00A58A83 /* FileCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileCryptor.h; sourceTree = "<group>"; };
-		658943F819269B4A00A58A83 /* FileCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileCryptor.m; sourceTree = "<group>"; };
 		658943F919269B4A00A58A83 /* FileHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileHelper.h; sourceTree = "<group>"; };
 		658943FA19269B4A00A58A83 /* FileHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileHelper.m; sourceTree = "<group>"; };
 		658943FB19269B4A00A58A83 /* FSWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSWatcher.h; sourceTree = "<group>"; };
@@ -315,8 +312,6 @@
 			children = (
 				658943F419269B4A00A58A83 /* BonjourSearcher.h */,
 				658943F519269B4A00A58A83 /* BonjourSearcher.m */,
-				658943F719269B4A00A58A83 /* FileCryptor.h */,
-				658943F819269B4A00A58A83 /* FileCryptor.m */,
 				658943F919269B4A00A58A83 /* FileHelper.h */,
 				658943FA19269B4A00A58A83 /* FileHelper.m */,
 				658943FB19269B4A00A58A83 /* FSWatcher.h */,
@@ -818,7 +813,6 @@
 				658945D519269B4C00A58A83 /* HTTPAsyncFileResponse.m in Sources */,
 				658945C119269B4C00A58A83 /* DDData.m in Sources */,
 				65AD01E6186E0DBB00DC6A1B /* FileScanOperation.m in Sources */,
-				6589459B19269B4C00A58A83 /* FileCryptor.m in Sources */,
 				658945E119269B4C00A58A83 /* WebSocket.m in Sources */,
 				658946BD19269B4C00A58A83 /* RNCryptorEngine.m in Sources */,
 				658946B719269B4C00A58A83 /* DispatchQueueLogFormatter.m in Sources */,

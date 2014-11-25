@@ -3,10 +3,6 @@
 //  Copyright (c) 2014 Forrer. All rights reserved.
 //
 
-/**
- * The MainController should never use the Singleton
- */
-
 
 #import "DownloadShares.h"
 #import "DownloadFile.h"
