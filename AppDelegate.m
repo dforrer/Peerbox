@@ -26,7 +26,7 @@
 {
 	@autoreleasepool
 	{		
-		DebugLog(@"applicationDidFinishLaunching");
+		NSLog(@"applicationDidFinishLaunching");
 
 		mc = [[MainController alloc] init];
 	}
@@ -39,7 +39,7 @@
  */
 - (BOOL) applicationShouldTerminateAfterLastWindowClosed: (NSApplication *)theApplication
 {
-	DebugLog(@"applicationShouldTerminateAfterLastWindowClosed");
+	NSLog(@"applicationShouldTerminateAfterLastWindowClosed");
 	return NO;
 }
 
@@ -53,7 +53,7 @@
  */
 - (void) applicationWillTerminate:(NSNotification *)aNotification
 {
-	DebugLog(@"applicationWillTerminate");
+	NSLog(@"applicationWillTerminate");
 	[[mc dataModel] commitAllShareDBs];
 	[[mc dataModel] saveFileDownloads];
 	[mc saveModelToPlist];

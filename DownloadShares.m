@@ -95,7 +95,7 @@
    didFailWithError:(NSError*)error
 {
 	// Handle the error properly
-	DebugLog(@"Error: %@", error);
+	NSLog(@"Error: %@", error);
 	hasFailed = TRUE;
 }
 

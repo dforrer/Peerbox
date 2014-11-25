@@ -31,7 +31,7 @@
  */
 - (void) main
 {
-	DebugLog(@"ShareScanOperation");
+	NSLog(@"ShareScanOperation");
 
 	// Search DELETED Files
 	

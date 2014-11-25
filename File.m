@@ -143,18 +143,18 @@
 		return [str1 compare:str2 options:NSNumericSearch];
 	}];;
 	
-	//DebugLog(@"local: %@", local);
-	//DebugLog(@"remote: %@", remote);
+	//NSLog(@"local: %@", local);
+	//NSLog(@"remote: %@", remote);
 	
 	int local_smallest	 = [[local firstObject] intValue];
 	int remote_smallest = [[remote firstObject] intValue];
 	int local_biggest	 = [[local lastObject] intValue];
 	int remote_biggest	 = [[remote lastObject] intValue];
 	
-	//DebugLog(@"local_smallest:  %i", local_smallest);
-	//DebugLog(@"remote_smallest: %i", remote_smallest);
-	//DebugLog(@"local_biggest:   %i", local_biggest);
-	//DebugLog(@"remote_biggest:  %i", remote_biggest);
+	//NSLog(@"local_smallest:  %i", local_smallest);
+	//NSLog(@"remote_smallest: %i", remote_smallest);
+	//NSLog(@"local_biggest:   %i", local_biggest);
+	//NSLog(@"remote_biggest:  %i", remote_biggest);
 	
 	int smallestSharedVersion;
 	int biggestSharedVersion;
@@ -162,9 +162,9 @@
 	// Finding the smallest shared revision
 	
 	smallestSharedVersion = MAX(local_smallest , remote_smallest);
-	//DebugLog(@"shared smallest: %i", smallestSharedVersion);
+	//NSLog(@"shared smallest: %i", smallestSharedVersion);
 	biggestSharedVersion  = MIN(local_biggest  , remote_biggest);
-	//DebugLog(@"shared biggest:  %i", biggestSharedVersion);
+	//NSLog(@"shared biggest:  %i", biggestSharedVersion);
 	
 	if ( (biggestSharedVersion - smallestSharedVersion) < 0)
 	{
@@ -175,8 +175,8 @@
 	while (i <= biggestSharedVersion
 		  && [[v1 objectForKey:[NSString stringWithFormat:@"%i", i]] isEqualToString:[v2 objectForKey:[NSString stringWithFormat:@"%i", i]]])
 	{
-		//DebugLog(@"%i: %@", i, [v1 objectForKey:[NSString stringWithFormat:@"%i", i]]);
-		//DebugLog(@"%i: %@", i, [v2 objectForKey:[NSString stringWithFormat:@"%i", i]]);
+		//NSLog(@"%i: %@", i, [v1 objectForKey:[NSString stringWithFormat:@"%i", i]]);
+		//NSLog(@"%i: %@", i, [v2 objectForKey:[NSString stringWithFormat:@"%i", i]]);
 		i++;
 	}
 	return !(i == biggestSharedVersion + 1);
@@ -256,37 +256,37 @@
 	}
 	if (![[self revision] isEqualToNumber:[f revision]])
 	{
-		//	DebugLog(@"isEqualToFile: revision");
+		//	NSLog(@"isEqualToFile: revision");
 		return FALSE;
 	}
 	if (![[self fileSize] isEqualToNumber:[f fileSize]])
 	{
-		//	DebugLog(@"isEqualToFile: fileSize");
+		//	NSLog(@"isEqualToFile: fileSize");
 		return FALSE;
 	}
 	if (![[self contentModDate] isEqualToDate:[f contentModDate]])
 	{
-		//	DebugLog(@"isEqualToFile: contentModDate");
+		//	NSLog(@"isEqualToFile: contentModDate");
 		return FALSE;
 	}
 	if (![[self attributesModDate] isEqualToDate:[f attributesModDate]])
 	{
-		//	DebugLog(@"isEqualToFile: attributesModDate");
+		//	NSLog(@"isEqualToFile: attributesModDate");
 		return FALSE;
 	}
 	if (![[self isSet] isEqualToNumber:[f isSet]])
 	{
-		//	DebugLog(@"isEqualToFile: isSet");
+		//	NSLog(@"isEqualToFile: isSet");
 		return FALSE;
 	}
 	if (![[self extAttributes] isEqualToDictionary:[f extAttributes]])
 	{
-		//	DebugLog(@"isEqualToFile: extAttributes");
+		//	NSLog(@"isEqualToFile: extAttributes");
 		return FALSE;
 	}
 	if (![[self versions] isEqualToDictionary:[f versions]])
 	{
-		//	DebugLog(@"isEqualToFile: versions");
+		//	NSLog(@"isEqualToFile: versions");
 		return FALSE;
 	}
 	if (![[self isSymlink] isEqualToNumber:[f isSymlink]])
@@ -321,22 +321,22 @@
 
 - (void) print
 {
-	DebugLog(@"--------------------");
-	DebugLog(@"url:                %@", url);
-	DebugLog(@"revision:           %@", revision);
-	DebugLog(@"fileSize:           %@", fileSize);
-	DebugLog(@"contentModDate:     %@", contentModDate);
-	DebugLog(@"attributesModDate:  %@", attributesModDate);
-	DebugLog(@"isSet:              %@", isSet);
-	DebugLog(@"extAttributes: %@", extAttributes);
-	DebugLog(@"versions:           %@", versions);
-	DebugLog(@"--------------------");
+	NSLog(@"--------------------");
+	NSLog(@"url:                %@", url);
+	NSLog(@"revision:           %@", revision);
+	NSLog(@"fileSize:           %@", fileSize);
+	NSLog(@"contentModDate:     %@", contentModDate);
+	NSLog(@"attributesModDate:  %@", attributesModDate);
+	NSLog(@"isSet:              %@", isSet);
+	NSLog(@"extAttributes: %@", extAttributes);
+	NSLog(@"versions:           %@", versions);
+	NSLog(@"--------------------");
 }
 
 
 
 /**
- Allows for an object to be printed with DebugLog()
+ Allows for an object to be printed with NSLog()
  */
 
 - (NSString*) description

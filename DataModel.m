@@ -62,7 +62,7 @@
 
 - (NSDictionary*) plistEncoded
 {
-	//DebugLog(@"plistEncoded: MainModel");
+	//NSLog(@"plistEncoded: MainModel");
 	NSMutableDictionary * plist = [[NSMutableDictionary alloc] init];
 	for (id key in myShares)
 	{

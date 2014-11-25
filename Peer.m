@@ -56,7 +56,7 @@
 
 - (NSDictionary*) plistEncoded
 {
-	//DebugLog(@"plistEncoded: Peer");
+	//NSLog(@"plistEncoded: Peer");
 	
 	NSMutableDictionary * rv = [[NSMutableDictionary alloc] init];
 	[rv setObject:peerID forKey:@"peerID"];

@@ -94,15 +94,15 @@
 		
 		// Prepare POST-Data
 	
-		//DebugLog(@"fromRev: %@",[peer lastDownloadedRev]);
+		//NSLog(@"fromRev: %@",[peer lastDownloadedRev]);
 		NSMutableDictionary * postData = [NSMutableDictionary dictionary];
 		[postData setObject:[NSNumber numberWithLongLong:[[peer lastDownloadedRev] longLongValue] + 1] forKey:@"fromRev"];
 		NSError * error;
 		NSData * json = [[CJSONSerializer serializer] serializeObject:postData error:&error];
-		//DebugLog(@"json: %@", postData);
+		//NSLog(@"json: %@", postData);
 		if (error)
 		{
-			DebugLog(@"ERROR 10: CJSON-Serializer failed: %@", error);
+			NSLog(@"ERROR 10: CJSON-Serializer failed: %@", error);
 		}
 		json = [RNEncryptor encryptData:json
 					    withSettings:kRNCryptorAES256Settings
@@ -145,7 +145,7 @@
 {
 	// Handle the error properly
 	
-	DebugLog(@"Error: %@",error);
+	NSLog(@"Error: %@",error);
 	
 	[delegate downloadRevisionsHasFailed:self];
 }
@@ -164,17 +164,17 @@
 									   error:&error];
 	if (error)
 	{
-		DebugLog(@"During decryption an error occurred!");
+		NSLog(@"During decryption an error occurred!");
 		return;
 	}
 
-//	DebugLog(@"Size before inflation: %lu",(unsigned long)[response length]);
+//	NSLog(@"Size before inflation: %lu",(unsigned long)[response length]);
 	
 	// Decompress response
 	
 	response = [NSMutableData dataWithData:[responseData gzipInflate]];
 
-//	DebugLog(@"Size after inflation: %lu",(unsigned long)[response length]);
+//	NSLog(@"Size after inflation: %lu",(unsigned long)[response length]);
 	
 	[delegate downloadRevisionsHasFinished:self];
  

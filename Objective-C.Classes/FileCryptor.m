@@ -53,19 +53,19 @@
 		{
 			[data setLength:bytesRead];
 			[encryptor addData:data];
-			DebugLog(@"Sent %ld bytes to decryptor", (unsigned long)bytesRead);
+			NSLog(@"Sent %ld bytes to decryptor", (unsigned long)bytesRead);
 		}
 	};
 	
 	encryptor = [[RNEncryptor alloc] initWithSettings:kRNCryptorAES256Settings
 									 password:password
 									  handler:^(RNCryptor *cryptor, NSData *data) {
-										  DebugLog(@"Decryptor recevied %ld bytes", (unsigned long)data.length);
+										  NSLog(@"Decryptor recevied %ld bytes", (unsigned long)data.length);
 										  [encryptedStream write:data.bytes maxLength:data.length];
 										  if (cryptor.isFinished)
 										  {
 											  [encryptedStream close];
-											  DebugLog(@"Encryption finished");
+											  NSLog(@"Encryption finished");
 											  // call my delegate that I'm finished with decrypting
 										  }
 										  else
@@ -124,7 +124,7 @@
 										  if (cryptor.isFinished)
 										  {
 											  [decryptedStream close];
-											  DebugLog(@"Encryption finished");
+											  NSLog(@"Encryption finished");
 											  // call my delegate that I'm finished with decrypting
 										  }
 										  else

@@ -60,7 +60,7 @@
 		long statusCode = [((NSHTTPURLResponse *)response) statusCode];
 		if (statusCode != 200)
 		{
-			DebugLog(@"HTTP-ERROR: didReceiveResponse statusCode: %li", statusCode);
+			NSLog(@"HTTP-ERROR: didReceiveResponse statusCode: %li", statusCode);
 			[self->connection cancel];  // stop connecting; no more delegate messages
 		}
 	}
@@ -81,7 +81,7 @@
    didFailWithError:(NSError*)error
 {
 	// Handle the error properly
-	DebugLog(@"Error: %@", error);
+	NSLog(@"Error: %@", error);
 }
 
 

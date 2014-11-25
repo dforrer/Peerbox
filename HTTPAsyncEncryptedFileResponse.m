@@ -61,7 +61,7 @@
 		filePath			= [fpath copy];
 		if (filePath == nil)
 		{
-			DebugLog(@"%@: Init failed - Nil filePath", THIS_FILE);
+			NSLog(@"%@: Init failed - Nil filePath", THIS_FILE);
 			
 			return nil;
 		}
@@ -78,14 +78,14 @@
 		[readStream open];
 
 		void (^handlerBlock) (RNCryptor *, NSData *) = ^(RNCryptor *cryptor, NSData *encryptedData) {
-			//DebugLog(@"handler");
+			//NSLog(@"handler");
 			data = [[NSMutableData alloc] initWithData:encryptedData]; // alloc is very importent here!!!
 			// Notify the connection that we have data available for it.
 			[connection responseHasAvailableData:self];
 			if (encryptor.isFinished)
 			{
 				//[readStream close];
-				//DebugLog(@"Encryption finished");
+				//NSLog(@"Encryption finished");
 			}
 		};
 		encryptor	= [[RNEncryptor alloc] initWithSettings:kRNCryptorAES256Settings
@@ -105,7 +105,7 @@
 	if (bytesRead < 0)
 	{
 		// Throw an error
-		DebugLog(@"ERROR 3: bytesRead < 0")
+		NSLog(@"ERROR 3: bytesRead < 0");
 		[self abort];
 	}
 	else if (bytesRead == 0)
@@ -116,14 +116,14 @@
 	{
 		[data setLength:bytesRead];
 		[encryptor addData:data];
-		//DebugLog(@"Sent %ld bytes to encryptor", (unsigned long)bytesRead);
+		//NSLog(@"Sent %ld bytes to encryptor", (unsigned long)bytesRead);
 	}
 }
 
 
 - (void) abort
 {
-	DebugLog(@"ABORTED");
+	NSLog(@"ABORTED");
 	[connection responseDidAbort:self];
 	aborted = YES;
 }
@@ -141,7 +141,7 @@
 
 - (NSData *) readDataOfLength: (NSUInteger)length
 {
-	//DebugLog(@"readDataOfLength:%lu", (unsigned long)length);
+	//NSLog(@"readDataOfLength:%lu", (unsigned long)length);
 	if (data)
 	{
 		NSData * result = [NSData dataWithData:data];
@@ -161,7 +161,7 @@
 - (BOOL) isDone
 {
 	BOOL result = finishedReading;
-	// DebugLog(@"isDone - %@", (result ? @"YES" : @"NO"));
+	// NSLog(@"isDone - %@", (result ? @"YES" : @"NO"));
 	return result;
 }
 
@@ -180,7 +180,7 @@
 
 - (void) connectionDidClose
 {
-	//DebugLog(@"connectionDidClose");
+	//NSLog(@"connectionDidClose");
 	[readStream close];
 	readStream	= nil;
 	filePath		= nil;
@@ -191,7 +191,7 @@
 
 - (void) dealloc
 {
-//	DebugLog(@"dealloc");
+//	NSLog(@"dealloc");
 }
 
 

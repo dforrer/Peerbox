@@ -154,7 +154,7 @@
 		
 		[[Singleton data] setMyPeerID:[model objectForKey:@"myPeerID"]];
 		
-		DebugLog(@"%myPeerID: %@", [[Singleton data] myPeerID]);
+		NSLog(@"%myPeerID: %@", [[Singleton data] myPeerID]);
 		
 		// Set myShares
 		
@@ -198,7 +198,7 @@
 	NSString * path = [[[[Singleton data] config] workingDir] stringByAppendingPathComponent:@"model.plist"];
 	if (![model writeToFile:path atomically:TRUE])
 	{
-		DebugLog(@"AN ERROR OCCURED DURING SAVING OF: model.plist");
+		NSLog(@"AN ERROR OCCURED DURING SAVING OF: model.plist");
 	}
 }
 
@@ -235,13 +235,13 @@
 	
 	if( ![httpServer start:&error] )
 	{
-		DebugLog(@"Error starting HTTP Server: %@", error);
+		NSLog(@"Error starting HTTP Server: %@", error);
 	}
 	else
 	{
-		DebugLog(@"Server started");
-		DebugLog(@"address: localhost");
-		DebugLog(@"port: %i", [httpServer listeningPort]);
+		NSLog(@"Server started");
+		NSLog(@"address: localhost");
+		NSLog(@"port: %i", [httpServer listeningPort]);
 	}
 }
 
@@ -288,8 +288,8 @@
 	NSDictionary * resolvedServices = [bonjourSearcher resolvedServices];
 	for (NSNetService *aNetService in [resolvedServices allValues])
 	{
-		DebugLog(@"ResolvedServiceName: %@, hostname: %@",[aNetService name], [aNetService hostName]);
-		DebugLog(@"\thostname: %@", [aNetService hostName]);
+		NSLog(@"ResolvedServiceName: %@, hostname: %@",[aNetService name], [aNetService hostName]);
+		NSLog(@"\thostname: %@", [aNetService hostName]);
 	}
 }
 
@@ -297,13 +297,13 @@
 
 - (void) printMyShares
 {
-	DebugLog(@"myPeerId: %@", [[Singleton data] myPeerID]);
+	NSLog(@"myPeerId: %@", [[Singleton data] myPeerID]);
 	for (Share * s in [[dataModel myShares] allValues])
 	{
-		DebugLog(@"%@", s);
+		NSLog(@"%@", s);
 		for (Peer * p in [s allPeers])
 		{
-			DebugLog(@"%@", p);
+			NSLog(@"%@", p);
 		}
 	}
 }
@@ -313,7 +313,7 @@
 - (void) printDebugLogs
 {
 	// TODO: Find out why certain downloads finish but the downloads are then not moved to their destination
-	DebugLog(@"FileDownloads-Count: %lu",(unsigned long)[[dataModel fileDownloads] count]);
+	NSLog(@"FileDownloads-Count: %lu",(unsigned long)[[dataModel fileDownloads] count]);
 }
 
 
@@ -359,7 +359,7 @@
 	
 	if (!sharesRemote)
 	{
-		DebugLog(@"ERROR 11: shares is nil");
+		NSLog(@"ERROR 11: shares is nil");
 		return;
 	}
 	
@@ -406,7 +406,7 @@
  */
 - (void) downloadSharesHasFailed
 {
-	DebugLog(@"downloadSharesHasFailed: Whatever...!");
+	NSLog(@"downloadSharesHasFailed: Whatever...!");
 }
 
 
@@ -422,10 +422,10 @@
 	NSDictionary * dict = [NSDictionary dictionaryWithJSONData:[d response] error:&error];
 	if (error)
 	{
-		DebugLog(@"response-count:%li", [[dict objectForKey:@"revisions"] count]);
+		NSLog(@"response-count:%li", [[dict objectForKey:@"revisions"] count]);
 		return;
 	}
-	//	DebugLog(@"REVISIONS:\n%@", dict);
+	//	NSLog(@"REVISIONS:\n%@", dict);
 	
 	
 	// Store revisions in share->peers->downloadedRevs
@@ -480,7 +480,7 @@
 		// Get biggest revision from response->revisions
 		
 		NSNumber * biggestRev = [dict objectForKey:@"biggestRev"];
-		DebugLog(@"biggestRev: %@", biggestRev);
+		NSLog(@"biggestRev: %@", biggestRev);
 		[[d peer] setLastDownloadedRev:biggestRev];
 	}
 }
@@ -500,8 +500,8 @@
  */
 - (void) downloadFileHasFinished:(DownloadFile*)d
 {
-	DebugLog(@"DL finished : %@", [[d rev] relURL]);
-	DebugLog(@"downloadPath: %@", [d downloadPath]);
+	NSLog(@"DL finished : %@", [[d rev] relURL]);
+	NSLog(@"downloadPath: %@", [d downloadPath]);
 	[dataModel addOrRemove:0 synchronizedFromFileDownloads:d];
 	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
@@ -519,7 +519,7 @@
  */
 - (void) downloadFileHasFailed:(DownloadFile*)d
 {
-	DebugLog(@"ERROR: downloadFileHasFailed: %@", [d downloadPath]);
+	NSLog(@"ERROR: downloadFileHasFailed: %@", [d downloadPath]);
 	[dataModel addOrRemove:0 synchronizedFromFileDownloads:d];
 	
 	// Remove failed download-file from downloads directory
@@ -528,7 +528,7 @@
 	[[NSFileManager defaultManager] removeItemAtPath:[d downloadPath] error:&error];
 	if (error)
 	{
-		DebugLog(@"ERROR: removeItemAtURL failed!, %@", error);
+		NSLog(@"ERROR: removeItemAtURL failed!, %@", error);
 		return;
 	}
 	
@@ -551,12 +551,12 @@
 {
 	if (object == revMatcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
-		//DebugLog(@"revMatcherQueue->operationCount: %lu", (unsigned long)[revMatcherQueue operationCount]);
+		//NSLog(@"revMatcherQueue->operationCount: %lu", (unsigned long)[revMatcherQueue operationCount]);
 		if ([revMatcherQueue operationCount] == 0)
 		{
 			// Do something here when your queue has completed
 			
-			DebugLog(@"queue has completed");
+			NSLog(@"queue has completed");
 			
 			
 			// Restart Revision-Download
@@ -572,7 +572,7 @@
 	}
 	else if (object == fsWatcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
-		//DebugLog(@"fsWatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
+		//NSLog(@"fsWatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
 		
 		/*
 		 * If the 'operationCount' gets bigger than FSWATCHER_QUEUE_THRESHOLD the application
@@ -585,7 +585,7 @@
 			if (![fsWatcherQueue isSuspended])
 			{
 				[fsWatcherQueue cancelAllOperations];
-				DebugLog(@"fswatcherQueueRestartet == FALSE");
+				NSLog(@"fswatcherQueueRestartet == FALSE");
 				[fsWatcherQueue setSuspended:TRUE];
 				[self performSelector: @selector(restartFSWatcherQueue)
 						 withObject: nil
@@ -596,7 +596,7 @@
 	}
 	else if (object == fileMatcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
-		//DebugLog(@"fileMatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
+		//NSLog(@"fileMatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
 		
 		if ([fileMatcherQueue operationCount] == 0)
 		{
@@ -622,7 +622,7 @@
  */
 - (void) restartFSWatcherQueue
 {
-	DebugLog(@"restartFSWatcherQueue");
+	NSLog(@"restartFSWatcherQueue");
 	
 	// Do the rescan
 	
@@ -650,7 +650,7 @@
 	}
 	
 	NSURL * fileURL = [notification object];
-	//DebugLog(@"fsWatcherEvent: %@", fileURL);
+	//NSLog(@"fsWatcherEvent: %@", fileURL);
 	
 	for (Share * share in [[dataModel myShares] allValues])
 	{
@@ -678,7 +678,7 @@
 	{
 		[a addObject:[[s root] path]];
 	}
-	DebugLog(@"%@", a);
+	NSLog(@"%@", a);
 	[fswatcher setPaths:a];
 	[fswatcher startWatching];
 }
@@ -743,7 +743,7 @@
 
 - (void) notifyPeers:(NSNotification*)aNotification
 {
-	DebugLog(@"notifyPeers");
+	NSLog(@"notifyPeers");
 	// For every announced NetService...
 	
 	for (id key in [bonjourSearcher resolvedServices])
@@ -762,7 +762,7 @@
  */
 - (void) downloadSharesFromPeers:(NSNotification*)aNotification
 {
-	DebugLog(@"downloadSharesFromPeers");
+	NSLog(@"downloadSharesFromPeers");
 	
 	// For every announced NetService...
 	

@@ -53,7 +53,7 @@
 		{
 			return;
 		}
-		//DebugLog(@"timer is not Valid");
+		//NSLog(@"timer is not Valid");
 		timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(updateStatusBarMenu) userInfo:nil repeats:NO];
 		[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 	}

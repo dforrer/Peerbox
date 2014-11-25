@@ -52,11 +52,11 @@
 - (id) initWithNetService:(NSNetService*)netService
 		    andRevision:(Revision*)r
 {
-	//DebugLog(@"DownloadFile: 1. Init");
+	//NSLog(@"DownloadFile: 1. Init");
 	if ((self = [super init]))
 	{
 		rev	= r;
-		//DebugLog(@"DownloadFile: %@", [[remoteState url] absoluteString]);
+		//NSLog(@"DownloadFile: %@", [[remoteState url] absoluteString]);
 		isFinished	= FALSE;
 		hasFailed		= FALSE;
 		downloadPath	= [self prepareDownloadPath];
@@ -69,13 +69,13 @@
 		[request setTimeoutInterval:30];
 		[request setHTTPBody: [self preparePostData]];
 		[request setURL: [self urlFromNetService: netService]];
-		//	DebugLog(@"URL: %@", [request URL]);
+		//	NSLog(@"URL: %@", [request URL]);
 		
 		
 		decryptor = [[RNDecryptor alloc] initWithPassword:[[[rev peer] share] secret] handler:
 				   ^(RNCryptor *cryptor, NSData *data) {
 					   
-					   //DebugLog(@"DownloadFile: 5. Decryptor-Handler");
+					   //NSLog(@"DownloadFile: 5. Decryptor-Handler");
 					   [download writeData:data];
 					   
 					   // Update the download-hash
@@ -129,10 +129,10 @@
 		}
 		else
 		{
-			DebugLog(@"ERROR: sha1OfDownload: %@", sha1OfDownload);
-			DebugLog(@"ERROR: lastVersionhash:%@", [rev versions]);
-			DebugLog(@"ERROR: sizeOfDownload: %@", sizeOfDownload);
-			DebugLog(@"ERROR: rev fileSize: %@", [rev fileSize]);
+			NSLog(@"ERROR: sha1OfDownload: %@", sha1OfDownload);
+			NSLog(@"ERROR: lastVersionhash:%@", [rev versions]);
+			NSLog(@"ERROR: sizeOfDownload: %@", sizeOfDownload);
+			NSLog(@"ERROR: rev fileSize: %@", [rev fileSize]);
 			[delegate downloadFileHasFailed:self];
 		}
 	}
@@ -151,7 +151,7 @@
 											    error:&error];
 	if (error)
 	{
-		DebugLog(@"ERROR 1: %@", error);
+		NSLog(@"ERROR 1: %@", error);
 	}
 	error = nil;
 	
@@ -161,7 +161,7 @@
 					    error:&error];
 	if (error)
 	{
-		DebugLog(@"ERROR 2: %@", error);
+		NSLog(@"ERROR 2: %@", error);
 	}
 	return rv;
 }
@@ -196,7 +196,7 @@
 
 - (void) start
 {
-	//DebugLog(@"DownloadFile: 2. start - %@", downloadPath);
+	//NSLog(@"DownloadFile: 2. start - %@", downloadPath);
 
 	// Starting the async request
 	connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
@@ -221,13 +221,13 @@
 - (void) connection:(NSURLConnection*)connection
  didReceiveResponse:(NSURLResponse*)response
 {
-	//DebugLog(@"DownloadFile: 3. didReceiveResponse");
+	//NSLog(@"DownloadFile: 3. didReceiveResponse");
 	if ([response respondsToSelector:@selector(statusCode)])
 	{
 		statusCode = (int)[((NSHTTPURLResponse *)response) statusCode];
 		if (statusCode != 200)
 		{
-			DebugLog(@"HTTP-ERROR: didReceiveResponse statusCode: %i", statusCode);
+			NSLog(@"HTTP-ERROR: didReceiveResponse statusCode: %i", statusCode);
 			hasFailed = TRUE;
 			return [self decryptionDidFinish];
 		}
@@ -241,7 +241,7 @@
 - (void) connection:(NSURLConnection*)connection
 	didReceiveData:(NSData*)dataIn
 {
-	//DebugLog(@"DownloadFile: 4a. didReceiveData");
+	//NSLog(@"DownloadFile: 4a. didReceiveData");
 	[decryptor addData:dataIn];
 	
 	//[download writeData:dataIn];
@@ -256,8 +256,8 @@
    didFailWithError:(NSError*)error
 {
 	// Handle the error properly
-	DebugLog(@"Error: %@",error);
-	DebugLog(@"StatusCode: %li", [error code]);
+	NSLog(@"Error: %@",error);
+	NSLog(@"StatusCode: %li", [error code]);
 	hasFailed = TRUE;
 	[self decryptionDidFinish];
 }
@@ -267,7 +267,7 @@
 // OVERRIDE
 - (void) connectionDidFinishLoading:(NSURLConnection*)connection
 {
-	//DebugLog(@"DownloadFile: 4. didFinishLoading");
+	//NSLog(@"DownloadFile: 4. didFinishLoading");
 	[decryptor finish];
 }
 

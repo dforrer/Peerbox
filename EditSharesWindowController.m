@@ -34,7 +34,7 @@
 
 - (void) openEditDialog
 {
-	DebugLog(@"openEditDialog");
+	NSLog(@"openEditDialog");
 	[self showWindow:nil];
 	[[self window] makeKeyAndOrderFront:self];
 	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
@@ -125,7 +125,7 @@
 {
 	@autoreleasepool
 	{
-		//DebugLog(@"tableView objectValueForTableColumn");
+		//NSLog(@"tableView objectValueForTableColumn");
 		NSArray * mySharesArray = [[dataModel myShares] allValues];
 		Share * shareAtIndex = [mySharesArray objectAtIndex:rowIndex];
 		if (!shareAtIndex)

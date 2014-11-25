@@ -50,7 +50,7 @@
 			[[NSFileManager defaultManager] removeItemAtURL:fullURL error:&error];
 			if (error)
 			{
-				DebugLog(@"ERROR: removeItemAtURL failed!, %@", error);
+				NSLog(@"ERROR: removeItemAtURL failed!, %@", error);
 				return;
 			}
 		}
@@ -64,19 +64,19 @@
 			BOOL successfullyMoved = [[NSFileManager defaultManager] moveItemAtPath:[d downloadPath] toPath:[fullURL path] error:&error];
 			if (successfullyMoved == NO || error)
 			{
-				DebugLog(@"ERROR: during moving of file an error occurred!, %@", error);
+				NSLog(@"ERROR: during moving of file an error occurred!, %@", error);
 				return;
 			}
 		}
 		else
 		{
-			DebugLog(@"ERROR: downloadPath = %@, [fullURL path] = %@", [d downloadPath], [fullURL path]);
+			NSLog(@"ERROR: downloadPath = %@, [fullURL path] = %@", [d downloadPath], [fullURL path]);
 			return;
 		}
 	}
 	else
 	{
-		DebugLog(@"ERROR: Can't read file at %@", [d downloadPath]);
+		NSLog(@"ERROR: Can't read file at %@", [d downloadPath]);
 		return;
 	}
 	
