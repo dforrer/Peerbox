@@ -15,7 +15,6 @@
 		65384C761930C0AB0070F0A9 /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65384C751930C0AB0070F0A9 /* MainController.m */; };
 		65384C811936F1400070F0A9 /* FileMatchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 65384C801936F1400070F0A9 /* FileMatchOperation.m */; };
 		6547B5A6188D91B1005F3BD4 /* DownloadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 6547B5A5188D91B1005F3BD4 /* DownloadFile.m */; };
-		65582BCF197C4CF500A6D87C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A7924718FBF32F00E8C878 /* XCTest.framework */; };
 		65582BD5197C4CF500A6D87C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 65582BD3197C4CF500A6D87C /* InfoPlist.strings */; };
 		65582BDE197C4DF800A6D87C /* File Unit Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A7923E18FBF2B000E8C878 /* File Unit Tests.m */; };
 		65582BDF197C4DFB00A6D87C /* FileHelper Unit Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F0EBED18FDAEAE0044A9AB /* FileHelper Unit Tests.m */; };
@@ -238,7 +237,6 @@
 		65A1213219046F830082C251 /* Revision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Revision.h; sourceTree = "<group>"; };
 		65A1213319046F830082C251 /* Revision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Revision.m; sourceTree = "<group>"; };
 		65A7923E18FBF2B000E8C878 /* File Unit Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "File Unit Tests.m"; sourceTree = "<group>"; };
-		65A7924718FBF32F00E8C878 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		65AC4DDD197C486A003F08AD /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = COPYING; path = Resources/COPYING; sourceTree = SOURCE_ROOT; };
 		65AD01E4186E0DBA00DC6A1B /* FileScanOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileScanOperation.h; sourceTree = "<group>"; };
 		65AD01E5186E0DBA00DC6A1B /* FileScanOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileScanOperation.m; sourceTree = "<group>"; };
@@ -255,7 +253,6 @@
 		65E5CBC2180AFF98001065AE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		65E5CBC3180AFF98001065AE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		65E5CBC4180AFF98001065AE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		65E5CBDE180AFF98001065AE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		65E5CBF5180B0043001065AE /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		65E5CBF6180B0043001065AE /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		65E5CBFF180B0043001065AE /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
@@ -274,7 +271,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65582BCF197C4CF500A6D87C /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,7 +574,6 @@
 			isa = PBXGroup;
 			children = (
 				65E98252184F9DD7000282C1 /* Linked Frameworks */,
-				65A7924718FBF32F00E8C878 /* XCTest.framework */,
 				65E5CBC1180AFF98001065AE /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -616,7 +611,6 @@
 				65E98253184F9E75000282C1 /* Security.framework */,
 				65E5CBBF180AFF98001065AE /* Cocoa.framework */,
 				65ADCAEB180B1B6C00CB05B5 /* CoreFoundation.framework */,
-				65E5CBDE180AFF98001065AE /* XCTest.framework */,
 				65ADCAED180B1C1E00CB05B5 /* libz.dylib */,
 				65E5CC34180B0166001065AE /* libsqlite3.dylib */,
 			);

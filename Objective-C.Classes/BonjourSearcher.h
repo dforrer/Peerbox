@@ -30,7 +30,7 @@
 
 - (id) initWithServiceType: (NSString *) type
 			  andDomain: (NSString *) domain
-		andMyName: (NSString *) name;
+			  andMyName: (NSString *) name;
 
 - (NSNetService*) getNetServiceForName: (NSString *) name;
 
