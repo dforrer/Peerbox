@@ -1,5 +1,4 @@
 /**
- * VERSION:	1.00
  * AUTHOR:	Daniel Forrer
  * FEATURES:	Observes 0-n directories and reports changes to directories (and files)
  *			via NSNotificationCenter

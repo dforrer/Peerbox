@@ -1,5 +1,4 @@
 /**
- * VERSION:	1.0
  * AUTHOR:	Daniel Forrer
  * FEATURES:
  */

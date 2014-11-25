@@ -1,5 +1,4 @@
 /**
- * VERSION:	1.03
  * AUTHOR:	Daniel Forrer
  * FEATURES:	Thread-safe
  */
