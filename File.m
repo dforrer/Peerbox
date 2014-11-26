@@ -76,7 +76,7 @@
 		 isSymlink:(NSNumber*)sym
 		 targetPath:(NSString *)t
 {
-	if (self == [super init])
+	if (self = [super init])
 	{
 		url = [NSURL URLWithString:u relativeToURL:[s root]];
 		isSet = i;
