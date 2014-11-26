@@ -27,12 +27,12 @@
 
 - (id) initWithPeerID:(NSString*)pid andShare:(Share*)s
 {
-	if( self = [super init] )
+	if (self = [super init])
 	{
-		currentRev		= [NSNumber numberWithLongLong:0];
-		lastDownloadedRev	= [NSNumber numberWithLongLong:0];
-		peerID			= pid;
-		share			= s;
+		currentRev = [NSNumber numberWithLongLong:0];
+		lastDownloadedRev = [NSNumber numberWithLongLong:0];
+		peerID = pid;
+		share = s;
 	}
 	return self;
 }

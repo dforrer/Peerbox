@@ -317,9 +317,7 @@
  */
 - (void) bonjourSearcherServiceResolved:(NSNetService*)n
 {
-	// Update StatusBar
 	[statusBarController refreshStatusBar];
-
 	[self downloadSharesFromPeers:nil];
 	[self matchFiles];
 }
@@ -330,8 +328,6 @@
  */
 - (void) bonjourSearcherServiceRemoved:(NSNetService*)n
 {
-	// Update StatusBar
-	
 	[statusBarController refreshStatusBar];
 }
 

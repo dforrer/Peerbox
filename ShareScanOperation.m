@@ -17,7 +17,7 @@
 
 - (id)initWithShare: (Share*) s
 {
-	if ( self = [super init] )
+	if (self = [super init])
 	{
 		share = s;
 	}

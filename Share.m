@@ -88,7 +88,7 @@
 	{
 		// Check if superclass could create its object
 	
-		if ((self = [super init]))
+		if (self = [super init])
 		{
 			shareId	= i;
 			root		= u;
@@ -162,11 +162,11 @@
 		{
 			return;
 		}
-		//NSLog(@"timer is not Valid");
 		timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(commitAndBegin) userInfo:nil repeats:NO];
 		[[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 	}
 }
+
 
 /**
  * Returns total number of uncommited changes
@@ -197,6 +197,7 @@
 }
 
 
+
 - (void) dbBegin
 {
 	NSError * error;
@@ -206,6 +207,7 @@
 		NSLog(@"%@", error);
 	}
 }
+
 
 
 - (void) dbCommit
@@ -223,8 +225,6 @@
 
 
 
-
-
 - (NSArray*) allPeers
 {
 	return [peers allValues];
@@ -232,14 +232,10 @@
 
 
 
-
-
 - (Peer*) getPeerForID:(NSString*)i
 {
 	return [peers objectForKey:i];
 }
-
-
 
 
 

@@ -145,10 +145,8 @@
  * Performs a 'query' and returns the number of rows found or changed
  * The rows themselves are accessible in the 'rows'-Array
  *
- * IMPORTENT: NSString variables need
- * to be bound using the
- * NSStringSqliteExtension
- * [string sqlString]!
+ * IMPORTENT: NSString variables need to be bound using the
+ * NSStringSqliteExtension e.g. [string sqlString]
  *
  * Supports: INSERT, UPDATE, DELETE, SELECT, etc.
  **/
@@ -183,6 +181,7 @@
 {
 	return sqlite3_total_changes(sqliteConnection);
 }
+
 
 /**
  * This function returns the number of database rows

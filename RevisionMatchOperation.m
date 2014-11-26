@@ -24,7 +24,7 @@
 
 - (id) initWithRevision:(Revision*)r
 {
-	if ((self = [super init]))
+	if (self = [super init])
 	{
 		rev	   = r;
 		fullURL = [NSURL URLWithString:[rev relURL] relativeToURL:[[[rev peer] share] root]];
