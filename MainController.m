@@ -102,8 +102,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsFile" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fsWatcherEvent:) name:@"fsWatcherEventIsSymlink" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyPeers:) name:@"notifyPeers" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addShare:) name:@"addShare" object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeShare:) name:@"removeShare" object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sharesEdited:) name:@"sharesEdited" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openEditDialog:) name:@"openEditDialog" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadSharesFromPeers:) name:@"downloadSharesFromPeers" object:nil];
 		
@@ -677,45 +676,14 @@
 	[editSharesWindowController openEditDialog];
 }
 
-
-- (void) addShare:(NSNotification*)aNotification
+- (void) sharesEdited:(NSNotification*)aNotification
 {
-	Share * s = [aNotification object];
-	[dataModel addShare:s];
+	[self restartFSWatcherQueue];
 	[self saveModelToPlist];
-	
-	// Perform initial scan
-	
-	ShareScanOperation * o = [[ShareScanOperation alloc] initWithShare:s];
-	[fsWatcherQueue addOperation:o];
 	[self updateFSWatcher];
-	
 	[self downloadSharesFromPeers:nil];
-	
-	// Update GUI
-	
-	[[editSharesWindowController sharesTableView] reloadData];
-	[statusBarController refreshStatusBar];
-}
 
-
-- (void) removeShare:(NSNotification*)aNotification
-{
-	Share * s = [aNotification object];
-	[dataModel removeShare:s];
-	[self saveModelToPlist];
-	
-	[self updateFSWatcher];
-	
-	// Remove .sqlite-File
-	
-	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [[[Singleton data] config] workingDir], [s shareId]];
-	NSError * error;
-	[[NSFileManager defaultManager] removeItemAtPath:sqlitePath error:&error];
-	
-	
 	// Update GUI
-	
 	[[editSharesWindowController sharesTableView] reloadData];
 	[statusBarController refreshStatusBar];
 }

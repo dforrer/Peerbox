@@ -47,20 +47,14 @@
 
 - (IBAction) addShare:(id)sender
 {
-	/*
-	 1. Here: Create new Share-object
-	 2. Notify the MainController
-	 3. MainController tells GUI to refresh
-	 */
-	
-	NSString	* shareId		= [shareIdTextfield stringValue];
-	NSURL	* root		= [NSURL fileURLWithPath:[rootTextfield stringValue]];
-	NSString	* passwordHash	= [FileHelper sha1OfNSString:[passwordTextfield stringValue]];
+	NSString * shareId		= [shareIdTextfield stringValue];
+	NSURL    * root		= [NSURL fileURLWithPath:[rootTextfield stringValue]];
+	NSString * passwordHash	= [FileHelper sha1OfNSString:[passwordTextfield stringValue]];
 	
 	Share * s = [[Share alloc] initShareWithID:shareId andRootURL:root withSecret:passwordHash];
+	[dataModel addShare:s];
 	
-	// Notify "MainController"
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"addShare" object:s];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"sharesEdited" object:nil]; // Notify "MainController"
 }
 
 
@@ -72,9 +66,9 @@
 	
 	NSArray * mySharesArray = [[dataModel myShares] allValues];
 	Share * s = [mySharesArray objectAtIndex:index];
-	
-	// Notify "MainController"
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"removeShare" object:s];
+	[dataModel removeShare:s];
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"sharesEdited" object:nil]; // Notify "MainController"
 }
 
 
