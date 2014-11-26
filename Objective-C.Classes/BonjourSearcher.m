@@ -28,7 +28,7 @@
 {
 	if ((self = [super init]))
 	{
-		NSLog(@"BonjourServiceSearcher: init");
+		NSLog(@"init");
 		services = [[NSMutableArray alloc] init];
 		resolvedServices = [[NSMutableDictionary alloc] init];
 		serviceBrowser = [[NSNetServiceBrowser alloc] init];
@@ -90,7 +90,7 @@
 {
 	if ([services containsObject:aNetService])
 	{
-		NSLog(@"BonjourServiceSearcher: didRemoveService");
+		NSLog(@"didRemoveService");
 		[self willChangeValueForKey:@"services"];
 		[services removeObject:aNetService];
 		[resolvedServices removeObjectForKey:[aNetService name]];
@@ -106,7 +106,7 @@
  */
 - (void) netServiceDidResolveAddress: (NSNetService *)aNetService
 {
-	NSLog(@"BonjourServiceSearcher: didResolveService: \nname: %@, \nhostname: %@",[aNetService name], [aNetService hostName]);
+	NSLog(@"didResolveService: \nname: %@, \nhostname: %@",[aNetService name], [aNetService hostName]);
 	[resolvedServices setObject:aNetService forKey:[aNetService name]];
 	[delegate bonjourSearcherServiceResolved:aNetService];
 }
