@@ -317,12 +317,10 @@
  */
 - (void) bonjourSearcherServiceResolved:(NSNetService*)n
 {
-	[self notifyPeers:nil];
-	
 	// Update StatusBar
-
 	[statusBarController refreshStatusBar];
-	
+
+	[self downloadSharesFromPeers:nil];
 	[self matchFiles];
 }
 
