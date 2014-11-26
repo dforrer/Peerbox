@@ -318,7 +318,7 @@
 		
 			NSString * queryUPDATE = [NSString stringWithFormat:@"UPDATE revisions SET peerID='%@', relURL='%@', revision=%lld, fileSize=%lld, isSet=%i, extAttributes='%@', versions='%@', isDir=%i, lastMatchAttemptDate='%@', isSymlink=%i, targetPath='%@' WHERE peerID='%@' AND relURL='%@';", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue],[[r fileSize] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [[r isSymlink] intValue], [[r targetPath] sqlString], [p peerID], [[r relURL] sqlString]];
 			//NSLog(@"%@", queryUPDATE);
-			rv = (int) [db performQuery:queryUPDATE rows:nil error:&error];
+			[db performQuery:queryUPDATE rows:nil error:&error];
 			if (error)
 			{
 				NSLog(@"ERROR during UPDATE:\n%@", queryUPDATE);
@@ -330,7 +330,7 @@
 			
 			NSString * queryINSERT = [NSString stringWithFormat:@"INSERT INTO revisions (peerID, relURL, revision, fileSize, isSet, extAttributes, versions, isDir, lastMatchAttemptDate, isSymlink, targetPath) VALUES ('%@', '%@', %lld, %lld, %i, '%@', '%@', %i, '%@', %i, '%@');", [p peerID], [[r relURL] sqlString], [[r revision] longLongValue], [[r fileSize] longLongValue], [[r isSet] intValue], [extAttrJSON sqlString], [versionsJSON sqlString], [[r isDir] intValue], [r lastMatchAttempt], [[r isSymlink] intValue], [[r targetPath] sqlString]];
 			//NSLog(@"%@", queryINSERT);
-			rv = (int) [db performQuery:queryINSERT rows:nil error:&error];
+			[db performQuery:queryINSERT rows:nil error:&error];
 			if (error)
 			{
 				NSLog(@"ERROR during INSERT");
