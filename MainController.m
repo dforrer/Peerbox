@@ -61,10 +61,8 @@
 	if ((self = [super init]))
 	{
 		dataModel = [[Singleton data] dataModel];
-		
 		[self openModel];
-		
-		
+
 		// Initialize the BonjourSearcher
 		
 		NSString * serviceType = [NSString stringWithFormat:@"_%@._tcp.", APP_NAME];
@@ -81,7 +79,6 @@
 		[fileMatcherQueue setMaxConcurrentOperationCount:1];
 		[revMatcherQueue  setMaxConcurrentOperationCount:1];
 		
-		
 		// Setup KVO
 		
 		[revMatcherQueue  addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
@@ -91,16 +88,13 @@
 		[self setupHTTPServer];
 		[self createWorkingDirectories];
 		
-		
 		// Remove all previously downloaded files from downloadsDir
 		
 		[FileHelper removeAllFilesInDir:[[[Singleton data] config] downloadsDir]];
 		
-		
 		// Perform initial scans of the shares
 		
 		[self restartFSWatcherQueue];
-		
 		
 		// Setup notification listeners
 		
@@ -113,9 +107,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openEditDialog:) name:@"openEditDialog" object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadSharesFromPeers:) name:@"downloadSharesFromPeers" object:nil];
 		
-		
 		[self updateFSWatcher];
-		
 		
 		statusBarController = [[StatusBarController alloc] initWithDataModel:dataModel andBonjourSearcher:bonjourSearcher];
 		editSharesWindowController = [[EditSharesWindowController alloc] initWithDataModel:dataModel];
@@ -131,7 +123,6 @@
 {
 	@autoreleasepool
 	{
-		
 		NSString * modelPath = [[[[Singleton data] config] workingDir] stringByAppendingPathComponent:@"model.plist"];
 		if (![FileHelper fileFolderExists:modelPath] )
 		{
@@ -312,7 +303,6 @@
 
 - (void) printDebugLogs
 {
-	// TODO: Find out why certain downloads finish but the downloads are then not moved to their destination
 	NSLog(@"FileDownloads-Count: %lu",(unsigned long)[[dataModel fileDownloads] count]);
 }
 
