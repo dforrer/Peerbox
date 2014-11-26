@@ -56,10 +56,10 @@
 	}
 }
 
+
 /**
  * Helper function for encoding the model in a readable format
  */
-
 - (NSDictionary*) plistEncoded
 {
 	//NSLog(@"plistEncoded: MainModel");
@@ -71,6 +71,7 @@
 	}
 	return plist;
 }
+
 
 - (void) commitAllShareDBs
 {
@@ -101,6 +102,11 @@
 - (void) removeShare:(Share*)s
 {
 	[myShares removeObjectForKey:[s shareId]];
+
+	// Remove .sqlite-File
+	NSString * sqlitePath = [NSString stringWithFormat:@"%@/%@.sqlite", [[[Singleton data] config] workingDir], [s shareId]];
+	NSError * error;
+	[[NSFileManager defaultManager] removeItemAtPath:sqlitePath error:&error];
 }
 
 
