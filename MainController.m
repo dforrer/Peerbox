@@ -401,30 +401,27 @@
 	NSError * error;
 	
 	// Convert NSData to NSDictionary
-	
 	NSDictionary * dict = [NSDictionary dictionaryWithJSONData:[d response] error:&error];
 	if (error)
 	{
 		NSLog(@"response-count:%li", [[dict objectForKey:@"revisions"] count]);
 		return;
 	}
-	//	NSLog(@"REVISIONS:\n%@", dict);
-	
 	
 	// Store revisions in share->peers->downloadedRevs
-	
 	if ([[dict objectForKey:@"revisions"] count] > 0)
 	{
 		// Sort the downloaded revisions by the revision-number
-		
 		NSArray * keysSortedByRevision =
 		[[dict objectForKey:@"revisions"] keysSortedByValueUsingComparator:^(id obj1, id obj2)
 		 {
-			 if ([[obj1 objectForKey:@"revision"] longLongValue] > [[obj2 objectForKey:@"revision"] longLongValue])
+			 if ([[obj1 objectForKey:@"revision"] longLongValue]
+				> [[obj2 objectForKey:@"revision"] longLongValue])
 			 {
 				 return (NSComparisonResult)NSOrderedDescending;
 			 }
-			 if ([[obj1 objectForKey:@"revision"] longLongValue] < [[obj2 objectForKey:@"revision"] longLongValue])
+			 if ([[obj1 objectForKey:@"revision"] longLongValue]
+				< [[obj2 objectForKey:@"revision"] longLongValue])
 			 {
 				 return (NSComparisonResult)NSOrderedAscending;
 			 }
@@ -432,7 +429,6 @@
 		 }];
 		
 		// Create a RevisionMatchOperation for every downloaded revision
-		
 		for (id key in keysSortedByRevision)
 		{
 			NSDictionary * rev	= [[dict objectForKey:@"revisions"] objectForKey:key];
@@ -459,12 +455,11 @@
 			[revMatcherQueue addOperation:o];
 		}
 		
-		
 		// Get biggest revision from response->revisions
-		
 		NSNumber * biggestRev = [dict objectForKey:@"biggestRev"];
-		NSLog(@"biggestRev: %@", biggestRev);
 		[[d peer] setLastDownloadedRev:biggestRev];
+
+		NSLog(@"biggestRev: %@", biggestRev);
 	}
 }
 
@@ -506,7 +501,6 @@
 	[dataModel addOrRemove:0 synchronizedFromFileDownloads:d];
 	
 	// Remove failed download-file from downloads directory
-	
 	NSError * error;
 	[[NSFileManager defaultManager] removeItemAtPath:[d downloadPath] error:&error];
 	if (error)
@@ -516,7 +510,6 @@
 	}
 	
 	// Keep the revision unless we receive a 404-Error
-	
 	if ([d statusCode] != 404)
 	{
 		Revision * r = [d rev];
@@ -528,22 +521,20 @@
 /**
  * KVO: matcherQueue->operationCount
  * KVO: fsWatcherQueue->operationCount
+ * KVO: fileMatcherQueue->operationCount
  */
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                          change:(NSDictionary *)change context:(void *)context
 {
 	if (object == revMatcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
-		//NSLog(@"revMatcherQueue->operationCount: %lu", (unsigned long)[revMatcherQueue operationCount]);
 		if ([revMatcherQueue operationCount] == 0)
 		{
 			// Do something here when your queue has completed
 			
 			NSLog(@"queue has completed");
 			
-			
 			// Restart Revision-Download
-			
 			[self downloadRevisionsFromPeers];
 			
 			if ([fileMatcherQueue operationCount] == 0)
@@ -555,42 +546,36 @@
 	}
 	else if (object == fsWatcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
-		//NSLog(@"fsWatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
-		
 		/*
-		 * If the 'operationCount' gets bigger than FSWATCHER_QUEUE_THRESHOLD the application
-		 * should cancelAll ongoing operations,
+		 * If the 'operationCount' gets bigger than FSWATCHER_QUEUE_THRESHOLD 
+		 * the application should cancelAll ongoing operations,
 		 * sleep for 5 seconds and then scan all the shares.
 		 */
 		
-		if ([fsWatcherQueue operationCount] > FSWATCHER_QUEUE_THRESHOLD)
+		if ([fsWatcherQueue operationCount] > FSWATCHER_QUEUE_THRESHOLD
+		    && ![fsWatcherQueue isSuspended])
 		{
-			if (![fsWatcherQueue isSuspended])
-			{
-				[fsWatcherQueue cancelAllOperations];
-				NSLog(@"fswatcherQueueRestartet == FALSE");
-				[fsWatcherQueue setSuspended:TRUE];
-				[self performSelector: @selector(restartFSWatcherQueue)
-						 withObject: nil
-						 afterDelay: 5.0];
-			}
-			return;
+			[fsWatcherQueue cancelAllOperations];
+			NSLog(@"fswatcherQueueRestartet == FALSE");
+			[fsWatcherQueue setSuspended:TRUE];
+			[self performSelector: @selector(restartFSWatcherQueue)
+					 withObject: nil
+					 afterDelay: 5.0];
 		}
 	}
 	else if (object == fileMatcherQueue && [keyPath isEqualToString:@"operationCount"])
 	{
-		//NSLog(@"fileMatcherQueue->operationCount: %lu", (unsigned long)[fsWatcherQueue operationCount]);
-		
 		if ([fileMatcherQueue operationCount] == 0)
 		{
-			// Download more files
 			[self matchFiles];
 		}
 	}
 	else
 	{
-		[super observeValueForKeyPath:keyPath ofObject:object
-						   change:change context:context];
+		[super observeValueForKeyPath:keyPath
+						 ofObject:object
+						   change:change
+						  context:context];
 	}
 }
 
@@ -606,9 +591,7 @@
 - (void) restartFSWatcherQueue
 {
 	NSLog(@"restartFSWatcherQueue");
-	
-	// Do the rescan
-	
+
 	[fsWatcherQueue setSuspended:FALSE];
 	
 	for (Share * s in [[dataModel myShares] allValues])
@@ -625,16 +608,12 @@
  */
 - (void) fsWatcherEvent: (NSNotification *)notification
 {
-	// Return from function if fsWatcherQueue isSuspended
-	
 	if ([fsWatcherQueue isSuspended])
 	{
 		return;
 	}
 	
 	NSURL * fileURL = [notification object];
-	//NSLog(@"fsWatcherEvent: %@", fileURL);
-	
 	for (Share * share in [[dataModel myShares] allValues])
 	{
 		if (![FileHelper URL:fileURL hasAsRootURL:[share root]])
@@ -654,15 +633,14 @@
 - (void) updateFSWatcher
 {
 	// Prepare temporary table with paths
-	
-	NSMutableArray * a = [[NSMutableArray alloc] init];
+	NSMutableArray * tempPaths = [[NSMutableArray alloc] init];
 	
 	for (Share * s in [[dataModel myShares] allValues])
 	{
-		[a addObject:[[s root] path]];
+		[tempPaths addObject:[[s root] path]];
 	}
-	NSLog(@"%@", a);
-	[fswatcher setPaths:a];
+	NSLog(@"%@", tempPaths);
+	[fswatcher setPaths:tempPaths];
 	[fswatcher startWatching];
 }
 
@@ -696,12 +674,11 @@
 - (void) notifyPeers:(NSNotification*)aNotification
 {
 	NSLog(@"notifyPeers");
-	// For every announced NetService...
 	
+	// For every announced NetService...
 	for (id key in [bonjourSearcher resolvedServices])
 	{
 		NSNetService *aNetService = [[bonjourSearcher resolvedServices] objectForKey:key];
-		
 		PostNotification * n = [[PostNotification alloc] initWithNetService:aNetService];
 		[n start];
 	}
@@ -717,13 +694,9 @@
 	NSLog(@"downloadSharesFromPeers");
 	
 	// For every announced NetService...
-	
 	for (id key in [bonjourSearcher resolvedServices])
 	{
 		NSNetService *aNetService = [[bonjourSearcher resolvedServices] objectForKey:key];
-		
-		// ...and for every Share
-		
 		DownloadShares * d = [[DownloadShares alloc] initWithNetService:aNetService];
 		[d setDelegate:self];
 		[d start];
@@ -738,7 +711,6 @@
 - (void) downloadRevisionsFromPeers
 {
 	// For every Share ....
-	
 	for (id key in [dataModel myShares])
 	{
 		Share * s = [[dataModel myShares] objectForKey:key];
@@ -747,9 +719,7 @@
 			NSNetService * ns = [bonjourSearcher getNetServiceForName:[p peerID]];
 			
 			// Compare currentRev (on remote peer) with lastDownloadedRev
-			
-			if (ns != nil
-			    && ([[p currentRev] longLongValue] > [[p lastDownloadedRev] longLongValue]))
+			if (ns != nil && ([[p currentRev] longLongValue] > [[p lastDownloadedRev] longLongValue]))
 			{
 				DownloadRevisions * d = [[DownloadRevisions alloc] initWithNetService:ns andPeer:p];
 				[d setDelegate:self];
