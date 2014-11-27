@@ -15,6 +15,9 @@
 #import "Configuration.h"
 
 @implementation DataModel
+{
+	dispatch_queue_t fileDownloadsQueue;
+}
 
 @synthesize fileDownloads;
 @synthesize myShares;
@@ -25,9 +28,27 @@
 	{
 		fileDownloads = [[NSMutableArray alloc] init];
 		myShares = [[NSMutableDictionary alloc] init];
+		fileDownloadsQueue = dispatch_queue_create("com.peerbox.fileDownloadsQueue", 0);
 	}
 	return self;
 }
+
+
+- (void) addDownloadFile:(DownloadFile*)d
+{
+	dispatch_sync(fileDownloadsQueue, ^{
+		[fileDownloads addObject:d];
+	});
+}
+
+
+- (void) removeDownloadFile:(DownloadFile*)d
+{
+	dispatch_sync(fileDownloadsQueue, ^{
+		[fileDownloads removeObject:d];
+	});
+}
+
 
 - (void) saveFileDownloads
 {
@@ -35,24 +56,6 @@
 	{
 		Revision * r = [d rev];
 		[[[r peer] share] setRevision:r forPeer:[r peer]];
-	}
-}
-
-/**
- * @params: addOrRemove = 1 (add) or 0 (remove)
- */
-- (void) addOrRemove:(int)addOrRemove synchronizedFromFileDownloads:(DownloadFile *)d
-{
-	@synchronized(fileDownloads)
-	{
-		if (addOrRemove == 1)
-		{
-			[fileDownloads addObject:d];
-		}
-		else
-		{
-			[fileDownloads removeObject:d];
-		}
 	}
 }
 

@@ -21,7 +21,8 @@
 - (void) commitAllShareDBs;
 - (void) saveFileDownloads;
 - (NSDictionary*) plistEncoded;
-- (void) addOrRemove:(int)addOrRemove synchronizedFromFileDownloads:(DownloadFile *)d;
+- (void) addDownloadFile:(DownloadFile*)d;
+- (void) removeDownloadFile:(DownloadFile*)d;
 
 
 @property (nonatomic, readonly, strong) NSMutableArray * fileDownloads;

@@ -480,7 +480,7 @@
 {
 	NSLog(@"DL finished : %@", [[d rev] relURL]);
 	NSLog(@"downloadPath: %@", [d downloadPath]);
-	[dataModel addOrRemove:0 synchronizedFromFileDownloads:d];
+	[dataModel removeDownloadFile:d];
 	
 	FileMatchOperation * o = [[FileMatchOperation alloc] initWithDownloadFile:d];
 	[fileMatcherQueue addOperation:o];
@@ -498,7 +498,7 @@
 - (void) downloadFileHasFailed:(DownloadFile*)d
 {
 	NSLog(@"ERROR: downloadFileHasFailed: %@", [d downloadPath]);
-	[dataModel addOrRemove:0 synchronizedFromFileDownloads:d];
+	[dataModel removeDownloadFile:d];
 	
 	// Remove failed download-file from downloads directory
 	NSError * error;
@@ -755,7 +755,7 @@
 					[s removeRevision:r forPeer:p];
 					
 					DownloadFile * d = [[DownloadFile alloc] initWithNetService:ns andRevision:r];
-					[dataModel addOrRemove:1 synchronizedFromFileDownloads:d];
+					[dataModel addDownloadFile:d];
 					[d setDelegate:self];
 					[d start];
 					
