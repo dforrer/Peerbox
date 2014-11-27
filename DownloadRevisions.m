@@ -144,9 +144,7 @@
    didFailWithError:(NSError*)error
 {
 	// Handle the error properly
-	
 	NSLog(@"Error: %@",error);
-	
 	[delegate downloadRevisionsHasFailed:self];
 }
 
@@ -157,7 +155,6 @@
 	isFinished = TRUE;
 
 	// Decrypt Data
-	
 	NSError * error;
 	NSData * responseData = [RNDecryptor decryptData:response
 								 withPassword:[[peer share] secret]
@@ -167,17 +164,10 @@
 		NSLog(@"During decryption an error occurred!");
 		return;
 	}
-
-//	NSLog(@"Size before inflation: %lu",(unsigned long)[response length]);
 	
 	// Decompress response
-	
 	response = [NSMutableData dataWithData:[responseData gzipInflate]];
-
-//	NSLog(@"Size after inflation: %lu",(unsigned long)[response length]);
-	
 	[delegate downloadRevisionsHasFinished:self];
- 
 }
 
 
