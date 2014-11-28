@@ -64,7 +64,7 @@
 	{
 		NSString * errorString = [NSString stringWithFormat:@"[SQLITE] Error when preparing query!: %@", query];
 		*error = [NSError errorWithDomain: errorString code:retval userInfo:nil];
-		return -1;
+		return 0;
 	}
 	
 	// Continue with SELECT (=No error)
@@ -132,7 +132,7 @@
 	{
 		NSString * errorString = [NSString stringWithFormat:@"[SQLITE] Error when executing query!: %@", query];
 		*error = [NSError errorWithDomain: errorString code:retval userInfo:nil];
-		return -1;
+		return 0;
 	}
 	
 	// Continue (= No error)
@@ -145,8 +145,10 @@
  * Performs a 'query' and returns the number of rows found or changed
  * The rows themselves are accessible in the 'rows'-Array
  *
- * IMPORTENT: NSString variables need to be bound using the
- * NSStringSqliteExtension e.g. [string sqlString]
+ * IMPORTENT: NSString variables need
+ * to be bound using the
+ * NSStringSqliteExtension
+ * [string sqlString]!
  *
  * Supports: INSERT, UPDATE, DELETE, SELECT, etc.
  **/
@@ -181,7 +183,6 @@
 {
 	return sqlite3_total_changes(sqliteConnection);
 }
-
 
 /**
  * This function returns the number of database rows
