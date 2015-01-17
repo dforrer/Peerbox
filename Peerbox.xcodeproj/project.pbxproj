@@ -20,6 +20,7 @@
 		65582BDF197C4DFB00A6D87C /* FileHelper Unit Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F0EBED18FDAEAE0044A9AB /* FileHelper Unit Tests.m */; };
 		6564985B18708DF800BBB3D1 /* ShareScanOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6564985A18708DF800BBB3D1 /* ShareScanOperation.m */; };
 		656AA41F188AB6BF007C6ED9 /* DownloadShares.m in Sources */ = {isa = PBXBuildFile; fileRef = 656AA41E188AB6BF007C6ED9 /* DownloadShares.m */; };
+		6573D4071A30B5E700DCCE2E /* DownloadBulk.m in Sources */ = {isa = PBXBuildFile; fileRef = 6573D4061A30B5E700DCCE2E /* DownloadBulk.m */; };
 		657657D918D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 657657D818D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m */; };
 		658943EE192125EA00A58A83 /* Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943ED192125EA00A58A83 /* Configuration.m */; };
 		6589459719269B4C00A58A83 /* BonjourSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943F519269B4A00A58A83 /* BonjourSearcher.m */; };
@@ -127,6 +128,8 @@
 		6564985A18708DF800BBB3D1 /* ShareScanOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareScanOperation.m; sourceTree = "<group>"; };
 		656AA41D188AB6BF007C6ED9 /* DownloadShares.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadShares.h; sourceTree = "<group>"; };
 		656AA41E188AB6BF007C6ED9 /* DownloadShares.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadShares.m; sourceTree = "<group>"; };
+		6573D4051A30B5DA00DCCE2E /* DownloadBulk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadBulk.h; sourceTree = "<group>"; };
+		6573D4061A30B5E700DCCE2E /* DownloadBulk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadBulk.m; sourceTree = "<group>"; };
 		657657D718D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPAsyncEncryptedFileResponse.h; sourceTree = "<group>"; };
 		657657D818D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPAsyncEncryptedFileResponse.m; sourceTree = "<group>"; };
 		658943EC192125EA00A58A83 /* Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configuration.h; sourceTree = "<group>"; };
@@ -650,6 +653,8 @@
 				65CDF14C188C4B9700F31C13 /* DownloadRevisions.m */,
 				6547B5A4188D91A5005F3BD4 /* DownloadFile.h */,
 				6547B5A5188D91B1005F3BD4 /* DownloadFile.m */,
+				6573D4051A30B5DA00DCCE2E /* DownloadBulk.h */,
+				6573D4061A30B5E700DCCE2E /* DownloadBulk.m */,
 				65D830DC1938A88100DF3F8B /* PostNotification.h */,
 				65D830DD1938A88100DF3F8B /* PostNotification.m */,
 			);
@@ -797,6 +802,7 @@
 				658946D119269B4C00A58A83 /* CJSONDeserializer.m in Sources */,
 				6589459719269B4C00A58A83 /* BonjourSearcher.m in Sources */,
 				658946C119269B4C00A58A83 /* RNEncryptor.m in Sources */,
+				6573D4071A30B5E700DCCE2E /* DownloadBulk.m in Sources */,
 				658945D319269B4C00A58A83 /* MultipartMessageHeaderField.m in Sources */,
 				658943EE192125EA00A58A83 /* Configuration.m in Sources */,
 				652F704D184F71D3004E13C5 /* MyHTTPConnection.m in Sources */,

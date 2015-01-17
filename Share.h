@@ -49,7 +49,7 @@
 - (void) setRevision:(Revision*)r forPeer:(Peer*)p;
 - (void) removeRevision:(Revision*)r forPeer:(Peer*)p;
 - (Revision*) nextRevisionForPeer:(Peer*)p;
-
+- (NSDictionary*) getAndRemoveMaxCount:(int)limit revisionsForPeer:(Peer*)p;
 
 // Other
 
