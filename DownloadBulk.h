@@ -26,6 +26,6 @@
 @property (nonatomic, readonly, strong) NSMutableURLRequest * request;
 @property (nonatomic, readonly) BOOL isFinished;
 @property (nonatomic, readonly) BOOL hasFailed;
-@property (nonatomic, assign) id <DownloadFileDelegate> delegate;
+@property (nonatomic, assign) id <DownloadBulkDelegate> delegate;
 @property (nonatomic, readonly) int statusCode;
 @end

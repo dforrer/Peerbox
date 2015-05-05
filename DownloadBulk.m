@@ -4,7 +4,7 @@
 //
 
 // HEADER
-#import "DownloadFile.h"
+#import "DownloadBulk.h"
 
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
@@ -27,7 +27,7 @@
 
 
 
-@implementation DownloadFile
+@implementation DownloadBulk
 {
 	RNDecryptor * decryptor;
 	NSURLConnection * connection;
@@ -38,13 +38,9 @@
 
 
 @synthesize request;
-@synthesize download;
 @synthesize isFinished;
-@synthesize downloadPath;
 @synthesize hasFailed;
-@synthesize rev;
 @synthesize delegate;
-@synthesize sha1OfDownload;
 @synthesize statusCode;
 
 
@@ -55,13 +51,9 @@
 	//NSLog(@"DownloadFile: 1. Init");
 	if ((self = [super init]))
 	{
-		rev	= r;
 		//NSLog(@"DownloadFile: %@", [[remoteState url] absoluteString]);
 		isFinished	= FALSE;
 		hasFailed		= FALSE;
-		downloadPath	= [self prepareDownloadPath];
-		sha1OfDownload	= nil;
-		download		= [FileHelper fileForWritingAtPath:downloadPath];
 		request		= [[NSMutableURLRequest alloc] init];
 		downloadSize   = 0;
 		[request setHTTPMethod:@"POST"];

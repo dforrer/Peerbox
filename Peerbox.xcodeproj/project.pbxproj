@@ -20,7 +20,6 @@
 		65582BDF197C4DFB00A6D87C /* FileHelper Unit Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F0EBED18FDAEAE0044A9AB /* FileHelper Unit Tests.m */; };
 		6564985B18708DF800BBB3D1 /* ShareScanOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6564985A18708DF800BBB3D1 /* ShareScanOperation.m */; };
 		656AA41F188AB6BF007C6ED9 /* DownloadShares.m in Sources */ = {isa = PBXBuildFile; fileRef = 656AA41E188AB6BF007C6ED9 /* DownloadShares.m */; };
-		6573D4071A30B5E700DCCE2E /* DownloadBulk.m in Sources */ = {isa = PBXBuildFile; fileRef = 6573D4061A30B5E700DCCE2E /* DownloadBulk.m */; };
 		657657D918D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 657657D818D4C7E1002C3CA1 /* HTTPAsyncEncryptedFileResponse.m */; };
 		658943EE192125EA00A58A83 /* Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943ED192125EA00A58A83 /* Configuration.m */; };
 		6589459719269B4C00A58A83 /* BonjourSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 658943F519269B4A00A58A83 /* BonjourSearcher.m */; };
@@ -802,7 +801,6 @@
 				658946D119269B4C00A58A83 /* CJSONDeserializer.m in Sources */,
 				6589459719269B4C00A58A83 /* BonjourSearcher.m in Sources */,
 				658946C119269B4C00A58A83 /* RNEncryptor.m in Sources */,
-				6573D4071A30B5E700DCCE2E /* DownloadBulk.m in Sources */,
 				658945D319269B4C00A58A83 /* MultipartMessageHeaderField.m in Sources */,
 				658943EE192125EA00A58A83 /* Configuration.m in Sources */,
 				652F704D184F71D3004E13C5 /* MyHTTPConnection.m in Sources */,
@@ -996,6 +994,7 @@
 				GCC_WARN_UNUSED_FUNCTION = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 			};
 			name = Release;
